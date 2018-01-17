@@ -1,26 +1,53 @@
 package main
 
-import (
-	"fmt"
-	"strings"
+func initializeRoutes() {
 
-	"github.com/gin-gonic/gin"
-)
+	// Use the setUserStatus middleware for every route to set a flag
+	// indicating whether the request was from an authenticated user or not
+	router.Use(setUserStatus())
 
-func main() {
-	r := gin.Default()
+	// Handle the index route
+	router.GET("/", showIndexPage)
 
-	r.GET("/drivers/:id", GetDriverHandler)
+	// Group user related routes together
+	userRoutes := router.Group("/u")
+	{
+		// Handle the GET requests at /u/login
+		// Show the login page
+		// Ensure that the user is not logged in by using the middleware
+		userRoutes.GET("/login", ensureNotLoggedIn(), showLoginPage)
 
-	r.Run(":3000")
-}
+		// Handle POST requests at /u/login
+		// Ensure that the user is not logged in by using the middleware
+		userRoutes.POST("/login", ensureNotLoggedIn(), performLogin)
 
-func GetDriverHandler(c *gin.Context) {
-	//fmt.Println(c.Request.RequestURI)
-	if strings.EqualFold(c.Request.RequestURI, "/drivers/price") {
-		fmt.Fprintf(c.Writer, "GetDriversPrice")
-	} else {
-		id := c.Param("id")
-		fmt.Fprintf(c.Writer, "GetDriversId "+id)
+		// Handle GET requests at /u/logout
+		// Ensure that the user is logged in by using the middleware
+		userRoutes.GET("/logout", ensureLoggedIn(), logout)
+
+		// Handle the GET requests at /u/register
+		// Show the registration page
+		// Ensure that the user is not logged in by using the middleware
+		userRoutes.GET("/register", ensureNotLoggedIn(), showRegistrationPage)
+
+		// Handle POST requests at /u/register
+		// Ensure that the user is not logged in by using the middleware
+		userRoutes.POST("/register", ensureNotLoggedIn(), register)
+	}
+
+	// Group article related routes together
+	articleRoutes := router.Group("/article")
+	{
+		// Handle GET requests at /article/view/some_article_id
+		articleRoutes.GET("/view/:article_id", getArticle)
+
+		// Handle the GET requests at /article/create
+		// Show the article creation page
+		// Ensure that the user is logged in by using the middleware
+		articleRoutes.GET("/create", ensureLoggedIn(), showArticleCreationPage)
+
+		// Handle POST requests at /article/create
+		// Ensure that the user is logged in by using the middleware
+		articleRoutes.POST("/create", ensureLoggedIn(), createArticle)
 	}
 }
