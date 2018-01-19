@@ -17,21 +17,21 @@ func main() {
 
 	// Process the templates at the start so that they don't have to be loaded
 	// from the disk again. This makes serving HTML pages very fast.
-	router.LoadHTMLGlob("templates/*")
+	// router.LoadHTMLGlob("templates/*")
 
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", nil)
-	})
-	router.GET("/login", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "login.html", nil)
-	})
+	// router.GET("/", func(c *gin.Context) {
+	// 	c.HTML(http.StatusOK, "index.html", nil)
+	// })
+	// router.GET("/login", func(c *gin.Context) {
+	// 	c.HTML(http.StatusOK, "login.html", nil)
+	// })
 	// admin := r.Group("/admin")
 	// admin.GET("/", func(c *gin.Context) {
 	//     c.HTML(http.StatusOK, "admin-overview.html", nil)
 	// })
 
 	// Initialize the routes
-	// initializeRoutes()
+	initializeRoutes()
 
 	// Start serving the application
 	router.Run()
@@ -52,4 +52,20 @@ func render(c *gin.Context, data gin.H, templateName string) {
 		// Respond with HTML
 		c.HTML(http.StatusOK, templateName, data)
 	}
+}
+
+func showIndexPage(c *gin.Context) {
+
+	// Вызовем метод HTML из Контекста Gin для обработки шаблона
+	c.HTML(
+		// Зададим HTTP статус 200 (OK)
+		http.StatusOK,
+		// Используем шаблон index.html
+		"index.html",
+		// Передадим данные в шаблон
+		gin.H{
+			"title":   "Home Page",
+			"payload": artical,
+		},
+	)
 }
