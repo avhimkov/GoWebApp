@@ -19,8 +19,19 @@ func main() {
 	// from the disk again. This makes serving HTML pages very fast.
 	router.LoadHTMLGlob("templates/*")
 
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", nil)
+	})
+	router.GET("/login", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "login.html", nil)
+	})
+	// admin := r.Group("/admin")
+	// admin.GET("/", func(c *gin.Context) {
+	//     c.HTML(http.StatusOK, "admin-overview.html", nil)
+	// })
+
 	// Initialize the routes
-	initializeRoutes()
+	// initializeRoutes()
 
 	// Start serving the application
 	router.Run()
