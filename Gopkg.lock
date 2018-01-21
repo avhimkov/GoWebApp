@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/boltdb/bolt"
+  packages = ["."]
+  revision = "2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8"
+  version = "v1.3.1"
+
+[[projects]]
   branch = "master"
   name = "github.com/gin-contrib/sse"
   packages = ["."]
@@ -9,11 +15,7 @@
 
 [[projects]]
   name = "github.com/gin-gonic/gin"
-  packages = [
-    ".",
-    "binding",
-    "render"
-  ]
+  packages = [".","binding","render"]
   revision = "d459835d2b077e44f7c9b453505ee29881d5d12d"
   version = "v1.2"
 
@@ -30,10 +32,40 @@
   version = "v0.0.3"
 
 [[projects]]
-  branch = "master"
   name = "github.com/ugorji/go"
   packages = ["codec"]
   revision = "9831f2c3ac1068a78f50999a30db84270f647af6"
+  version = "v1.1"
+
+[[projects]]
+  name = "github.com/xyproto/cookie"
+  packages = ["."]
+  revision = "8ce3defb0907741a2a8c9b56cce0f716c933ce34"
+  version = "2.0"
+
+[[projects]]
+  name = "github.com/xyproto/permissionbolt"
+  packages = ["."]
+  revision = "657ad1a411098f614a30382e53d4267067b0fa43"
+  version = "2.3"
+
+[[projects]]
+  name = "github.com/xyproto/pinterface"
+  packages = ["."]
+  revision = "05fa0e3080664c781c213d0a890a9d22718f7afb"
+  version = "4.1"
+
+[[projects]]
+  name = "github.com/xyproto/simplebolt"
+  packages = ["."]
+  revision = "3ad76f169f0ede30c60f6b098efd305ad995e417"
+  version = "3.0"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["bcrypt","blowfish"]
+  revision = "a6600008915114d9c087fad9f03d75087b1a74df"
 
 [[projects]]
   branch = "master"
@@ -56,6 +88,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "1a2b10f3ec80fa4b6ad88156b737403ca45820640ec668e0b797538b6274d305"
+  inputs-digest = "e0bd7fca7ffaf0bbbb6badea707bc3311a66a716420b4f8aca63ba456bc5dc4e"
   solver-name = "gps-cdcl"
   solver-version = 1
