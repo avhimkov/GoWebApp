@@ -13,6 +13,7 @@ import (
 func initializeRoutes() {
 
 	g := gin.New()
+
 	perm, err := permissionbolt.New()
 	if err != nil {
 		log.Fatalln(err)
