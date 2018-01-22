@@ -10,8 +10,6 @@ import (
 	"github.com/xyproto/permissionbolt"
 )
 
-//var router *gin.Engine
-
 func main() {
 	// Set Gin to production mode
 	//gin.SetMode(gin.ReleaseMode)
@@ -53,13 +51,6 @@ func main() {
 	// Recovery middleware
 	g.Use(gin.Recovery())
 
-	// Process the templates at the start so that they don't have to be loaded
-	// from the disk again. This makes serving HTML pages very fast.
-	// router.LoadHTMLGlob("templates/*")
-
-	// Initialize the routes
-	//initializeRoutes()
-
 	// Get the userstate, used in the handlers below
 	userstate := perm.UserState()
 
@@ -89,6 +80,7 @@ func main() {
 
 	g.GET("/remove", func(c *gin.Context) {
 		userstate.RemoveUser("bob")
+		userstate.FindUserByConfirmationCode("bob")
 		c.String(http.StatusOK, fmt.Sprintf("User bob was removed: %v\n", !userstate.HasUser("bob")))
 	})
 
