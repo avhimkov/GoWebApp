@@ -77,8 +77,9 @@ func main() {
 	})
 
 	g.GET("/register", func(c *gin.Context) {
-		userstate.AddUser("bob", "hunter1", "bob@zombo.com")
-		c.String(http.StatusOK, fmt.Sprintf("User bob was created: %v\n", userstate.HasUser("bob")))
+		//userstate.AddUser("bob", "hunter1", "bob@zombo.com")
+		//c.String(http.StatusOK, fmt.Sprintf("User bob was created: %v\n", userstate.HasUser("bob")))
+		c.HTML(http.StatusOK, "register.html", gin.H{})
 	})
 
 	g.GET("/confirm", func(c *gin.Context) {
@@ -93,8 +94,9 @@ func main() {
 
 	g.GET("/login", func(c *gin.Context) {
 		// Headers will be written, for storing a cookie
-		userstate.Login(c.Writer, "bob")
-		c.String(http.StatusOK, fmt.Sprintf("bob is now logged in: %v\n", userstate.IsLoggedIn("bob")))
+		//userstate.Login(c.Writer, "bob")
+		//c.String(http.StatusOK, fmt.Sprintf("bob is now logged in: %v\n", userstate.IsLoggedIn("bob")))
+		c.HTML(http.StatusOK, "login.html", gin.H{})
 	})
 
 	g.GET("/logout", func(c *gin.Context) {
