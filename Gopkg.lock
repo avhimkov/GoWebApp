@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/Sirupsen/logrus"
+  packages = ["."]
+  revision = "d682213848ed68c0a260ca37d6dd5ace8423f5ba"
+  version = "v1.0.4"
+
+[[projects]]
   name = "github.com/boltdb/bolt"
   packages = ["."]
   revision = "2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8"
@@ -34,6 +40,12 @@
   packages = ["."]
   revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
   version = "v0.0.3"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/mnadel/boltq"
+  packages = ["boltq"]
+  revision = "24e7d8cc27747a3be1c1347b02568c5f3fac67a1"
 
 [[projects]]
   name = "github.com/ugorji/go"
@@ -70,14 +82,18 @@
   name = "golang.org/x/crypto"
   packages = [
     "bcrypt",
-    "blowfish"
+    "blowfish",
+    "ssh/terminal"
   ]
-  revision = "d94f6bc902c2970500950e88ab1a54a0c26bec48"
+  revision = "3d37316aaa6bd9929127ac9a527abf408178ea7b"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = ["unix"]
+  packages = [
+    "unix",
+    "windows"
+  ]
   revision = "af50095a40f9041b3b38960738837185c26e9419"
 
 [[projects]]
@@ -95,6 +111,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e0bd7fca7ffaf0bbbb6badea707bc3311a66a716420b4f8aca63ba456bc5dc4e"
+  inputs-digest = "ef1efe3a0a12ea20951f8b956475e4d185086d8f420e603646251ac22008aa30"
   solver-name = "gps-cdcl"
   solver-version = 1

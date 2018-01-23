@@ -4,12 +4,19 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"reflect"
 	"strings"
 
+	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
+	"github.com/mnadel/boltq/boltq"
 	"github.com/xyproto/permissionbolt"
 )
+
+type Users struct {
+	User string
+	Name string
+	Mail string
+}
 
 func main() {
 	// Set Gin to production mode
@@ -121,20 +128,34 @@ func main() {
 	g.Run(":3000")
 }
 
-func RangeStructer(args ...interface{}) []interface{} {
-	if len(args) == 0 {
+func executeSelect(stmt *boltq.SelectStatement, db *bolt.DB) error {
+	return db.View(func(tx *bolt.Tx) error {
+		var bucket *bolt.Bucket
+
+		for _, name := range stmt.BucketPath {
+			log.Debugln("navigating to bucket", name)
+			bucket = tx.Bucket([]byte(name))
+
+			if bucket == nil {
+				return fmt.Errorf("cannot find bucket %s", name)
+			}
+		}
+
+		if containsAsterisk(stmt.Fields) {
+			log.Debugln("interating keys")
+			cursor := bucket.Cursor()
+
+			for k, v := cursor.First(); k != nil; k, v = cursor.Next() {
+				emitKeypair(k, v)
+			}
+		} else {
+			for _, k := range stmt.Fields {
+				keyBytes := []byte(k)
+				v := bucket.Get(keyBytes)
+				emitKeypair(keyBytes, v)
+			}
+		}
+
 		return nil
-	}
-
-	v := reflect.ValueOf(args[0])
-	if v.Kind() != reflect.Struct {
-		return nil
-	}
-
-	out := make([]interface{}, v.NumField())
-	for i := 0; i < v.NumField(); i++ {
-		out[i] = v.Field(i).Interface()
-	}
-
-	return out
+	})
 }
