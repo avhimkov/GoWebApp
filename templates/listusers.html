@@ -13,22 +13,10 @@
         {{.ErrorTitle}}: {{.ErrorMessage}}
         </p>
     {{end}}
-        <!--Create a form that POSTs to the `/u/register` route-->
-        <form class="form" action="/register" method="POST">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Username">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="Password">
-            </div>
-            <div class="form-group">
-                <label for="password">Mail</label>
-                <input type="email" name="mail" class="form-control" id="mail" placeholder="Mail">
-            </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
+    {{range .}}<tr>
+        {{range rangeStruct .}} <td>{{.}}</td>
+        {{end}}</tr>
+    {{end}}
     </div>
 </div>
 

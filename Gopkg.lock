@@ -15,7 +15,11 @@
 
 [[projects]]
   name = "github.com/gin-gonic/gin"
-  packages = [".","binding","render"]
+  packages = [
+    ".",
+    "binding",
+    "render"
+  ]
   revision = "d459835d2b077e44f7c9b453505ee29881d5d12d"
   version = "v1.2"
 
@@ -23,7 +27,7 @@
   branch = "master"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
-  revision = "1e59b77b52bf8e4b449a57e6f79f21226d571845"
+  revision = "c65a0412e71e8b9b3bfd22925720d23c0f054237"
 
 [[projects]]
   name = "github.com/mattn/go-isatty"
@@ -64,14 +68,17 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = ["bcrypt","blowfish"]
-  revision = "a6600008915114d9c087fad9f03d75087b1a74df"
+  packages = [
+    "bcrypt",
+    "blowfish"
+  ]
+  revision = "d94f6bc902c2970500950e88ab1a54a0c26bec48"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "2c42eef0765b9837fbdab12011af7830f55f88f0"
+  revision = "af50095a40f9041b3b38960738837185c26e9419"
 
 [[projects]]
   name = "gopkg.in/go-playground/validator.v8"

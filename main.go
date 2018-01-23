@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"reflect"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -118,4 +119,22 @@ func main() {
 	})
 	// Start serving the application
 	g.Run(":3000")
+}
+
+func RangeStructer(args ...interface{}) []interface{} {
+	if len(args) == 0 {
+		return nil
+	}
+
+	v := reflect.ValueOf(args[0])
+	if v.Kind() != reflect.Struct {
+		return nil
+	}
+
+	out := make([]interface{}, v.NumField())
+	for i := 0; i < v.NumField(); i++ {
+		out[i] = v.Field(i).Interface()
+	}
+
+	return out
 }
