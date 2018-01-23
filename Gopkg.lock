@@ -21,11 +21,7 @@
 
 [[projects]]
   name = "github.com/gin-gonic/gin"
-  packages = [
-    ".",
-    "binding",
-    "render"
-  ]
+  packages = [".","binding","render"]
   revision = "d459835d2b077e44f7c9b453505ee29881d5d12d"
   version = "v1.2"
 
@@ -44,7 +40,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/mnadel/boltq"
-  packages = ["boltq"]
+  packages = [".","boltq"]
   revision = "24e7d8cc27747a3be1c1347b02568c5f3fac67a1"
 
 [[projects]]
@@ -80,20 +76,13 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = [
-    "bcrypt",
-    "blowfish",
-    "ssh/terminal"
-  ]
+  packages = ["bcrypt","blowfish","ssh/terminal"]
   revision = "3d37316aaa6bd9929127ac9a527abf408178ea7b"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = [
-    "unix",
-    "windows"
-  ]
+  packages = ["unix","windows"]
   revision = "af50095a40f9041b3b38960738837185c26e9419"
 
 [[projects]]
@@ -111,6 +100,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ef1efe3a0a12ea20951f8b956475e4d185086d8f420e603646251ac22008aa30"
+  inputs-digest = "2ca78a033c827557e83150785b7324b365055a818b57eb7159e6fe0694e39e6d"
   solver-name = "gps-cdcl"
   solver-version = 1
