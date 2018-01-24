@@ -6,11 +6,24 @@
 <h1>List Users</h1>
 
 <div class="col-sm-9">
-    <select multiple class="form-control" name="selectbucket" id="selectbucket">
-      {{range .listusers}}
-        <option>{{.}}</option>
-      {{end}}
-    </select>
+    <table class="table">
+            <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">First</th>
+                      <th scope="col">Last</th>
+                      <th scope="col">Handle</th>
+                    </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        {{range .listusers}}
+                        <th scope="row">1</th>
+                        <td>{{.}}</td>
+                        {{end}}
+                    </tr>
+            </tbody>
+    </table>
 </div>
 
 <!--Embed the footer.html template at this location-->

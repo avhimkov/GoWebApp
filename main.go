@@ -55,22 +55,22 @@ func main() {
 	userstate := perm.UserState()
 
 	g.GET("/", func(c *gin.Context) {
-		//msg := ""
-		//msg += fmt.Sprintf("Has user bob: %v\n", userstate.HasUser("bob"))
-		//msg += fmt.Sprintf("Logged in on server: %v\n", userstate.IsLoggedIn("bob"))
-		//msg += fmt.Sprintf("Is confirmed: %v\n", userstate.IsConfirmed("bob"))
-		//msg += fmt.Sprintf("Username stored in cookies (or blank): %v\n", userstate.Username(c.Request))
-		//msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *user rights*: %v\n", userstate.UserRights(c.Request))
-		//msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *admin rights*: %v\n", userstate.AdminRights(c.Request))
-		//msg += fmt.Sprintln("\nTry: /register, /confirm, /remove, /login, /logout, /makeadmin, /clear, /data and /admin")
-		//c.String(http.StatusOK, msg)
-		c.HTML(http.StatusOK, "index.html", gin.H{})
+		msg := ""
+		msg += fmt.Sprintf("Has user bob: %v\n", userstate.HasUser("bob"))
+		msg += fmt.Sprintf("Logged in on server: %v\n", userstate.IsLoggedIn("bob"))
+		msg += fmt.Sprintf("Is confirmed: %v\n", userstate.IsConfirmed("bob"))
+		msg += fmt.Sprintf("Username stored in cookies (or blank): %v\n", userstate.Username(c.Request))
+		msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *user rights*: %v\n", userstate.UserRights(c.Request))
+		msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *admin rights*: %v\n", userstate.AdminRights(c.Request))
+		msg += fmt.Sprintln("\nTry: /register, /confirm, /remove, /login, /logout, /makeadmin, /clear, /data and /admin")
+		c.String(http.StatusOK, msg)
+		// c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 
 	g.GET("/register", func(c *gin.Context) {
-		//userstate.AddUser("bob", "hunter1", "bob@zombo.com")
-		//c.String(http.StatusOK, fmt.Sprintf("User bob was created: %v\n", userstate.HasUser("bob")))
-		c.HTML(http.StatusOK, "register.html", gin.H{})
+		userstate.AddUser("bob", "hunter1", "bob@zombo.com")
+		c.String(http.StatusOK, fmt.Sprintf("User bob was created: %v\n", userstate.HasUser("bob")))
+		// c.HTML(http.StatusOK, "register.html", gin.H{})
 	})
 
 	g.GET("/confirm", func(c *gin.Context) {
