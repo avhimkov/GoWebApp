@@ -5,21 +5,13 @@
 
 <h1>List Users</h1>
 
-<div class="panel panel-default col-sm-6">
-    <div class="panel-body">
-        <!--If there's an error, display the error-->
-    {{ if .ErrorTitle}}
-        <p class="bg-danger">
-        {{.ErrorTitle}}: {{.ErrorMessage}}
-        </p>
-    {{end}}
-    {{range .}}<tr>
-        {{range rangeStruct .}} <td>{{.}}</td>
-        {{end}}</tr>
-    {{end}}
-    </div>
+<div class="col-sm-9">
+    <select multiple class="form-control" name="selectbucket" id="selectbucket">
+      {{range .listusers}}
+        <option>{{.}}</option>
+      {{end}}
+    </select>
 </div>
-
 
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}

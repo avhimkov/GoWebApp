@@ -6,17 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
-	"github.com/mnadel/boltq/boltq"
 	"github.com/xyproto/permissionbolt"
 )
-
-type Users struct {
-	User string
-	Name string
-	Mail string
-}
 
 func main() {
 	// Set Gin to production mode
@@ -92,6 +84,11 @@ func main() {
 		c.String(http.StatusOK, fmt.Sprintf("User bob was removed: %v\n", !userstate.HasUser("bob")))
 	})
 
+	g.GET("/listuser", func(c *gin.Context) {
+		userlist := userstate.Users()
+		c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": userlist})
+	})
+
 	g.GET("/login", func(c *gin.Context) {
 		// Headers will be written, for storing a cookie
 		//userstate.Login(c.Writer, "bob")
@@ -126,36 +123,4 @@ func main() {
 	})
 	// Start serving the application
 	g.Run(":3000")
-}
-
-func executeSelect(stmt *boltq.SelectStatement, db *bolt.DB) error {
-	return db.View(func(tx *bolt.Tx) error {
-		var bucket *bolt.Bucket
-
-		for _, name := range stmt.BucketPath {
-			log.Debugln("navigating to bucket", name)
-			bucket = tx.Bucket([]byte(name))
-
-			if bucket == nil {
-				return fmt.Errorf("cannot find bucket %s", name)
-			}
-		}
-
-		if containsAsterisk(stmt.Fields) {
-			log.Debugln("interating keys")
-			cursor := bucket.Cursor()
-
-			for k, v := cursor.First(); k != nil; k, v = cursor.Next() {
-				emitKeypair(k, v)
-			}
-		} else {
-			for _, k := range stmt.Fields {
-				keyBytes := []byte(k)
-				v := bucket.Get(keyBytes)
-				emitKeypair(keyBytes, v)
-			}
-		}
-
-		return nil
-	})
 }
