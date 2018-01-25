@@ -69,7 +69,9 @@ func main() {
 
 	g.GET("/register", func(c *gin.Context) {
 		userstate.AddUser("bob", "hunter1", "bob@zombo.com")
+		userstate.AddUser("ben", "hunter2", "ben@zombo.com")
 		c.String(http.StatusOK, fmt.Sprintf("User bob was created: %v\n", userstate.HasUser("bob")))
+		c.String(http.StatusOK, fmt.Sprintf("User ben was created: %v\n", userstate.HasUser("ben")))
 		// c.HTML(http.StatusOK, "register.html", gin.H{})
 	})
 
@@ -85,7 +87,10 @@ func main() {
 	})
 
 	g.GET("/listuser", func(c *gin.Context) {
-		userlist := userstate.Users()
+		userstate.AllUsernames()
+		for _, u := range userlist {
+			return u
+		}
 		c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": userlist})
 	})
 
