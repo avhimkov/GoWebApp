@@ -87,11 +87,9 @@ func main() {
 	})
 
 	g.GET("/listuser", func(c *gin.Context) {
-		userstate.AllUsernames()
-		for _, u := range userlist {
-			return u
-		}
-		c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": userlist})
+		userlist, _ := userstate.FindUserByConfirmationCode("bob")
+		c.String(http.StatusOK, fmt.Sprintf("User ben was created: %v\n", userlist))
+		// c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": userlist})
 	})
 
 	g.GET("/login", func(c *gin.Context) {
