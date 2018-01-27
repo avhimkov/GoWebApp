@@ -88,8 +88,8 @@ func main() {
 
 	g.GET("/listusers", func(c *gin.Context) {
 		listusers, _ := userstate.AllUsernames()
-		c.String(http.StatusOK, fmt.Sprintf("User ben was created: %v\n", listusers))
-		// c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": userlist})
+		//c.String(http.StatusOK, fmt.Sprintf("User ben was created: %v\n", listusers))
+		 c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers})
 	})
 
 	g.GET("/login", func(c *gin.Context) {
