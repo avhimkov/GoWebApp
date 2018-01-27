@@ -19,7 +19,7 @@ func main() {
 
 	g := gin.New()
 
-	g.LoadHTMLGlob("templates/*")
+	g.LoadHTMLGlob("templates/*.html")
 
 	perm, err := permissionbolt.New()
 	if err != nil {
@@ -86,9 +86,9 @@ func main() {
 		c.String(http.StatusOK, fmt.Sprintf("User bob was removed: %v\n", !userstate.HasUser("bob")))
 	})
 
-	g.GET("/listuser", func(c *gin.Context) {
-		userlist, _ := userstate.FindUserByConfirmationCode("bob")
-		c.String(http.StatusOK, fmt.Sprintf("User ben was created: %v\n", userlist))
+	g.GET("/listusers", func(c *gin.Context) {
+		listusers, _ := userstate.AllUsernames()
+		c.String(http.StatusOK, fmt.Sprintf("User ben was created: %v\n", listusers))
 		// c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": userlist})
 	})
 
