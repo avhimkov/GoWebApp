@@ -80,11 +80,11 @@ func main() {
 		c.String(http.StatusOK, fmt.Sprintf("User bob was confirmed: %v\n", userstate.IsConfirmed("bob")))
 	})
 
-	g.GET("/remove", func(c *gin.Context) {
-		userstate.RemoveUser("bob")
-		userstate.FindUserByConfirmationCode("bob")
-		c.String(http.StatusOK, fmt.Sprintf("User bob was removed: %v\n", !userstate.HasUser("bob")))
-	})
+	//g.GET("/remove", func(c *gin.Context) {
+	//	userstate.RemoveUser("bob")
+	//	userstate.FindUserByConfirmationCode("bob")
+	//	c.String(http.StatusOK, fmt.Sprintf("User bob was removed: %v\n", !userstate.HasUser("bob")))
+	//})
 
 	g.GET("/listusers", func(c *gin.Context) {
 		listusers, _ := userstate.AllUsernames()
@@ -116,6 +116,18 @@ func main() {
 
 	g.GET("/data", func(c *gin.Context) {
 		c.String(http.StatusOK, "user page that only logged in users must see!")
+	})
+
+	g.POST("/delusers", func(c *gin.Context) {
+
+		id := c.Query("id")
+		page := c.DefaultQuery("page", "0")
+		name := c.PostForm("name")
+		message := c.PostForm("message")
+
+		userstate.RemoveUser("bob")
+		//fmt.Printf("id: %s; page: %s; name: %s; message: %s", id, page, name, message)
+		c.HTML(http.StatusOK, "login.html", gin.H{})
 	})
 
 	g.GET("/admin", func(c *gin.Context) {

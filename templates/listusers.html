@@ -4,7 +4,10 @@
 {{ template "header.html" .}}
 
 <h1>List Users</h1>
-
+<p class="bg-danger">
+    <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+    <button type="submit" class="btn btn-primary">Delete</button>
+</p>
 <div class="col-sm-9">
     <table class="table">
         <thead>
