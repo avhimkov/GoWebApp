@@ -67,12 +67,20 @@ func main() {
 		// c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 
-	g.GET("/register", func(c *gin.Context) {
-		userstate.AddUser("bob", "hunter1", "bob@zombo.com")
-		userstate.AddUser("ben", "hunter2", "ben@zombo.com")
-		c.String(http.StatusOK, fmt.Sprintf("User bob was created: %v\n", userstate.HasUser("bob")))
-		c.String(http.StatusOK, fmt.Sprintf("User ben was created: %v\n", userstate.HasUser("ben")))
-		// c.HTML(http.StatusOK, "register.html", gin.H{})
+	g.POST("/register", func(c *gin.Context) {
+		//userstate.AddUser("bob", "hunter1", "bob@zombo.com")
+		//userstate.AddUser("ben", "hunter2", "ben@zombo.com")
+		//c.String(http.StatusOK, fmt.Sprintf("User bob was created: %v\n", userstate.HasUser("bob")))
+		//c.String(http.StatusOK, fmt.Sprintf("User ben was created: %v\n", userstate.HasUser("ben")))
+
+		//id := c.Query("id")
+		username := c.PostForm("username")
+		pass := c.PostForm("password")
+		message := c.PostForm("email")
+
+		userstate.AddUser(username, pass, message)
+
+		 c.HTML(http.StatusOK, "register.html", gin.H{})
 	})
 
 	g.GET("/confirm", func(c *gin.Context) {
@@ -120,10 +128,10 @@ func main() {
 
 	g.POST("/delusers", func(c *gin.Context) {
 
-		id := c.Query("id")
-		page := c.DefaultQuery("page", "0")
-		name := c.PostForm("name")
-		message := c.PostForm("message")
+		//id := c.Query("id")
+		//page := c.DefaultQuery("page", "0")
+		//name := c.PostForm("name")
+		//message := c.PostForm("message")
 
 		userstate.RemoveUser("bob")
 		//fmt.Printf("id: %s; page: %s; name: %s; message: %s", id, page, name, message)
