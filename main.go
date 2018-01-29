@@ -55,16 +55,16 @@ func main() {
 	userstate := perm.UserState()
 
 	g.GET("/", func(c *gin.Context) {
-		msg := ""
-		msg += fmt.Sprintf("Has user bob: %v\n", userstate.HasUser("bob"))
-		msg += fmt.Sprintf("Logged in on server: %v\n", userstate.IsLoggedIn("bob"))
-		msg += fmt.Sprintf("Is confirmed: %v\n", userstate.IsConfirmed("bob"))
-		msg += fmt.Sprintf("Username stored in cookies (or blank): %v\n", userstate.Username(c.Request))
-		msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *user rights*: %v\n", userstate.UserRights(c.Request))
-		msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *admin rights*: %v\n", userstate.AdminRights(c.Request))
-		msg += fmt.Sprintln("\nTry: /register, /confirm, /remove, /login, /logout, /makeadmin, /clear, /data and /admin")
-		c.String(http.StatusOK, msg)
-		// c.HTML(http.StatusOK, "index.html", gin.H{})
+		//msg := ""
+		//msg += fmt.Sprintf("Has user bob: %v\n", userstate.HasUser("bob"))
+		//msg += fmt.Sprintf("Logged in on server: %v\n", userstate.IsLoggedIn("bob"))
+		//msg += fmt.Sprintf("Is confirmed: %v\n", userstate.IsConfirmed("bob"))
+		//msg += fmt.Sprintf("Username stored in cookies (or blank): %v\n", userstate.Username(c.Request))
+		//msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *user rights*: %v\n", userstate.UserRights(c.Request))
+		//msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *admin rights*: %v\n", userstate.AdminRights(c.Request))
+		//msg += fmt.Sprintln("\nTry: /register, /confirm, /remove, /login, /logout, /makeadmin, /clear, /data and /admin")
+		//c.String(http.StatusOK, msg)
+		 c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 
 	g.POST("/register", func(c *gin.Context) {
@@ -79,8 +79,9 @@ func main() {
 		message := c.PostForm("email")
 
 		userstate.AddUser(username, pass, message)
-
-		 c.HTML(http.StatusOK, "register.html", gin.H{})
+		//c.Redirect(http.StatusMovedPermanently, networks_url)
+		//c.Redirect(200, "/")
+		c.HTML(http.StatusOK, "register.html", gin.H{})
 	})
 
 	g.GET("/confirm", func(c *gin.Context) {
@@ -96,6 +97,7 @@ func main() {
 
 	g.GET("/listusers", func(c *gin.Context) {
 		listusers, _ := userstate.AllUsernames()
+
 		//c.String(http.StatusOK, fmt.Sprintf("User ben was created: %v\n", listusers))
 		 c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers})
 	})
@@ -126,16 +128,10 @@ func main() {
 		c.String(http.StatusOK, "user page that only logged in users must see!")
 	})
 
-	g.POST("/delusers", func(c *gin.Context) {
-
-		//id := c.Query("id")
-		//page := c.DefaultQuery("page", "0")
-		//name := c.PostForm("name")
-		//message := c.PostForm("message")
-
-		userstate.RemoveUser("bob")
-		//fmt.Printf("id: %s; page: %s; name: %s; message: %s", id, page, name, message)
-		c.HTML(http.StatusOK, "login.html", gin.H{})
+	g.POST("/delete", func(c *gin.Context) {
+		username := c.PostForm("name")
+		userstate.RemoveUser(username)
+		c.HTML(http.StatusOK, "delete.html", gin.H{})
 	})
 
 	g.GET("/admin", func(c *gin.Context) {
