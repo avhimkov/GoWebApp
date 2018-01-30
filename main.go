@@ -136,8 +136,12 @@ func main() {
 		c.String(http.StatusOK, "user page that only logged in users must see!")
 	})
 
+	g.GET("/delete", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "delete.html", gin.H{})
+	})
+
 	g.POST("/delete", func(c *gin.Context) {
-		username := c.PostForm("name")
+		username := c.PostForm("username")
 		userstate.RemoveUser(username)
 		c.HTML(http.StatusOK, "delete.html", gin.H{})
 	})
