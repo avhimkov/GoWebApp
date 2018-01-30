@@ -69,7 +69,6 @@ func main() {
 
 	g.GET("/register", func(c *gin.Context) {
 		//userstate.AddUser("bob", "hunter1", "bob@zombo.com")
-		//userstate.AddUser("ben", "hunter2", "ben@zombo.com")
 		//c.String(http.StatusOK, fmt.Sprintf("User bob was created: %v\n", userstate.HasUser("bob")))
 
 		c.HTML(http.StatusOK, "register.html", gin.H{})
@@ -77,16 +76,11 @@ func main() {
 	})
 
 	g.POST("/register", func(c *gin.Context) {
-		//userstate.AddUser("bob", "hunter1", "bob@zombo.com")
-		//userstate.AddUser("ben", "hunter2", "ben@zombo.com")
-		//c.String(http.StatusOK, fmt.Sprintf("User bob was created: %v\n", userstate.HasUser("bob")))
-
 		username := c.PostForm("username")
 		pass := c.PostForm("password")
 		message := c.PostForm("email")
 
 		userstate.AddUser(username, pass, message)
-		//c.Redirect(http.StatusMovedPermanently, networks_url)
 
 		c.HTML(http.StatusOK, "register.html", gin.H{})
 		c.String(http.StatusOK, fmt.Sprintf("User lord was created: %v\n", userstate.HasUser("lord")))
@@ -97,11 +91,11 @@ func main() {
 		c.String(http.StatusOK, fmt.Sprintf("User bob was confirmed: %v\n", userstate.IsConfirmed("bob")))
 	})
 
-	g.GET("/remove", func(c *gin.Context) {
-		userstate.RemoveUser("bob")
-		userstate.FindUserByConfirmationCode("bob")
-		c.String(http.StatusOK, fmt.Sprintf("User bob was removed: %v\n", !userstate.HasUser("bob")))
-	})
+	//g.GET("/remove", func(c *gin.Context) {
+	//	userstate.RemoveUser("bob")
+	//	userstate.FindUserByConfirmationCode("bob")
+	//	c.String(http.StatusOK, fmt.Sprintf("User bob was removed: %v\n", !userstate.HasUser("bob")))
+	//})
 
 	g.GET("/listusers", func(c *gin.Context) {
 		listusers, _ := userstate.AllUsernames()
@@ -112,9 +106,16 @@ func main() {
 
 	g.GET("/login", func(c *gin.Context) {
 		// Headers will be written, for storing a cookie
-		userstate.Login(c.Writer, "bob")
-		c.String(http.StatusOK, fmt.Sprintf("bob is now logged in: %v\n", userstate.IsLoggedIn("bob")))
-		//c.HTML(http.StatusOK, "login.html", gin.H{})
+		//userstate.Login(c.Writer, "bob")
+		//c.String(http.StatusOK, fmt.Sprintf("bob is now logged in: %v\n", userstate.IsLoggedIn("bob")))
+		c.HTML(http.StatusOK, "login.html", gin.H{})
+	})
+
+	g.POST("/login", func(c *gin.Context) {
+		username := c.PostForm("username")
+		password := c.PostForm("password")
+		userstate.CorrectPassword(username, password)
+		c.HTML(http.StatusOK, "login.html", gin.H{})
 	})
 
 	g.GET("/logout", func(c *gin.Context) {
