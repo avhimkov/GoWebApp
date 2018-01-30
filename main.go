@@ -64,10 +64,19 @@ func main() {
 		//msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *admin rights*: %v\n", userstate.AdminRights(c.Request))
 		//msg += fmt.Sprintln("\nTry: /register, /confirm, /remove, /login, /logout, /makeadmin, /clear, /data and /admin")
 		//c.String(http.StatusOK, msg)
-		 c.HTML(http.StatusOK, "index.html", gin.H{})
+		c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 
 	g.GET("/register", func(c *gin.Context) {
+		//userstate.AddUser("bob", "hunter1", "bob@zombo.com")
+		//userstate.AddUser("ben", "hunter2", "ben@zombo.com")
+		//c.String(http.StatusOK, fmt.Sprintf("User bob was created: %v\n", userstate.HasUser("bob")))
+
+		c.HTML(http.StatusOK, "register.html", gin.H{})
+		c.String(http.StatusOK, fmt.Sprintf("User lord was created: %v\n", userstate.HasUser("lord")))
+	})
+
+	g.POST("/register", func(c *gin.Context) {
 		//userstate.AddUser("bob", "hunter1", "bob@zombo.com")
 		//userstate.AddUser("ben", "hunter2", "ben@zombo.com")
 		//c.String(http.StatusOK, fmt.Sprintf("User bob was created: %v\n", userstate.HasUser("bob")))
@@ -98,7 +107,7 @@ func main() {
 		listusers, _ := userstate.AllUsernames()
 
 		//c.String(http.StatusOK, fmt.Sprintf("User ben was created: %v\n", listusers))
-		 c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers})
+		c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers})
 	})
 
 	g.GET("/login", func(c *gin.Context) {
