@@ -122,12 +122,19 @@ func main() {
 		// 	// }
 		// 	// c.String(http.StatusOK, "list of all users: "+strings.Join(usernames, ", "))
 		// }
-		c.HTML(http.StatusOK, "login.html", gin.H{})
-		c.String(http.StatusOK, fmt.Sprintf(username+" is now logged in: %v\n", userstate.IsLoggedIn(username)))
+		c.HTML(http.StatusOK, "login-successful.html", gin.H{})
+		// c.String(http.StatusOK, fmt.Sprintf(username+" is now logged in: %v\n", userstate.IsLoggedIn(username)))
 	})
 
 	g.GET("/logout", func(c *gin.Context) {
-		userstate.Logout("bob")
+		// userstate.Logout("bob")
+		c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: %v\n", !userstate.IsLoggedIn("bob")))
+	})
+
+	g.POST("/logout", func(c *gin.Context) {
+		username := c.PostForm("username")
+		userstate.Logout(username)
+		// userstate.Logout("bob")
 		c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: %v\n", !userstate.IsLoggedIn("bob")))
 	})
 
