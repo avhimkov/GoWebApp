@@ -99,12 +99,12 @@ func main() {
 
 	g.GET("/listusers", func(c *gin.Context) {
 		listusers, _ := userstate.AllUsernames()
-
-		//c.String(http.StatusOK, fmt.Sprintf("User ben was created: %v\n", listusers))
 		c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers})
 	})
 
 	g.GET("/login", func(c *gin.Context) {
+		//test
+		userstate.Login(c.Writer, "bob")
 		// Headers will be written, for storing a cookie
 		//userstate.Login(c.Writer, "bob")
 		//c.String(http.StatusOK, fmt.Sprintf("bob is now logged in: %v\n", userstate.IsLoggedIn("bob")))
@@ -112,10 +112,18 @@ func main() {
 	})
 
 	g.POST("/login", func(c *gin.Context) {
+
 		username := c.PostForm("username")
-		password := c.PostForm("password")
-		userstate.CorrectPassword(username, password)
+		userstate.Login(c.Writer, username)
+		// password := c.PostForm("password")
+		// if username, err := userstate.FindUserByConfirmationCode(username); err == nil {
+		// 	// if password := userstate.CorrectPassword(username, password){
+		// 	userstate.Login(c.Writer, username)
+		// 	// }
+		// 	// c.String(http.StatusOK, "list of all users: "+strings.Join(usernames, ", "))
+		// }
 		c.HTML(http.StatusOK, "login.html", gin.H{})
+		c.String(http.StatusOK, fmt.Sprintf(username+" is now logged in: %v\n", userstate.IsLoggedIn(username)))
 	})
 
 	g.GET("/logout", func(c *gin.Context) {
