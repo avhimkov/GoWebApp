@@ -64,6 +64,8 @@ func main() {
 		//msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *admin rights*: %v\n", userstate.AdminRights(c.Request))
 		//msg += fmt.Sprintln("\nTry: /register, /confirm, /remove, /login, /logout, /makeadmin, /clear, /data and /admin")
 		//c.String(http.StatusOK, msg)
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: ---%v---\n", usercook))
 		c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 
@@ -72,7 +74,6 @@ func main() {
 		//c.String(http.StatusOK, fmt.Sprintf("User bob was created: %v\n", userstate.HasUser("bob")))
 
 		c.HTML(http.StatusOK, "register.html", gin.H{})
-		c.String(http.StatusOK, fmt.Sprintf("User lord was created: %v\n", userstate.HasUser("lord")))
 	})
 
 	g.POST("/register", func(c *gin.Context) {
@@ -81,9 +82,10 @@ func main() {
 		message := c.PostForm("email")
 
 		userstate.AddUser(username, pass, message)
+		userstate.Login(c.Writer, username)
 
 		c.HTML(http.StatusOK, "register.html", gin.H{})
-		c.String(http.StatusOK, fmt.Sprintf("User lord was created: %v\n", userstate.HasUser("lord")))
+		c.String(http.StatusOK, fmt.Sprintf(username+" is now logged in: %v\n", userstate.IsLoggedIn(username)))
 	})
 
 	g.GET("/confirm", func(c *gin.Context) {
@@ -127,15 +129,19 @@ func main() {
 	})
 
 	g.GET("/logout", func(c *gin.Context) {
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		userstate.Logout(usercook)
+		userstate.ClearCookie(c.Writer)
 		// userstate.Logout("bob")
-		c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: %v\n", !userstate.IsLoggedIn("bob")))
+		c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: %v\n", !userstate.IsLoggedIn(usercook)))
 	})
 
 	g.POST("/logout", func(c *gin.Context) {
-		username := c.PostForm("username")
-		userstate.Logout(username)
-		// userstate.Logout("bob")
-		c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: %v\n", !userstate.IsLoggedIn("bob")))
+		//Пройтись по всем пользователям и по кукам найти текущего и разлогинить
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		userstate.Logout(usercook)
+		userstate.ClearCookie(c.Writer)
+		// c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: %v\n", !userstate.IsLoggedIn("bob")))
 	})
 
 	g.GET("/makeadmin", func(c *gin.Context) {
