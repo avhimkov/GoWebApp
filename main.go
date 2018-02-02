@@ -79,6 +79,29 @@ func main() {
 	})
 
 	g.POST("/register", func(c *gin.Context) {
+		//if strings.TrimSpace(password) == "" {
+		//	return nil, errors.New("The password can't be empty")
+		//} else if !isUsernameAvailable(username) {
+		//	return nil, errors.New("The username isn't available")
+		//}
+
+		// if isUserValid(username, password) {
+		// 	// If the username/password is valid set the token in a cookie
+		// 	token := generateSessionToken()
+		// 	c.SetCookie("token", token, 3600, "", "", false, true)
+		// 	c.Set("is_logged_in", true)
+
+		// 	render(c, gin.H{
+		// 		"title": "Successful Login"}, "login-successful.html")
+
+		// } else {
+		// 	// If the username/password combination is invalid,
+		// 	// show the error message on the login page
+		// 	c.HTML(http.StatusBadRequest, "login.html", gin.H{
+		// 		"ErrorTitle":   "Login Failed",
+		// 		"ErrorMessage": "Invalid credentials provided"})
+		// }
+
 		username := c.PostForm("username")
 		pass := c.PostForm("password")
 		message := c.PostForm("email")
@@ -116,6 +139,13 @@ func main() {
 	})
 
 	g.POST("/login", func(c *gin.Context) {
+
+		//for _, u := range userList {
+		//	if u.Username == username && u.Password == password {
+		//		return true
+		//	}
+		//}
+		//return false
 
 		username := c.PostForm("username")
 		userstate.Login(c.Writer, username)
