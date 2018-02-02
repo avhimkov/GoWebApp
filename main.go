@@ -65,8 +65,10 @@ func main() {
 		//msg += fmt.Sprintln("\nTry: /register, /confirm, /remove, /login, /logout, /makeadmin, /clear, /data and /admin")
 		//c.String(http.StatusOK, msg)
 		usercook, _ := userstate.UsernameCookie(c.Request)
+		username := userstate.IsLoggedIn(usercook)
 		c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: ---%v---\n", usercook))
-		c.HTML(http.StatusOK, "index.html", gin.H{})
+		c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: ---%v---\n", username))
+		//c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 
 	g.GET("/register", func(c *gin.Context) {
@@ -145,6 +147,7 @@ func main() {
 	})
 
 	g.GET("/makeadmin", func(c *gin.Context) {
+		//
 		userstate.SetAdminStatus("bob")
 		c.String(http.StatusOK, fmt.Sprintf("bob is now administrator: %v\n", userstate.IsAdmin("bob")))
 	})
