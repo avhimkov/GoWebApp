@@ -117,26 +117,26 @@ func main() {
 	})
 
 	g.POST("/login", func(c *gin.Context) {
-		listusers, _ := userstate.AllUsernames()
 
 		username := c.PostForm("username")
-		userstate.Login(c.Writer, username)
-		// password := c.PostForm("password")
+		// userstate.Login(c.Writer, username)
+		password := c.PostForm("password")
+		logintryst := userstate.CorrectPassword(username, password)
 		// if username, err := userstate.FindUserByConfirmationCode(username); err == nil {
 		// 	// if password := userstate.CorrectPassword(username, password){
 		// 	userstate.Login(c.Writer, username)
 		// 	// }
 		// 	// c.String(http.StatusOK, "list of all users: "+strings.Join(usernames, ", "))
 		// }
-		for u := range listusers {
+		if logintryst == true {
 
-			if listusers[u] == username {
-				// if u == username && u.Password == password {
-				return
-			}
+			// if u == username && u.Password == password {
+			c.HTML(http.StatusOK, "login-successful.html", gin.H{})
+		} else {
+			c.HTML(http.StatusOK, "index.html", gin.H{})
 		}
 
-		c.HTML(http.StatusOK, "login-successful.html", gin.H{})
+		// c.HTML(http.StatusOK, "login-successful.html", gin.H{})
 		// c.String(http.StatusOK, fmt.Sprintf(username+" is now logged in: %v\n", userstate.IsLoggedIn(username)))
 	})
 
