@@ -55,15 +55,15 @@ func main() {
 	userstate := perm.UserState()
 
 	g.GET("/", func(c *gin.Context) {
-		//msg := ""
-		//msg += fmt.Sprintf("Has user bob: %v\n", userstate.HasUser("bob"))
-		//msg += fmt.Sprintf("Logged in on server: %v\n", userstate.IsLoggedIn("bob"))
-		//msg += fmt.Sprintf("Is confirmed: %v\n", userstate.IsConfirmed("bob"))
-		//msg += fmt.Sprintf("Username stored in cookies (or blank): %v\n", userstate.Username(c.Request))
-		//msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *user rights*: %v\n", userstate.UserRights(c.Request))
-		//msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *admin rights*: %v\n", userstate.AdminRights(c.Request))
-		//msg += fmt.Sprintln("\nTry: /register, /confirm, /remove, /login, /logout, /makeadmin, /clear, /data and /admin")
-		//c.String(http.StatusOK, msg)
+		// msg := ""
+		// msg += fmt.Sprintf("Has user bob: %v\n", userstate.HasUser("bob"))
+		// msg += fmt.Sprintf("Logged in on server: %v\n", userstate.IsLoggedIn("bob"))
+		// msg += fmt.Sprintf("Is confirmed: %v\n", userstate.IsConfirmed("bob"))
+		// msg += fmt.Sprintf("Username stored in cookies (or blank): %v\n", userstate.Username(c.Request))
+		// msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *user rights*: %v\n", userstate.UserRights(c.Request))
+		// msg += fmt.Sprintf("Current user is logged in, has a valid cookie and *admin rights*: %v\n", userstate.AdminRights(c.Request))
+		// msg += fmt.Sprintln("\nTry: /register, /confirm, /remove, /login, /logout, /makeadmin, /clear, /data and /admin")
+		// c.String(http.StatusOK, msg)
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		username := userstate.IsLoggedIn(usercook)
 		c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: ---%v---\n", usercook))
@@ -79,28 +79,6 @@ func main() {
 	})
 
 	g.POST("/register", func(c *gin.Context) {
-		//if strings.TrimSpace(password) == "" {
-		//	return nil, errors.New("The password can't be empty")
-		//} else if !isUsernameAvailable(username) {
-		//	return nil, errors.New("The username isn't available")
-		//}
-
-		// if isUserValid(username, password) {
-		// 	// If the username/password is valid set the token in a cookie
-		// 	token := generateSessionToken()
-		// 	c.SetCookie("token", token, 3600, "", "", false, true)
-		// 	c.Set("is_logged_in", true)
-
-		// 	render(c, gin.H{
-		// 		"title": "Successful Login"}, "login-successful.html")
-
-		// } else {
-		// 	// If the username/password combination is invalid,
-		// 	// show the error message on the login page
-		// 	c.HTML(http.StatusBadRequest, "login.html", gin.H{
-		// 		"ErrorTitle":   "Login Failed",
-		// 		"ErrorMessage": "Invalid credentials provided"})
-		// }
 
 		username := c.PostForm("username")
 		pass := c.PostForm("password")
@@ -139,13 +117,7 @@ func main() {
 	})
 
 	g.POST("/login", func(c *gin.Context) {
-
-		//for _, u := range userList {
-		//	if u.Username == username && u.Password == password {
-		//		return true
-		//	}
-		//}
-		//return false
+		listusers, _ := userstate.AllUsernames()
 
 		username := c.PostForm("username")
 		userstate.Login(c.Writer, username)
@@ -156,6 +128,14 @@ func main() {
 		// 	// }
 		// 	// c.String(http.StatusOK, "list of all users: "+strings.Join(usernames, ", "))
 		// }
+		for u := range listusers {
+
+			if listusers[u] == username {
+				// if u == username && u.Password == password {
+				return
+			}
+		}
+
 		c.HTML(http.StatusOK, "login-successful.html", gin.H{})
 		// c.String(http.StatusOK, fmt.Sprintf(username+" is now logged in: %v\n", userstate.IsLoggedIn(username)))
 	})
