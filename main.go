@@ -86,15 +86,16 @@ func main() {
 
 		userstate.AddUser(username, pass, message)
 		userstate.Login(c.Writer, username)
+		userstate.MarkConfirmed(username)
 
 		c.HTML(http.StatusOK, "register.html", gin.H{})
 		c.String(http.StatusOK, fmt.Sprintf(username+" is now logged in: %v\n", userstate.IsLoggedIn(username)))
 	})
 
-	g.GET("/confirm", func(c *gin.Context) {
-		userstate.MarkConfirmed("bob")
-		c.String(http.StatusOK, fmt.Sprintf("User bob was confirmed: %v\n", userstate.IsConfirmed("bob")))
-	})
+	// g.GET("/confirm", func(c *gin.Context) {
+	// 	userstate.MarkConfirmed("bob")
+	// 	c.String(http.StatusOK, fmt.Sprintf("User bob was confirmed: %v\n", userstate.IsConfirmed("bob")))
+	// })
 
 	//g.GET("/remove", func(c *gin.Context) {
 	//	userstate.RemoveUser("bob")
@@ -108,8 +109,6 @@ func main() {
 	})
 
 	g.GET("/login", func(c *gin.Context) {
-		//test
-		userstate.Login(c.Writer, "bob")
 		// Headers will be written, for storing a cookie
 		//userstate.Login(c.Writer, "bob")
 		//c.String(http.StatusOK, fmt.Sprintf("bob is now logged in: %v\n", userstate.IsLoggedIn("bob")))
@@ -157,9 +156,17 @@ func main() {
 	})
 
 	g.GET("/makeadmin", func(c *gin.Context) {
-		//
-		userstate.SetAdminStatus("bob")
-		c.String(http.StatusOK, fmt.Sprintf("bob is now administrator: %v\n", userstate.IsAdmin("bob")))
+
+		// userstate.SetAdminStatus("bob")
+		// c.String(http.StatusOK, fmt.Sprintf("bob is now administrator: %v\n", userstate.IsAdmin("bob")))
+		c.HTML(http.StatusOK, "makeadmin.html", gin.H{})
+	})
+
+	g.POST("/makeadmin", func(c *gin.Context) {
+		username := c.PostForm("username")
+		userstate.SetAdminStatus(username)
+		// c.String(http.StatusOK, fmt.Sprintf("bob is now administrator: %v\n", userstate.IsAdmin("bob")))
+		c.HTML(http.StatusOK, "makeadmin.html", gin.H{})
 	})
 
 	g.GET("/clear", func(c *gin.Context) {
