@@ -72,8 +72,8 @@ func main() {
 		} else {
 			c.HTML(http.StatusOK, "index.html", gin.H{"is_logged_in": is_logged_in})
 		}
-		c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: ---%v---\n", usercook))
-		c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: ---%v---\n", is_logged_in))
+		// c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: ---%v---\n", usercook))
+		// c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: ---%v---\n", is_logged_in))
 	})
 
 	g.GET("/register", func(c *gin.Context) {
@@ -116,6 +116,7 @@ func main() {
 	g.GET("/login", showLoginPage)
 
 	g.POST("/login", func(c *gin.Context) {
+
 		username := c.PostForm("username")
 		// userstate.Login(c.Writer, username)
 		password := c.PostForm("password")
@@ -143,13 +144,13 @@ func main() {
 		c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: %v\n", !userstate.IsLoggedIn(usercook)))
 	})
 
-	// g.POST("/logout", func(c *gin.Context) {
-	// 	//Пройтись по всем пользователям и по кукам найти текущего и разлогинить
-	// 	usercook, _ := userstate.UsernameCookie(c.Request)
-	// 	userstate.Logout(usercook)
-	// 	userstate.ClearCookie(c.Writer)
-	// 	// c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: %v\n", !userstate.IsLoggedIn("bob")))
-	// })
+	g.POST("/logout", func(c *gin.Context) {
+		//Пройтись по всем пользователям и по кукам найти текущего и разлогинить
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		userstate.Logout(usercook)
+		userstate.ClearCookie(c.Writer)
+		// c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: %v\n", !userstate.IsLoggedIn("bob")))
+	})
 
 	g.GET("/makeadmin", func(c *gin.Context) {
 

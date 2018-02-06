@@ -6,12 +6,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// func indexHandler(c *gin.Context) {
+//     c.HTML(http.StatusOK, "index.html", gin.H{})
+// }
+
 func showLoginPage(c *gin.Context) {
 	// Call the render function with the name of the template to render
 	c.HTML(http.StatusOK, "login.html", gin.H{})
 }
 
-// func performLogin(c *gin.Context) {
+// func performLogin(username string, password string, c *gin.Context) (string, bool) {
 // 	username := c.PostForm("username")
 // 	// userstate.Login(c.Writer, username)
 // 	password := c.PostForm("password")
@@ -29,6 +33,8 @@ func showLoginPage(c *gin.Context) {
 // 	} else {
 // 		c.HTML(http.StatusOK, "index.html", gin.H{})
 // 	}
+
+// 	return "", false
 // }
 
 // func logout(c *gin.Context) {
