@@ -54,6 +54,8 @@ func main() {
 	// Get the userstate, used in the handlers below
 	userstate := perm.UserState()
 
+	users := g.Group("/u")
+
 	g.GET("/", func(c *gin.Context) {
 		// msg := ""
 		// msg += fmt.Sprintf("Has user bob: %v\n", userstate.HasUser("bob"))
@@ -67,7 +69,7 @@ func main() {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		is_logged_in := userstate.IsLoggedIn(usercook)
 		if !is_logged_in {
-			c.Redirect(307, "/login")
+			c.Redirect(307, "/u/login")
 			// c.AbortWithStatus(http.StatusUnauthorized)
 		} else {
 			c.HTML(http.StatusOK, "index.html", gin.H{"is_logged_in": is_logged_in})
@@ -108,14 +110,16 @@ func main() {
 	//	c.String(http.StatusOK, fmt.Sprintf("User bob was removed: %v\n", !userstate.HasUser("bob")))
 	//})
 
-	g.GET("/listusers", func(c *gin.Context) {
+	users.GET("/listusers", func(c *gin.Context) {
 		listusers, _ := userstate.AllUsernames()
 		c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers})
 	})
 
-	g.GET("/login", showLoginPage)
+	users.GET("/login", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "login.html", gin.H{})
+	})
 
-	g.POST("/login", func(c *gin.Context) {
+	users.POST("/login", func(c *gin.Context) {
 
 		username := c.PostForm("username")
 		// userstate.Login(c.Writer, username)
@@ -136,7 +140,7 @@ func main() {
 		}
 	})
 
-	g.GET("/logout", func(c *gin.Context) {
+	users.GET("/logout", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		userstate.Logout(usercook)
 		userstate.ClearCookie(c.Writer)
@@ -144,7 +148,7 @@ func main() {
 		c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: %v\n", !userstate.IsLoggedIn(usercook)))
 	})
 
-	g.POST("/logout", func(c *gin.Context) {
+	users.POST("/logout", func(c *gin.Context) {
 		//Пройтись по всем пользователям и по кукам найти текущего и разлогинить
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		userstate.Logout(usercook)
