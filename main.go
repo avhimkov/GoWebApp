@@ -54,7 +54,7 @@ func main() {
 	// Get the userstate, used in the handlers below
 	userstate := perm.UserState()
 
-	users := g.Group("/u")
+	// users := g.Group("/u")
 
 	g.GET("/", func(c *gin.Context) {
 		// msg := ""
@@ -67,12 +67,12 @@ func main() {
 		// msg += fmt.Sprintln("\nTry: /register, /confirm, /remove, /login, /logout, /makeadmin, /clear, /data and /admin")
 		// c.String(http.StatusOK, msg)
 		usercook, _ := userstate.UsernameCookie(c.Request)
-		is_logged_in := userstate.IsLoggedIn(usercook)
-		if !is_logged_in {
-			c.Redirect(307, "/u/login")
+		isloggedin := userstate.IsLoggedIn(usercook)
+		if !isloggedin {
+			c.Redirect(307, "/login")
 			// c.AbortWithStatus(http.StatusUnauthorized)
 		} else {
-			c.HTML(http.StatusOK, "index.html", gin.H{"is_logged_in": is_logged_in})
+			c.HTML(http.StatusOK, "index.html", gin.H{"is_logged_in": isloggedin})
 		}
 		// c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: ---%v---\n", usercook))
 		// c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: ---%v---\n", is_logged_in))
@@ -110,16 +110,11 @@ func main() {
 	//	c.String(http.StatusOK, fmt.Sprintf("User bob was removed: %v\n", !userstate.HasUser("bob")))
 	//})
 
-	users.GET("/listusers", func(c *gin.Context) {
-		listusers, _ := userstate.AllUsernames()
-		c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers})
+	g.GET("/login", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Login Page"})
 	})
 
-	users.GET("/login", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "login.html", gin.H{})
-	})
-
-	users.POST("/login", func(c *gin.Context) {
+	g.POST("/login", func(c *gin.Context) {
 
 		username := c.PostForm("username")
 		// userstate.Login(c.Writer, username)
@@ -133,16 +128,19 @@ func main() {
 		// }
 		if logintryst == true {
 			userstate.Login(c.Writer, username)
+			userstate.Confirm(username)
 			// if u == username && u.Password == password {
-			// c.JSON(http.StatusOK, gin.H{"status": "you are logged in"})
+			// c.HTML(http.StatusOK, "index.html", gin.H{"title": "Successful Login"})
 			http.Redirect(c.Writer, c.Request, "/", 302)
 		} else {
 			// c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized"})
-			c.Redirect(http.StatusTemporaryRedirect, "/")
+			c.HTML(http.StatusBadRequest, "login.html", gin.H{
+				"ErrorTitle":   "Login Failed",
+				"ErrorMessage": "Invalid credentials provided"})
 		}
 	})
 
-	users.GET("/logout", func(c *gin.Context) {
+	g.GET("/logout", func(c *gin.Context) {
 
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		userstate.Logout(usercook)
@@ -159,40 +157,45 @@ func main() {
 	// 	c.String(http.StatusOK, fmt.Sprintf("bob is now logged out: %v\n", !userstate.IsLoggedIn(usercook)))
 	// })
 
-	users.GET("/makeadmin", func(c *gin.Context) {
+	g.GET("/listusers", func(c *gin.Context) {
+		listusers, _ := userstate.AllUsernames()
+		c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers})
+	})
+
+	g.GET("/makeadmin", func(c *gin.Context) {
 
 		// userstate.SetAdminStatus("bob")
 		// c.String(http.StatusOK, fmt.Sprintf("bob is now administrator: %v\n", userstate.IsAdmin("bob")))
 		c.HTML(http.StatusOK, "makeadmin.html", gin.H{})
 	})
 
-	users.POST("/makeadmin", func(c *gin.Context) {
+	g.POST("/makeadmin", func(c *gin.Context) {
 		username := c.PostForm("username")
 		userstate.SetAdminStatus(username)
 		// c.String(http.StatusOK, fmt.Sprintf("bob is now administrator: %v\n", userstate.IsAdmin("bob")))
 		c.HTML(http.StatusOK, "makeadmin.html", gin.H{})
 	})
 
-	users.GET("/clear", func(c *gin.Context) {
+	g.GET("/clear", func(c *gin.Context) {
 		userstate.ClearCookie(c.Writer)
 		c.String(http.StatusOK, "Clearing cookie")
 	})
 
-	users.GET("/data", func(c *gin.Context) {
+	g.GET("/data", func(c *gin.Context) {
 		c.String(http.StatusOK, "user page that only logged in users must see!")
 	})
 
-	users.GET("/delete", func(c *gin.Context) {
+	g.GET("/delete", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "delete.html", gin.H{})
 	})
 
-	users.POST("/delete", func(c *gin.Context) {
+	g.POST("/delete", func(c *gin.Context) {
 		username := c.PostForm("username")
 		userstate.RemoveUser(username)
 		c.HTML(http.StatusOK, "delete.html", gin.H{})
 	})
 
-	users.GET("/admin", func(c *gin.Context) {
+	g.GET("/admin", func(c *gin.Context) {
 		c.String(http.StatusOK, "super secret information that only logged in administrators must see!\n\n")
 		if usernames, err := userstate.AllUsernames(); err == nil {
 			c.String(http.StatusOK, "list of all users: "+strings.Join(usernames, ", "))
