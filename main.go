@@ -59,10 +59,10 @@ func main() {
 	g.GET("/", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
-		if !isloggedin {
-			c.Redirect(307, "/login")
-		} else {
+		if isloggedin {
 			c.HTML(http.StatusOK, "index.html", gin.H{"is_logged_in": isloggedin})
+		} else {
+			c.Redirect(307, "/login")
 		}
 	})
 
@@ -84,7 +84,10 @@ func main() {
 	})
 
 	g.GET("/login", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Login Page"})
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Login Page",
+			"is_logged_in": isloggedin})
 	})
 
 	g.POST("/login", func(c *gin.Context) {
@@ -98,6 +101,7 @@ func main() {
 			// c.HTML(http.StatusOK, "index.html", gin.H{"title": "Successful Login"})
 			http.Redirect(c.Writer, c.Request, "/", 302)
 		} else {
+
 			// c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized"})
 			c.HTML(http.StatusBadRequest, "login.html", gin.H{
 				"ErrorTitle":   "Login Failed",
@@ -106,16 +110,16 @@ func main() {
 	})
 
 	g.GET("/logout", func(c *gin.Context) {
-
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		userstate.Logout(usercook)
 		http.Redirect(c.Writer, c.Request, "/", 302)
-		// userstate.ClearCookie(c.Writer)
 	})
 
 	g.GET("/listusers", func(c *gin.Context) {
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
 		listusers, _ := userstate.AllUsernames()
-		c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers})
+		c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
 	})
 
 	g.GET("/makeadmin", func(c *gin.Context) {
@@ -138,7 +142,9 @@ func main() {
 	// })
 
 	g.GET("/delete", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "delete.html", gin.H{})
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+		c.HTML(http.StatusOK, "delete.html", gin.H{"is_logged_in": isloggedin})
 	})
 
 	g.POST("/delete", func(c *gin.Context) {
