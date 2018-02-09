@@ -15,6 +15,12 @@
         {{ if .is_logged_in }}
         <!--Display this link only when the user is not logged in-->
         <li><a href="/listusers">List users</a></li>
+        {{end}}
+        {{ if .is_logged_in }}
+        <!--Display this link only when the user is not logged in-->
+        <li><a href="/makeadmin">Make admin users</a></li>
+        {{end}}
+        {{ if .is_logged_in }}
         <!--Display this link only when the user is not logged in-->
         <li><a href="/delete">Delete users</a></li>
         {{end}}

@@ -123,7 +123,9 @@ func main() {
 	})
 
 	g.GET("/makeadmin", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "makeadmin.html", gin.H{})
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+		c.HTML(http.StatusOK, "makeadmin.html", gin.H{"is_logged_in": isloggedin})
 	})
 
 	g.POST("/makeadmin", func(c *gin.Context) {
