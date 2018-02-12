@@ -53,6 +53,7 @@ func main() {
 
 	// Get the userstate, used in the handlers below
 	userstate := perm.UserState()
+
 	initializeRoutes()
 	// users := g.Group("/u")
 

@@ -1,13 +1,38 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/xyproto/permissionbolt"
 )
 
 func initializeRoutes() {
 	g := gin.New()
+
+	perm, err := permissionbolt.New()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	// Set up a middleware handler for Gin, with a custom "permission denied" message.
+	permissionHandler := func(c *gin.Context) {
+		// Check if the user has the right admin/user rights
+		if perm.Rejected(c.Writer, c.Request) {
+			// Deny the request, don't call other middleware handlers
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+			return
+		}
+		// Call the next middleware handler
+		c.Next()
+	}
+
+	g.Use(permissionHandler)
+
+	userstate := perm.UserState()
 
 	// Use the setUserStatus middleware for every route to set a flag
 	// indicating whether the request was from an authenticated user or not
@@ -29,7 +54,12 @@ func initializeRoutes() {
 		// Handle the GET requests at /u/login
 		// Show the login page
 		// Ensure that the user is not logged in by using the middleware
-		userRoutes.GET("/login", ensureNotLoggedIn(), showLoginPage)
+		userRoutes.GET("/login", func(c *gin.Context) {
+			usercook, _ := userstate.UsernameCookie(c.Request)
+			isloggedin := userstate.IsLoggedIn(usercook)
+			c.HTML(http.StatusOK, "login.html", gin.H{"title": "Login Page",
+				"is_logged_in": isloggedin})
+		})
 
 		// Handle POST requests at /u/login
 		// Ensure that the user is not logged in by using the middleware
