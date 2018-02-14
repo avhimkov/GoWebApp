@@ -11,12 +11,49 @@ import (
 )
 
 func main() {
+
+	//ADD EXAMPLE BOLTDB
 	// Set Gin to production mode
 	//gin.SetMode(gin.ReleaseMode)
 
 	// Set the router as the default one provided by Gin
 	//router = gin.Default()
+	demo.Open()
+	defer demo.Close()
 
+	/*
+	   // A Person struct consists of ID, Name, Age, Job.
+	   peeps := []*Person{
+	       {"100", "Bill Joy", "60", "Programmer"},
+	       {"101", "Peter Norvig", "58", "Programmer"},
+	       {"102", "Donald Knuth", "77", "Programmer"},
+	       {"103", "Jeff Dean", "47", "Programmer"},
+	       {"104", "Rob Pike", "59", "Programmer"},
+	       {"200", "Brian Kernighan", "73", "Programmer"},
+	       {"201", "Ken Thompson", "72", "Programmer"},
+	   }
+	   // Persist people in the database.
+	   for _, p := range peeps {
+	       p.save()
+	   }
+	   // Get a person from the database by their ID.
+	   for _, id := range []string{"100", "101"} {
+	       p, err := GetPerson(id)
+	       if err != nil {
+	           log.Fatal(err)
+	       }
+	       fmt.Println(p)
+	   }
+	*/
+
+	demo.List("people")                    // each key/val in people bucket
+	demo.ListPrefix("people", "20")        // ... with key prefix `20`
+	demo.ListRange("people", "101", "103") // ... within range `101` to `103`
+	//
+	//
+	//
+	//
+	//
 	g := gin.New()
 
 	g.LoadHTMLGlob("templates/*.html")
@@ -53,8 +90,6 @@ func main() {
 
 	// Get the userstate, used in the handlers below
 	userstate := perm.UserState()
-
-	// users := g.Group("/u")
 
 	g.GET("/", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
@@ -148,10 +183,6 @@ func main() {
 		c.String(http.StatusOK, "Clearing cookie")
 	})
 
-	// g.GET("/data", func(c *gin.Context) {
-	// 	c.String(http.StatusOK, "user page that only logged in users must see!")
-	// })
-
 	g.GET("/delete", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
@@ -163,7 +194,6 @@ func main() {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
-
 	})
 
 	g.POST("/delete", func(c *gin.Context) {
