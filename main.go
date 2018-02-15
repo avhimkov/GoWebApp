@@ -18,8 +18,8 @@ func main() {
 
 	// Set the router as the default one provided by Gin
 	//router = gin.Default()
-	demo.Open()
-	defer demo.Close()
+	// demo.Open()
+	// defer demo.Close()
 
 	/*
 	   // A Person struct consists of ID, Name, Age, Job.
@@ -46,14 +46,10 @@ func main() {
 	   }
 	*/
 
-	demo.List("people")                    // each key/val in people bucket
-	demo.ListPrefix("people", "20")        // ... with key prefix `20`
-	demo.ListRange("people", "101", "103") // ... within range `101` to `103`
-	//
-	//
-	//
-	//
-	//
+	// demo.List("people")                    // each key/val in people bucket
+	// demo.ListPrefix("people", "20")        // ... with key prefix `20`
+	// demo.ListRange("people", "101", "103") // ... within range `101` to `103`
+
 	g := gin.New()
 
 	g.LoadHTMLGlob("templates/*.html")
@@ -159,6 +155,22 @@ func main() {
 			isloggedin := userstate.IsLoggedIn(usercook)
 			listusers, _ := userstate.AllUsernames()
 			c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+
+	})
+
+	g.GET("/base", func(c *gin.Context) {
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+
+		if isloggedin {
+			usercook, _ := userstate.UsernameCookie(c.Request)
+			isloggedin := userstate.IsLoggedIn(usercook)
+			listusers, _ := userstate.AllUsernames()
+			c.HTML(http.StatusOK, "base.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
