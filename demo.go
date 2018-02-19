@@ -124,8 +124,8 @@ func List(bucket string) {
 	db.View(func(tx *bolt.Tx) error {
 		c := tx.Bucket([]byte(bucket)).Cursor()
 		for k, v := c.First(); k != nil; k, v = c.Next() {
-			// fmt.Printf("key=%s, value=%s\n", k, v)
-			fmt.Print(k)
+			fmt.Printf("key=%s, value=%s\n", k, v)
+			// fmt.Print(k)
 		}
 		return nil
 	})
