@@ -19,7 +19,7 @@ var open bool
 func Open() error {
 	var err error
 	_, filename, _, _ := runtime.Caller(0) // get full path of this file
-	dbfile := path.Join(path.Dir(filename), "data.db")
+	dbfile := path.Join(path.Dir(filename), "db/data.db")
 	config := &bolt.Options{Timeout: 1 * time.Second}
 	db, err = bolt.Open(dbfile, 0600, config)
 	if err != nil {

@@ -22,8 +22,8 @@ func main() {
 	Open()
 	defer Close()
 
-	/* // A Person struct consists of ID, Name, Age, Job.
-	peeps := []*Person{
+	// A Person struct consists of ID, Name, Age, Job.
+	/* peeps := []*Person{
 		{"100", "Bill Joy", "60", "Programmer"},
 		{"101", "Peter Norvig", "58", "Programmer"},
 		{"102", "Donald Knuth", "77", "Programmer"},
@@ -43,8 +43,8 @@ func main() {
 			log.Fatal(err)
 		}
 		fmt.Println(p)
-	} */
-
+	}
+	*/
 	g := gin.New()
 
 	g.LoadHTMLGlob("templates/*.html")
