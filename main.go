@@ -22,7 +22,7 @@ func main() {
 	Open()
 	defer Close()
 
-	// A Person struct consists of ID, Name, Age, Job.
+	/* // A Person struct consists of ID, Name, Age, Job.
 	peeps := []*Person{
 		{"100", "Bill Joy", "60", "Programmer"},
 		{"101", "Peter Norvig", "58", "Programmer"},
@@ -43,7 +43,7 @@ func main() {
 			log.Fatal(err)
 		}
 		fmt.Println(p)
-	}
+	} */
 
 	g := gin.New()
 
@@ -163,13 +163,14 @@ func main() {
 		isloggedin := userstate.IsLoggedIn(usercook)
 
 		if isloggedin {
-
-			// list := fmt.Fprintf(c.Writer, "Has user bob: %v\n", List("people"))
+			person, _ := GetPerson("101")
+			// fmt.Println(list)
+			list, _ := fmt.Fprint(c.Writer, person)
 
 			// list := List("people") // each key/val in people bucket
 			// ListPrefix("people", "20") // ... with key prefix `20`
 			// ListRange("people", "101", "103") // ... within range `101` to `103`
-			// c.HTML(http.StatusOK, "base.html", gin.H{"list": list, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "base.html", gin.H{"list": list, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
