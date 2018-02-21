@@ -164,8 +164,7 @@ func main() {
 
 		if isloggedin {
 			person, _ := GetPerson("101")
-			// fmt.Println(list)
-			list, _ := fmt.Fprint(c.Writer, person)
+			list := person.Name
 
 			// list := List("people") // each key/val in people bucket
 			// ListPrefix("people", "20") // ... with key prefix `20`
