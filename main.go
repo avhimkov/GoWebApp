@@ -43,8 +43,8 @@ func main() {
 			log.Fatal(err)
 		}
 		fmt.Println(p)
-	}
-	*/
+	} */
+
 	g := gin.New()
 
 	g.LoadHTMLGlob("templates/*.html")
@@ -163,13 +163,14 @@ func main() {
 		isloggedin := userstate.IsLoggedIn(usercook)
 
 		if isloggedin {
-			person, _ := GetPerson("101")
-			list := person.Name
+			// person, _ := GetPerson("101")
+			// list := person.Name
+			List("people")
 
 			// list := List("people") // each key/val in people bucket
 			// ListPrefix("people", "20") // ... with key prefix `20`
 			// ListRange("people", "101", "103") // ... within range `101` to `103`
-			c.HTML(http.StatusOK, "base.html", gin.H{"list": list, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "base.html", gin.H{"is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
