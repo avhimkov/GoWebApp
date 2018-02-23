@@ -187,6 +187,30 @@ func main() {
 
 	})
 
+	g.POST("/visitors", func(c *gin.Context) {
+
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+
+		if isloggedin {
+			// TODO
+
+			// id := c.PostForm("ID")
+			// name := c.PostForm("Name")
+			// age := c.PostForm("Age")
+			// job := c.PostForm("Job")
+
+			// peeps := *Person{{id}, {name}, {age}, {job}}
+
+			// peeps.save()
+
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+
+	})
+
 	g.GET("/makeadmin", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)

@@ -26,6 +26,10 @@
         {{end}}
         {{ if .is_logged_in }}
         <!--Display this link only when the user is not logged in-->
+        <li><a href="/visitors">Base Users</a></li>
+        {{end}}
+        {{ if .is_logged_in }}
+        <!--Display this link only when the user is not logged in-->
         <li><a href="/base">Base Users</a></li>
         {{end}}
         {{ if not .is_logged_in }}

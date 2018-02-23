@@ -50,7 +50,7 @@ func (p *Person) save() error {
 		if err != nil {
 			return fmt.Errorf("create bucket: %s", err)
 		}
-		enc, err := p.encode()
+		enc, err := p.Encode()
 		if err != nil {
 			return fmt.Errorf("could not encode Person %s: %s", p.ID, err)
 		}
@@ -60,7 +60,7 @@ func (p *Person) save() error {
 	return err
 }
 
-func (p *Person) gobEncode() ([]byte, error) {
+func (p *Person) GobEncode() ([]byte, error) {
 	buf := new(bytes.Buffer)
 	enc := gob.NewEncoder(buf)
 	err := enc.Encode(p)
@@ -70,7 +70,7 @@ func (p *Person) gobEncode() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func gobDecode(data []byte) (*Person, error) {
+func GobDecode(data []byte) (*Person, error) {
 	var p *Person
 	buf := bytes.NewBuffer(data)
 	dec := gob.NewDecoder(buf)
@@ -81,7 +81,7 @@ func gobDecode(data []byte) (*Person, error) {
 	return p, nil
 }
 
-func (p *Person) encode() ([]byte, error) {
+func (p *Person) Encode() ([]byte, error) {
 	enc, err := json.Marshal(p)
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func (p *Person) encode() ([]byte, error) {
 	return enc, nil
 }
 
-func decode(data []byte) (*Person, error) {
+func Decode(data []byte) (*Person, error) {
 	var p *Person
 	err := json.Unmarshal(data, &p)
 	if err != nil {
@@ -107,7 +107,7 @@ func GetPerson(id string) (*Person, error) {
 		var err error
 		b := tx.Bucket([]byte("people"))
 		k := []byte(id)
-		p, err = decode(b.Get(k))
+		p, err = Decode(b.Get(k))
 		if err != nil {
 			return err
 		}
