@@ -162,15 +162,24 @@ func main() {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 
+		z := []string{}
 		if isloggedin {
-			// person, _ := GetPerson("101")
-			// list := person.Name
-			List("people")
+			for _, id := range []string{"100", "101", "103"} {
+				p, err := GetPerson(id)
+				list := p.Name
+				z = append(z, list)
+				if err != nil {
+					log.Fatal(err)
+				}
+			}
+			// fmt.Println(z)
+
+			c.HTML(http.StatusOK, "base.html", gin.H{"z": z, "is_logged_in": isloggedin})
 
 			// list := List("people") // each key/val in people bucket
 			// ListPrefix("people", "20") // ... with key prefix `20`
 			// ListRange("people", "101", "103") // ... within range `101` to `103`
-			c.HTML(http.StatusOK, "base.html", gin.H{"is_logged_in": isloggedin})
+
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")

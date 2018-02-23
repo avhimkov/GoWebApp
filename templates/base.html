@@ -14,11 +14,10 @@
         </tr>
         </thead>
             <tbody>
-                {{range $key, $value := .}}
+                {{range .z}}
             <tr>
                 {{/*<th scope="row">1</th>*/}}
-                    <td>{{.key}}</td>
-                    <td>{{.value}}</td>
+                    <td>{{.}}</td>
             </tr>
                 {{end}}
         </tbody>

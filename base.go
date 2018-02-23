@@ -120,6 +120,33 @@ func GetPerson(id string) (*Person, error) {
 	return p, nil
 }
 
+// func ListX(bucket, id string) (*Person, error) {
+// 	if !open {
+// 		return nil, fmt.Errorf("db must be opened before saving!")
+// 	}
+// 	var p *Person
+// 	err := db.View(func(tx *bolt.Tx) error {
+// 		var err error
+// 		bucket := tx.Bucket([]byte("people"))
+// 		k := []byte(id)
+// 		p, err = decode(bucket.Get(k))
+
+// 		for k, v := c.Seek(p); bytes.HasPrefix(k, p); k, v = c.Next() {
+// 			fmt.Printf("key=%s, value=%s\n", k, v)
+// 		}
+
+// 		if err != nil {
+// 			return err
+// 		}
+// 		return nil
+// 	})
+// 	if err != nil {
+// 		fmt.Printf("Could not get Person ID %s", id)
+// 		return nil, err
+// 	}
+// 	return p, nil
+// }
+
 func List(bucket string) {
 	db.View(func(tx *bolt.Tx) error {
 		c := tx.Bucket([]byte(bucket)).Cursor()
