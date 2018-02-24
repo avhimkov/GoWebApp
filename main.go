@@ -214,13 +214,13 @@ func main() {
 			job := c.PostForm("Job")
 
 			peeps := []*Person{
-				{id, name, age, job},
+				{id, usercook, name, age, job},
 			}
 
 			// peeps := *Person{{id}, {name}, {age}, {job}}
 			for _, p := range peeps {
 				fmt.Println(p)
-				p.save()
+				p.create()
 			}
 
 			// for _, id := range []string{"100"} {

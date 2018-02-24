@@ -36,12 +36,53 @@ func Close() {
 
 type Person struct {
 	ID   string
+	User string
 	Name string
 	Age  string
 	Job  string
 }
 
-func (p *Person) save() error {
+func (p *Person) create() error {
+	if !open {
+		return fmt.Errorf("db must be opened before saving!")
+	}
+	err := db.Update(func(tx *bolt.Tx) error {
+		people, err := tx.CreateBucketIfNotExists([]byte("people"))
+		if err != nil {
+			return fmt.Errorf("create bucket: %s", err)
+		}
+		enc, err := p.Encode()
+		if err != nil {
+			return fmt.Errorf("could not encode Person %s: %s", p.ID, err)
+		}
+		err = people.Put([]byte(p.ID), enc)
+		return err
+	})
+	return err
+}
+
+/* TODO Rewrite this function */
+func (p *Person) delete() error {
+	if !open {
+		return fmt.Errorf("db must be opened before saving!")
+	}
+	err := db.Update(func(tx *bolt.Tx) error {
+		people, err := tx.CreateBucketIfNotExists([]byte("people"))
+		if err != nil {
+			return fmt.Errorf("create bucket: %s", err)
+		}
+		enc, err := p.Encode()
+		if err != nil {
+			return fmt.Errorf("could not encode Person %s: %s", p.ID, err)
+		}
+		err = people.Put([]byte(p.ID), enc)
+		return err
+	})
+	return err
+}
+
+/* TODO Rewrite this function */
+func (p *Person) update() error {
 	if !open {
 		return fmt.Errorf("db must be opened before saving!")
 	}
@@ -119,33 +160,6 @@ func GetPerson(id string) (*Person, error) {
 	}
 	return p, nil
 }
-
-// func ListX(bucket, id string) (*Person, error) {
-// 	if !open {
-// 		return nil, fmt.Errorf("db must be opened before saving!")
-// 	}
-// 	var p *Person
-// 	err := db.View(func(tx *bolt.Tx) error {
-// 		var err error
-// 		bucket := tx.Bucket([]byte("people"))
-// 		k := []byte(id)
-// 		p, err = decode(bucket.Get(k))
-
-// 		for k, v := c.Seek(p); bytes.HasPrefix(k, p); k, v = c.Next() {
-// 			fmt.Printf("key=%s, value=%s\n", k, v)
-// 		}
-
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return nil
-// 	})
-// 	if err != nil {
-// 		fmt.Printf("Could not get Person ID %s", id)
-// 		return nil, err
-// 	}
-// 	return p, nil
-// }
 
 func List(bucket string) {
 	db.View(func(tx *bolt.Tx) error {

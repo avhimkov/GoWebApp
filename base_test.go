@@ -12,7 +12,7 @@ func TestPerson_save(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.p.save(); (err != nil) != tt.wantErr {
+			if err := tt.p.create(); (err != nil) != tt.wantErr {
 				t.Errorf("Person.save() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
