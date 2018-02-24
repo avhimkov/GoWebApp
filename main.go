@@ -164,7 +164,7 @@ func main() {
 
 		z := []string{}
 		if isloggedin {
-			for _, id := range []string{"100", "101", "103"} {
+			for _, id := range []string{"100", "101", "103", "104", "105", "106"} {
 				p, err := GetPerson(id)
 				list := p.Name
 				z = append(z, list)
@@ -184,7 +184,21 @@ func main() {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
+	})
 
+	g.GET("/visitors", func(c *gin.Context) {
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+
+		if isloggedin {
+			usercook, _ := userstate.UsernameCookie(c.Request)
+			isloggedin := userstate.IsLoggedIn(usercook)
+			c.HTML(http.StatusOK, "visitors.html", gin.H{"is_logged_in": isloggedin})
+			// http.Redirect(c.Writer, c.Request, "/visitors", 302)
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
 	})
 
 	g.POST("/visitors", func(c *gin.Context) {
@@ -193,22 +207,36 @@ func main() {
 		isloggedin := userstate.IsLoggedIn(usercook)
 
 		if isloggedin {
-			// TODO
+			// :TODO
+			id := c.PostForm("ID")
+			name := c.PostForm("Name")
+			age := c.PostForm("Age")
+			job := c.PostForm("Job")
 
-			// id := c.PostForm("ID")
-			// name := c.PostForm("Name")
-			// age := c.PostForm("Age")
-			// job := c.PostForm("Job")
+			peeps := []*Person{
+				{id, name, age, job},
+			}
 
 			// peeps := *Person{{id}, {name}, {age}, {job}}
+			for _, p := range peeps {
+				fmt.Println(p)
+				p.save()
+			}
 
-			// peeps.save()
+			// for _, id := range []string{"100"} {
+			// 	p, err := GetPerson(id)
+			// 	if err != nil {
+			// 		log.Fatal(err)
+			// 	}
+			// 	fmt.Println(p)
+			// }
+
+			http.Redirect(c.Writer, c.Request, "/visitors", 302)
 
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
-
 	})
 
 	g.GET("/makeadmin", func(c *gin.Context) {

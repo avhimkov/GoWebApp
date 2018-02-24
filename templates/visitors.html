@@ -14,14 +14,14 @@
         </p>
     {{end}}
         <!--Create a form that POSTs to the `/u/register` route-->
-        <form class="form" action="/visiotrs" method="POST">
+        <form class="form" action="/visitors" method="POST">
             <div class="form-group">
                 <label for="username">ID</label>
-                <input type="text" class="form-control" id="id" name="id" placeholder="ID">
+                <input type="text" name="ID" class="form-control" id="id" name="id" placeholder="ID">
             </div>
             <div class="form-group">
                 <label for="Name">Name</label>
-                <input type="text" name="password" class="form-control" id="name" placeholder="Name">
+                <input type="text" name="Name" class="form-control" id="name" placeholder="Name">
             </div>
             <div class="form-group">
                 <label for="age">Age</label>
@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label for="job">Job</label>
-                <input type="text" name="job" class="form-control" id="job" placeholder="Job">
+                <input type="text" name="Job" class="form-control" id="job" placeholder="Job">
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
