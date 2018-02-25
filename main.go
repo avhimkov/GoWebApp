@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/xyproto/permissionbolt"
@@ -82,9 +81,14 @@ func main() {
 	// Get the userstate, used in the handlers below
 	userstate := perm.UserState()
 
-	g.GET("/", func(c *gin.Context) {
+	isloggedin := func(c *gin.Context) bool {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
+		return isloggedin
+	}
+
+	g.GET("/", func(c *gin.Context) {
+		isloggedin := isloggedin(c)
 		if isloggedin {
 			c.HTML(http.StatusOK, "index.html", gin.H{"is_logged_in": isloggedin})
 		} else {
@@ -110,8 +114,7 @@ func main() {
 	})
 
 	g.GET("/login", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
+		isloggedin := isloggedin(c)
 		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Login Page",
 			"is_logged_in": isloggedin})
 	})
@@ -142,12 +145,9 @@ func main() {
 	})
 
 	g.GET("/listusers", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
+		isloggedin := isloggedin(c)
 
 		if isloggedin {
-			usercook, _ := userstate.UsernameCookie(c.Request)
-			isloggedin := userstate.IsLoggedIn(usercook)
 			listusers, _ := userstate.AllUsernames()
 			c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
 		} else {
@@ -157,10 +157,9 @@ func main() {
 
 	})
 
+	//List register users
 	g.GET("/base", func(c *gin.Context) {
-
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
+		isloggedin := isloggedin(c)
 
 		z := []string{}
 		if isloggedin {
@@ -186,28 +185,24 @@ func main() {
 		}
 	})
 
+	//Register visitors GET
 	g.GET("/visitors", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
+		isloggedin := isloggedin(c)
 
 		if isloggedin {
-			usercook, _ := userstate.UsernameCookie(c.Request)
-			isloggedin := userstate.IsLoggedIn(usercook)
 			c.HTML(http.StatusOK, "visitors.html", gin.H{"is_logged_in": isloggedin})
-			// http.Redirect(c.Writer, c.Request, "/visitors", 302)
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
 	})
 
+	//Register visitors POST
 	g.POST("/visitors", func(c *gin.Context) {
-
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 
 		if isloggedin {
-			// :TODO
 			id := c.PostForm("ID")
 			name := c.PostForm("Name")
 			age := c.PostForm("Age")
@@ -217,19 +212,10 @@ func main() {
 				{id, usercook, name, age, job},
 			}
 
-			// peeps := *Person{{id}, {name}, {age}, {job}}
 			for _, p := range peeps {
 				fmt.Println(p)
 				p.create()
 			}
-
-			// for _, id := range []string{"100"} {
-			// 	p, err := GetPerson(id)
-			// 	if err != nil {
-			// 		log.Fatal(err)
-			// 	}
-			// 	fmt.Println(p)
-			// }
 
 			http.Redirect(c.Writer, c.Request, "/visitors", 302)
 
@@ -239,29 +225,28 @@ func main() {
 		}
 	})
 
+	//Make user as admin GET
 	g.GET("/makeadmin", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
+		isloggedin := isloggedin(c)
 		c.HTML(http.StatusOK, "makeadmin.html", gin.H{"is_logged_in": isloggedin})
 	})
 
+	//Make user as admin POST
 	g.POST("/makeadmin", func(c *gin.Context) {
 		username := c.PostForm("username")
 		userstate.SetAdminStatus(username)
 		c.HTML(http.StatusOK, "makeadmin.html", gin.H{})
 	})
 
-	g.GET("/clear", func(c *gin.Context) {
+	/* 	g.GET("/clear", func(c *gin.Context) {
 		userstate.ClearCookie(c.Writer)
 		c.String(http.StatusOK, "Clearing cookie")
-	})
+	}) */
 
+	//Delete User from Base GET
 	g.GET("/delete", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
+		isloggedin := isloggedin(c)
 		if isloggedin {
-			usercook, _ := userstate.UsernameCookie(c.Request)
-			isloggedin := userstate.IsLoggedIn(usercook)
 			c.HTML(http.StatusOK, "delete.html", gin.H{"is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
@@ -269,18 +254,20 @@ func main() {
 		}
 	})
 
+	//Delete User from Base POST
 	g.POST("/delete", func(c *gin.Context) {
 		username := c.PostForm("username")
 		userstate.RemoveUser(username)
 		c.HTML(http.StatusOK, "delete.html", gin.H{})
 	})
 
-	g.GET("/admin", func(c *gin.Context) {
+	/* 	g.GET("/admin", func(c *gin.Context) {
 		c.String(http.StatusOK, "super secret information that only logged in administrators must see!\n\n")
 		if usernames, err := userstate.AllUsernames(); err == nil {
 			c.String(http.StatusOK, "list of all users: "+strings.Join(usernames, ", "))
 		}
-	})
+	}) */
+
 	// Start serving the application
 	g.Run(":3000")
 }
