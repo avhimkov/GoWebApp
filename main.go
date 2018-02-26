@@ -149,6 +149,7 @@ func main() {
 
 		if isloggedin {
 			listusers, _ := userstate.AllUsernames()
+			ListPrefix("people", "20") // ... with key prefix `20`
 			c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
@@ -171,7 +172,9 @@ func main() {
 					log.Fatal(err)
 				}
 			}
-			// fmt.Println(z)
+			listx, _ := ListX("people")
+			// List("people")
+			fmt.Println(listx)
 
 			c.HTML(http.StatusOK, "base.html", gin.H{"z": z, "is_logged_in": isloggedin})
 
@@ -213,10 +216,11 @@ func main() {
 			}
 
 			for _, p := range peeps {
-				fmt.Println(p)
+				// fmt.Println(p)
 				p.create()
 			}
 
+			// List("people")
 			http.Redirect(c.Writer, c.Request, "/visitors", 302)
 
 		} else {

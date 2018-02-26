@@ -161,6 +161,23 @@ func GetPerson(id string) (*Person, error) {
 	return p, nil
 }
 
+func ListX(bucket string) (*Person, error) {
+	var p *Person
+	db.View(func(tx *bolt.Tx) error {
+		var err error
+		c := tx.Bucket([]byte(bucket)).Cursor()
+		for _, v := c.First(); v != nil; _, v = c.Next() {
+			// vv := []byte(p.Name)
+			p, err = decode(v)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	return p, nil
+}
+
 func List(bucket string) {
 	db.View(func(tx *bolt.Tx) error {
 		c := tx.Bucket([]byte(bucket)).Cursor()
