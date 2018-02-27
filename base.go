@@ -164,14 +164,9 @@ func GetPerson(id string) (*Person, error) {
 func ListX(bucket string) (*Person, error) {
 	var p *Person
 	db.View(func(tx *bolt.Tx) error {
-		var err error
 		c := tx.Bucket([]byte(bucket)).Cursor()
-		for _, v := c.First(); v != nil; _, v = c.Next() {
-			// vv := []byte(p.Name)
-			p, err = decode(v)
-			if err != nil {
-				return err
-			}
+		for k, v := c.Last(); k != nil && v != nil; k, v = c.Prev() {
+			p, _ = decode(v)
 		}
 		return nil
 	})
@@ -183,7 +178,6 @@ func List(bucket string) {
 		c := tx.Bucket([]byte(bucket)).Cursor()
 		for k, v := c.First(); k != nil; k, v = c.Next() {
 			fmt.Printf("key=%s, value=%s\n", k, v)
-			// fmt.Print(k)
 		}
 		return nil
 	})

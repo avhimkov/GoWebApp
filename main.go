@@ -172,11 +172,14 @@ func main() {
 					log.Fatal(err)
 				}
 			}
-			listx, _ := ListX("people")
+
 			// List("people")
+
+			listx, _ := ListX("people")
 			fmt.Println(listx)
 
 			c.HTML(http.StatusOK, "base.html", gin.H{"z": z, "is_logged_in": isloggedin})
+			// c.HTML(http.StatusOK, "base.html", gin.H{"listx": listx, "is_logged_in": isloggedin})
 
 			// list := List("people") // each key/val in people bucket
 			// ListPrefix("people", "20") // ... with key prefix `20`
