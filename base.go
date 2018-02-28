@@ -11,7 +11,11 @@ import (
 	"time"
 
 	"github.com/boltdb/bolt"
+	// "github.com/asdine/storm"
 )
+
+// db, err := storm.Open("db/data.db")
+// defer db.Close()
 
 var db *bolt.DB
 var open bool
@@ -161,11 +165,25 @@ func GetPerson(id string) (*Person, error) {
 	return p, nil
 }
 
+func All(bucket string) *Person {
+	var p *Person
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(bucket))
+		b.ForEach(func(k, v []byte) error {
+			p, _ = decode(v)
+			// fmt.Printf("key=%s, value=%s\n", k, v)
+			return nil
+		})
+		return nil
+	})
+	return p
+}
+
 func ListX(bucket string) (*Person, error) {
 	var p *Person
 	db.View(func(tx *bolt.Tx) error {
 		c := tx.Bucket([]byte(bucket)).Cursor()
-		for k, v := c.Last(); k != nil && v != nil; k, v = c.Prev() {
+		for k, v := c.First(); k != nil; k, v = c.Next() {
 			p, _ = decode(v)
 		}
 		return nil

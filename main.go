@@ -87,6 +87,8 @@ func main() {
 		return isloggedin
 	}
 
+	fmt.Println(All("people"))
+
 	g.GET("/", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		if isloggedin {
@@ -175,8 +177,8 @@ func main() {
 
 			// List("people")
 
-			listx, _ := ListX("people")
-			fmt.Println(listx)
+			// listx, _ := ListX("people")
+			// fmt.Println(listx)
 
 			c.HTML(http.StatusOK, "base.html", gin.H{"z": z, "is_logged_in": isloggedin})
 			// c.HTML(http.StatusOK, "base.html", gin.H{"listx": listx, "is_logged_in": isloggedin})
