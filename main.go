@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/asdine/storm"
 	"github.com/gin-gonic/gin"
 	"github.com/xyproto/permissionbolt"
 )
@@ -18,31 +19,29 @@ func main() {
 	// Set the router as the default one provided by Gin
 	//router = gin.Default()
 
-	Open()
-	defer Close()
+	db, err := storm.Open("db/data.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
 
-	// A Person struct consists of ID, Name, Age, Job.
-	/* peeps := []*Person{
-		{"100", "Bill Joy", "60", "Programmer"},
-		{"101", "Peter Norvig", "58", "Programmer"},
-		{"102", "Donald Knuth", "77", "Programmer"},
-		{"103", "Jeff Dean", "47", "Programmer"},
-		{"104", "Rob Pike", "59", "Programmer"},
-		{"200", "Brian Kernighan", "73", "Programmer"},
-		{"201", "Ken Thompson", "72", "Programmer"},
+	// person := Person{
+	// 	ID:   "100",
+	// 	User: "ren",
+	// 	Name: "Bob Smith",
+	// 	Age:  "20",
+	// 	Job:  "Programmist",
+	// }
+
+	// err := db.Save(&user)
+
+	type Person struct {
+		ID   string `form:"ID" binding:"required" storm:"id,increment"`
+		User string
+		Name string `form:"Name" binding:"required"`
+		Age  string `form:"Age" binding:"required"`
+		Job  string `form:"Job" binding:"required"`
 	}
-	// Persist people in the database.
-	for _, p := range peeps {
-		p.save()
-	}
-	// Get a person from the database by their ID.
-	for _, id := range []string{"100", "101"} {
-		p, err := GetPerson(id)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(p)
-	} */
 
 	g := gin.New()
 
@@ -86,8 +85,6 @@ func main() {
 		isloggedin := userstate.IsLoggedIn(usercook)
 		return isloggedin
 	}
-
-	fmt.Println(All("people"))
 
 	g.GET("/", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
@@ -151,7 +148,6 @@ func main() {
 
 		if isloggedin {
 			listusers, _ := userstate.AllUsernames()
-			ListPrefix("people", "20") // ... with key prefix `20`
 			c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
@@ -163,29 +159,18 @@ func main() {
 	//List register users
 	g.GET("/base", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
-
-		z := []string{}
+		// var person []*Person
 		if isloggedin {
-			for _, id := range []string{"100", "101", "103", "104", "105", "106"} {
-				p, err := GetPerson(id)
-				list := p.Name
-				z = append(z, list)
-				if err != nil {
-					log.Fatal(err)
-				}
+
+			var p []*Person
+			err = db.All(&p)
+			if err != nil {
+				log.Fatal(err)
 			}
+			fmt.Println(p)
 
-			// List("people")
-
-			// listx, _ := ListX("people")
-			// fmt.Println(listx)
-
-			c.HTML(http.StatusOK, "base.html", gin.H{"z": z, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "base.html", gin.H{"is_logged_in": isloggedin})
 			// c.HTML(http.StatusOK, "base.html", gin.H{"listx": listx, "is_logged_in": isloggedin})
-
-			// list := List("people") // each key/val in people bucket
-			// ListPrefix("people", "20") // ... with key prefix `20`
-			// ListRange("people", "101", "103") // ... within range `101` to `103`
 
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
@@ -211,6 +196,9 @@ func main() {
 		isloggedin := userstate.IsLoggedIn(usercook)
 
 		if isloggedin {
+			// person := Person{}
+			// c.Bind(&person)
+
 			id := c.PostForm("ID")
 			name := c.PostForm("Name")
 			age := c.PostForm("Age")
@@ -222,7 +210,7 @@ func main() {
 
 			for _, p := range peeps {
 				// fmt.Println(p)
-				p.create()
+				db.Save(p)
 			}
 
 			// List("people")

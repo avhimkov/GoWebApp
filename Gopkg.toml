@@ -28,8 +28,5 @@
   branch = "master"
   name = "github.com/mnadel/boltq"
 
-[[constraint]]
-  name = "github.com/asdine/storm"
-  version = ">=1.0.0,<2.0.0"
 
 
