@@ -1,14 +1,24 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/asdine/storm"
+	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 	"github.com/xyproto/permissionbolt"
 )
+
+type Person struct {
+	ID   string `form:"ID" binding:"required" storm:"id,increment"`
+	User string
+	Name string `form:"Name" binding:"required"`
+	Age  string `form:"Age" binding:"required"`
+	Job  string `form:"Job" binding:"required"`
+}
 
 func main() {
 
@@ -34,14 +44,6 @@ func main() {
 	// }
 
 	// err := db.Save(&user)
-
-	type Person struct {
-		ID   string `form:"ID" binding:"required" storm:"id,increment"`
-		User string
-		Name string `form:"Name" binding:"required"`
-		Age  string `form:"Age" binding:"required"`
-		Job  string `form:"Job" binding:"required"`
-	}
 
 	g := gin.New()
 
@@ -161,15 +163,24 @@ func main() {
 		isloggedin := isloggedin(c)
 		// var person []*Person
 		if isloggedin {
-
-			var p []*Person
-			err = db.All(&p)
-			if err != nil {
-				log.Fatal(err)
+			z := []string{}
+			for _, id := range []string{"100", "101", "103", "104", "105", "106"} {
+				p, err := GetPerson(id)
+				list := p.Name
+				z = append(z, list)
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
-			fmt.Println(p)
 
-			c.HTML(http.StatusOK, "base.html", gin.H{"is_logged_in": isloggedin})
+			// var p []Person
+			// err = db.Prefix("Name", "ren", &p)
+			// if err != nil {
+			// 	log.Fatal(err)
+			// }
+			// fmt.Println(p)
+
+			c.HTML(http.StatusOK, "base.html", gin.H{"z": z, "is_logged_in": isloggedin})
 			// c.HTML(http.StatusOK, "base.html", gin.H{"listx": listx, "is_logged_in": isloggedin})
 
 		} else {
@@ -267,4 +278,40 @@ func main() {
 
 	// Start serving the application
 	g.Run(":3000")
+}
+
+func GetPerson(id string) (*Person, error) {
+	var p *Person
+	err := db.View(func(tx *bolt.Tx) error {
+		var err error
+		b := tx.Bucket([]byte("people"))
+		k := []byte(id)
+		p, err = decode(b.Get(k))
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		fmt.Printf("Could not get Person ID %s", id)
+		return nil, err
+	}
+	return p, nil
+}
+
+func (p *Person) encode() ([]byte, error) {
+	enc, err := json.Marshal(p)
+	if err != nil {
+		return nil, err
+	}
+	return enc, nil
+}
+
+func decode(data []byte) (*Person, error) {
+	var p *Person
+	err := json.Unmarshal(data, &p)
+	if err != nil {
+		return nil, err
+	}
+	return p, nil
 }
