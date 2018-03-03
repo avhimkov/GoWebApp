@@ -1,13 +1,11 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/asdine/storm"
-	"github.com/boltdb/bolt"
 	"github.com/gin-gonic/gin"
 	"github.com/xyproto/permissionbolt"
 )
@@ -34,16 +32,6 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Close()
-
-	// person := Person{
-	// 	ID:   "100",
-	// 	User: "ren",
-	// 	Name: "Bob Smith",
-	// 	Age:  "20",
-	// 	Job:  "Programmist",
-	// }
-
-	// err := db.Save(&user)
 
 	g := gin.New()
 
@@ -155,32 +143,38 @@ func main() {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
-
 	})
 
 	//List register users
 	g.GET("/base", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
-		// var person []*Person
 		if isloggedin {
-			z := []string{}
-			for _, id := range []string{"100", "101", "103", "104", "105", "106"} {
-				p, err := GetPerson(id)
-				list := p.Name
-				z = append(z, list)
-				if err != nil {
-					log.Fatal(err)
-				}
-			}
 
-			// var p []Person
-			// err = db.Prefix("Name", "ren", &p)
+			// z := []string{}
+			// for _, id := range []string{"100", "101", "103", "104", "105", "106"} {
+			// 	p, err := GetPerson(id)
+			// 	list := p.Name
+			// 	z = append(z, list)
+			// 	if err != nil {
+			// 		log.Fatal(err)
+			// 	}
+			// }
+
+			// var person []Person
+			// err = db.Range("ID", "101", "103", &person)
 			// if err != nil {
 			// 	log.Fatal(err)
 			// }
-			// fmt.Println(p)
 
-			c.HTML(http.StatusOK, "base.html", gin.H{"z": z, "is_logged_in": isloggedin})
+			var person []Person
+			err := db.All(&person)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Println(person)
+
+			c.HTML(http.StatusOK, "base.html", gin.H{"person": person, "is_logged_in": isloggedin})
 			// c.HTML(http.StatusOK, "base.html", gin.H{"listx": listx, "is_logged_in": isloggedin})
 
 		} else {
@@ -207,8 +201,6 @@ func main() {
 		isloggedin := userstate.IsLoggedIn(usercook)
 
 		if isloggedin {
-			// person := Person{}
-			// c.Bind(&person)
 
 			id := c.PostForm("ID")
 			name := c.PostForm("Name")
@@ -220,7 +212,6 @@ func main() {
 			}
 
 			for _, p := range peeps {
-				// fmt.Println(p)
 				db.Save(p)
 			}
 
@@ -269,49 +260,6 @@ func main() {
 		c.HTML(http.StatusOK, "delete.html", gin.H{})
 	})
 
-	/* 	g.GET("/admin", func(c *gin.Context) {
-		c.String(http.StatusOK, "super secret information that only logged in administrators must see!\n\n")
-		if usernames, err := userstate.AllUsernames(); err == nil {
-			c.String(http.StatusOK, "list of all users: "+strings.Join(usernames, ", "))
-		}
-	}) */
-
 	// Start serving the application
 	g.Run(":3000")
-}
-
-func GetPerson(id string) (*Person, error) {
-	var p *Person
-	err := db.View(func(tx *bolt.Tx) error {
-		var err error
-		b := tx.Bucket([]byte("people"))
-		k := []byte(id)
-		p, err = decode(b.Get(k))
-		if err != nil {
-			return err
-		}
-		return nil
-	})
-	if err != nil {
-		fmt.Printf("Could not get Person ID %s", id)
-		return nil, err
-	}
-	return p, nil
-}
-
-func (p *Person) encode() ([]byte, error) {
-	enc, err := json.Marshal(p)
-	if err != nil {
-		return nil, err
-	}
-	return enc, nil
-}
-
-func decode(data []byte) (*Person, error) {
-	var p *Person
-	err := json.Unmarshal(data, &p)
-	if err != nil {
-		return nil, err
-	}
-	return p, nil
 }
