@@ -8,14 +8,17 @@ import (
 	"github.com/asdine/storm"
 	"github.com/gin-gonic/gin"
 	"github.com/xyproto/permissionbolt"
+	"encoding/json"
+	"bytes"
+	"encoding/gob"
 )
 
 type Person struct {
 	ID   string `form:"ID" binding:"required" storm:"id,increment"`
 	User string
-	Name string `form:"Name" binding:"required"`
-	Age  string `form:"Age" binding:"required"`
-	Job  string `form:"Job" binding:"required"`
+	Name string `form:"Name" storm:"index"`
+	Age  string `form:"Age" storm:"index"`
+	Job  string `form:"Job" storm:"index"`
 }
 
 func main() {
@@ -147,32 +150,16 @@ func main() {
 
 	//List register users
 	g.GET("/base", func(c *gin.Context) {
+
+
 		isloggedin := isloggedin(c)
 		if isloggedin {
-
-			// z := []string{}
-			// for _, id := range []string{"100", "101", "103", "104", "105", "106"} {
-			// 	p, err := GetPerson(id)
-			// 	list := p.Name
-			// 	z = append(z, list)
-			// 	if err != nil {
-			// 		log.Fatal(err)
-			// 	}
-			// }
-
-			// var person []Person
-			// err = db.Range("ID", "101", "103", &person)
-			// if err != nil {
-			// 	log.Fatal(err)
-			// }
 
 			var person []Person
 			err := db.All(&person)
 			if err != nil {
 				log.Fatal(err)
 			}
-
-			fmt.Println(person)
 
 			c.HTML(http.StatusOK, "base.html", gin.H{"person": person, "is_logged_in": isloggedin})
 			// c.HTML(http.StatusOK, "base.html", gin.H{"listx": listx, "is_logged_in": isloggedin})
@@ -262,4 +249,42 @@ func main() {
 
 	// Start serving the application
 	g.Run(":3000")
+}
+
+func (p *Person) GobEncode() ([]byte, error) {
+	buf := new(bytes.Buffer)
+	enc := gob.NewEncoder(buf)
+	err := enc.Encode(p)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+func GobDecode(data []byte) (*Person, error) {
+	var p *Person
+	buf := bytes.NewBuffer(data)
+	dec := gob.NewDecoder(buf)
+	err := dec.Decode(&p)
+	if err != nil {
+		return nil, err
+	}
+	return p, nil
+}
+
+func (p *Person) encode() ([]byte, error) {
+	enc, err := json.Marshal(p)
+	if err != nil {
+		return nil, err
+	}
+	return enc, nil
+}
+
+func decode(data []byte) (*Person, error) {
+	var p *Person
+	err := json.Unmarshal(data, &p)
+	if err != nil {
+		return nil, err
+	}
+	return p, nil
 }
