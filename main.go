@@ -5,20 +5,21 @@ import (
 	"log"
 	"net/http"
 
+	"bytes"
+	"encoding/gob"
+	"encoding/json"
+
 	"github.com/asdine/storm"
 	"github.com/gin-gonic/gin"
 	"github.com/xyproto/permissionbolt"
-	"encoding/json"
-	"bytes"
-	"encoding/gob"
 )
 
 type Person struct {
-	ID   string `form:"ID" binding:"required" storm:"id,increment"`
+	ID   string `form:"ID" storm:"id,increment" json:"ID"`
 	User string
-	Name string `form:"Name" storm:"index"`
-	Age  string `form:"Age" storm:"index"`
-	Job  string `form:"Job" storm:"index"`
+	Name string `form:"Name" storm:"index" json:"Name"`
+	Age  string `form:"Age" storm:"index" json:"Age"`
+	Job  string `form:"Job" storm:"index" json:"Job"`
 }
 
 func main() {
@@ -151,19 +152,16 @@ func main() {
 	//List register users
 	g.GET("/base", func(c *gin.Context) {
 
-
 		isloggedin := isloggedin(c)
 		if isloggedin {
-
 			var person []Person
 			err := db.All(&person)
 			if err != nil {
 				log.Fatal(err)
 			}
+			z := decodName(person)
 
-			c.HTML(http.StatusOK, "base.html", gin.H{"person": person, "is_logged_in": isloggedin})
-			// c.HTML(http.StatusOK, "base.html", gin.H{"listx": listx, "is_logged_in": isloggedin})
-
+			c.HTML(http.StatusOK, "base.html", gin.H{"person": z, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
@@ -202,9 +200,7 @@ func main() {
 				db.Save(p)
 			}
 
-			// List("people")
 			http.Redirect(c.Writer, c.Request, "/visitors", 302)
-
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
@@ -251,6 +247,22 @@ func main() {
 	g.Run(":3000")
 }
 
+func decodName(person []Person) []string {
+	z := []string{}
+	b, _ := json.Marshal(person)
+	// Convert bytes to string.
+	s := string(b)
+	bytes := []byte(s)
+	// Unmarshal string into structs.
+	json.Unmarshal(bytes, &person)
+	for l := range person {
+		// fmt.Printf("Id = %v, Name = %v", person[l].ID, person[l].Name)
+		z = append(z, person[l].Name)
+		// fmt.Println(z)
+	}
+	return z
+}
+
 func (p *Person) GobEncode() ([]byte, error) {
 	buf := new(bytes.Buffer)
 	enc := gob.NewEncoder(buf)
@@ -288,3 +300,22 @@ func decode(data []byte) (*Person, error) {
 	}
 	return p, nil
 }
+
+//func GetPerson(id string) (*Person, error) {
+//	var p *Person
+//	err := db.View(func(tx *bolt.Tx) error {
+//		var err error
+//		b := tx.Bucket([]byte("people"))
+//		k := []byte(id)
+//		p, err = decode(b.Get(k))
+//		if err != nil {
+//			return err
+//		}
+//		return nil
+//	})
+//	if err != nil {
+//		fmt.Printf("Could not get Person ID %s", id)
+//		return nil, err
+//	}
+//	return p, nil
+//}
