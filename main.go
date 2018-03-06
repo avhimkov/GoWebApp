@@ -151,7 +151,6 @@ func main() {
 
 	//List register users
 	g.GET("/base", func(c *gin.Context) {
-
 		isloggedin := isloggedin(c)
 		if isloggedin {
 			var person []Person
@@ -159,9 +158,10 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			z := decodName(person)
 
-			c.HTML(http.StatusOK, "base.html", gin.H{"person": z, "is_logged_in": isloggedin})
+			_, name, _, _ := decodPerson(person)
+
+			c.HTML(http.StatusOK, "base.html", gin.H{"person": name, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
@@ -247,8 +247,12 @@ func main() {
 	g.Run(":3000")
 }
 
-func decodName(person []Person) []string {
-	z := []string{}
+func decodPerson(person []Person) ([]string, []string, []string, []string) {
+	id := []string{}
+	name := []string{}
+	age := []string{}
+	job := []string{}
+
 	b, _ := json.Marshal(person)
 	// Convert bytes to string.
 	s := string(b)
@@ -257,10 +261,12 @@ func decodName(person []Person) []string {
 	json.Unmarshal(bytes, &person)
 	for l := range person {
 		// fmt.Printf("Id = %v, Name = %v", person[l].ID, person[l].Name)
-		z = append(z, person[l].Name)
-		// fmt.Println(z)
+		id = append(id, person[l].ID)
+		name = append(name, person[l].Name)
+		age = append(age, person[l].Age)
+		job = append(job, person[l].Job)
 	}
-	return z
+	return id, name, age, job
 }
 
 func (p *Person) GobEncode() ([]byte, error) {
