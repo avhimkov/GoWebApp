@@ -8,18 +8,36 @@
     <table class="table">
         <thead>
         <tr>
-            {{/*<th scope="col">#</th>*/}}
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
         </tr>
         </thead>
             <tbody>
-                {{range .person}}
+                {{range .id}}
             <tr>
-                {{/*<th scope="row">1</th>*/}}
                     <td>{{.}}</td>
             </tr>
                 {{end}}
+                {{range .name}}
+            <tr>
+                <td>{{.}}</td>
+            </tr>
+                {{end}}
+                {{range .age}}
+            <tr>
+                    <td>{{.}}</td>
+            </tr>
+                {{end}}
+
+                <!-- {{range .}}
+                <tr>
+                    <td>{{.Member.Name}}</td>
+                    <td>{{.Member.Family}}</td>
+                    <td>{{.Member.Username}}</td>
+                </tr>
+                {{end}} -->
+                
         </tbody>
     </table>
 </div>

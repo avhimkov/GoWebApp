@@ -159,9 +159,14 @@ func main() {
 				log.Fatal(err)
 			}
 
-			_, name, _, _ := decodPerson(person)
+			id, _, _, _, _ := decodPerson(person)
+			fmt.Println(id)
+			_, _, name, _, _ := decodPerson(person)
+			fmt.Println(name)
+			_, _, _, age, _ := decodPerson(person)
+			fmt.Println(age)
 
-			c.HTML(http.StatusOK, "base.html", gin.H{"person": name, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "base.html", gin.H{"id": id, "name": name, "age": age, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
@@ -247,8 +252,9 @@ func main() {
 	g.Run(":3000")
 }
 
-func decodPerson(person []Person) ([]string, []string, []string, []string) {
+func decodPerson(person []Person) ([]string, []string, []string, []string, []string) {
 	id := []string{}
+	user := []string{}
 	name := []string{}
 	age := []string{}
 	job := []string{}
@@ -262,11 +268,12 @@ func decodPerson(person []Person) ([]string, []string, []string, []string) {
 	for l := range person {
 		// fmt.Printf("Id = %v, Name = %v", person[l].ID, person[l].Name)
 		id = append(id, person[l].ID)
+		user = append(user, person[l].User)
 		name = append(name, person[l].Name)
 		age = append(age, person[l].Age)
 		job = append(job, person[l].Job)
 	}
-	return id, name, age, job
+	return nil, id, name, age, job
 }
 
 func (p *Person) GobEncode() ([]byte, error) {
