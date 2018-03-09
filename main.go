@@ -152,7 +152,9 @@ func main() {
 	//List register users
 	g.GET("/base", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
+
 		if isloggedin {
+
 			var person []Person
 			err := db.All(&person)
 			if err != nil {
@@ -167,6 +169,7 @@ func main() {
 			fmt.Println(age)
 
 			c.HTML(http.StatusOK, "base.html", gin.H{"id": id, "name": name, "age": age, "is_logged_in": isloggedin})
+
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
