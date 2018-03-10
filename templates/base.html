@@ -14,30 +14,13 @@
         </tr>
         </thead>
             <tbody>
-                {{range .id}}
+                {{range .person}}
             <tr>
-                <td>{{.}}</td>
+                <td>{{.ID}}</td>
+                <td>{{.Name}}</td>
+                <td>{{.Age}}</td>
             </tr>
                 {{end}}
-                {{range .name}}
-            <tr>
-                <td>{{.}}</td>
-            </tr>
-                {{end}}
-                {{range .age}}
-            <tr>
-                <td>{{.}}</td>
-            </tr>
-                {{end}}
-
-                <!-- {{range .}}
-                <tr>
-                    <td>{{.Member.Name}}</td>
-                    <td>{{.Member.Family}}</td>
-                    <td>{{.Member.Username}}</td>
-                </tr>
-                {{end}} -->
-                
         </tbody>
     </table>
 </div>
