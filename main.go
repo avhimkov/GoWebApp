@@ -5,21 +5,17 @@ import (
 	"log"
 	"net/http"
 
-	"bytes"
-	"encoding/gob"
-	"encoding/json"
-
 	"github.com/asdine/storm"
 	"github.com/gin-gonic/gin"
 	"github.com/xyproto/permissionbolt"
 )
 
 type Person struct {
-	ID   string `form:"ID" storm:"id,increment" json:"ID"`
+	ID   string /* `form:"ID" storm:"id,increment" json:"ID"` */
 	User string
-	Name string `form:"Name" storm:"index" json:"Name"`
-	Age  string `form:"Age" storm:"index" json:"Age"`
-	Job  string `form:"Job" storm:"index" json:"Job"`
+	Name string /* `form:"Name" storm:"index" json:"Name"` */
+	Age  string /* `form:"Age" storm:"index" json:"Age"` */
+	Job  string /* `form:"Job" storm:"index" json:"Job"` */
 }
 
 func main() {
@@ -211,7 +207,13 @@ func main() {
 	//Make user as admin GET
 	g.GET("/makeadmin", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
-		c.HTML(http.StatusOK, "makeadmin.html", gin.H{"is_logged_in": isloggedin})
+		if isloggedin {
+			c.HTML(http.StatusOK, "makeadmin.html", gin.H{"is_logged_in": isloggedin})
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+
 	})
 
 	//Make user as admin POST
@@ -248,7 +250,7 @@ func main() {
 	g.Run(":3000")
 }
 
-func (p *Person) GobEncode() ([]byte, error) {
+/* func (p *Person) GobEncode() ([]byte, error) {
 	buf := new(bytes.Buffer)
 	enc := gob.NewEncoder(buf)
 	err := enc.Encode(p)
@@ -284,23 +286,23 @@ func decode(data []byte) (*Person, error) {
 		return nil, err
 	}
 	return p, nil
-}
+} */
 
-//func GetPerson(id string) (*Person, error) {
-//	var p *Person
-//	err := db.View(func(tx *bolt.Tx) error {
-//		var err error
-//		b := tx.Bucket([]byte("people"))
-//		k := []byte(id)
-//		p, err = decode(b.Get(k))
-//		if err != nil {
-//			return err
-//		}
-//		return nil
-//	})
-//	if err != nil {
-//		fmt.Printf("Could not get Person ID %s", id)
-//		return nil, err
-//	}
-//	return p, nil
-//}
+/* func GetPerson(id string) (*Person, error) {
+	var p *Person
+	err := db.View(func(tx *bolt.Tx) error {
+		var err error
+		b := tx.Bucket([]byte("people"))
+		k := []byte(id)
+		p, err = decode(b.Get(k))
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		fmt.Printf("Could not get Person ID %s", id)
+		return nil, err
+	}
+	return p, nil
+} */
