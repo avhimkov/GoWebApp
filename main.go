@@ -223,6 +223,11 @@ func main() {
 		c.HTML(http.StatusOK, "makeadmin.html", gin.H{})
 	})
 
+	g.GET("/adminka", func(c *gin.Context) {
+		isloggedin := isloggedin(c)
+		c.HTML(http.StatusOK, "adminka.html", gin.H{"title": "Login Page", "is_logged_in": isloggedin})
+	})
+
 	/* 	g.GET("/clear", func(c *gin.Context) {
 		userstate.ClearCookie(c.Writer)
 		c.String(http.StatusOK, "Clearing cookie")
