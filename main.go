@@ -225,7 +225,19 @@ func main() {
 
 	g.GET("/adminka", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
-		c.HTML(http.StatusOK, "adminka.html", gin.H{"title": "Login Page", "is_logged_in": isloggedin})
+
+		if isloggedin {
+
+			/* 			r.ParseForm()
+			   			fmt.Printf("%+v\n", r.Form)
+			   			productsSelected := r.Form["product_image_id"] */
+
+			listusers, _ := userstate.AllUsernames()
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
 	})
 
 	/* 	g.GET("/clear", func(c *gin.Context) {
@@ -253,6 +265,23 @@ func main() {
 
 	// Start serving the application
 	g.Run(":3000")
+}
+
+// ProcessCheckboxes will process checkboxes
+func ProcessCheckboxes(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	fmt.Printf("%+v\n", r.Form)
+	productsSelected := r.Form["product_image_id"]
+	log.Println(contains(productsSelected, "Grape"))
+}
+
+func contains(slice []string, item string) bool {
+	set := make(map[string]struct{}, len(slice))
+	for _, s := range slice {
+		set[s] = struct{}{}
+	}
+	_, ok := set[item]
+	return ok
 }
 
 /* func (p *Person) GobEncode() ([]byte, error) {

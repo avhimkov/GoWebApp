@@ -3,24 +3,22 @@
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
 
-<h1>List Users</h1>
+<h1>Adminka</h1>
 <div class="col-sm-4">
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Age</th>
+            <th scope="col">Users</th>
+            <th scope="col">Admin Users</th>
         </tr>
         </thead>
             <tbody>
-                {{range .person}}
+            {{range .userlist}}
             <tr>
-                <td>{{.ID}}</td>
-                <td>{{.Name}}</td>
-                <td>{{.Age}}</td>
+                    <td>{{.}}</td>
+                    <td><input id="product_image_id" type="checkbox"></td>
             </tr>
-                {{end}}
+            {{end}}
         </tbody>
     </table>
 </div>
