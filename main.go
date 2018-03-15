@@ -228,12 +228,27 @@ func main() {
 
 		if isloggedin {
 
-			/* 			r.ParseForm()
-			   			fmt.Printf("%+v\n", r.Form)
-			   			productsSelected := r.Form["product_image_id"] */
-
 			listusers, _ := userstate.AllUsernames()
 			c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+	})
+
+	g.POST("/adminka", func(c *gin.Context) {
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		chekuser := userstate.IsAdmin(usercook)
+
+		isloggedin := isloggedin(c)
+
+		if isloggedin {
+
+			if chekuser == ok {
+				return fmt.Sprint("checked")
+			}
+
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
