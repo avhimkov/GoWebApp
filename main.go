@@ -225,11 +225,14 @@ func main() {
 
 	g.GET("/adminka", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		chekuser := userstate.IsAdmin(usercook)
 
 		if isloggedin {
-
-			listusers, _ := userstate.AllUsernames()
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
+			if chekuser {
+				listusers, _ := userstate.AllUsernames()
+				c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
+			}
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
@@ -243,9 +246,10 @@ func main() {
 		isloggedin := isloggedin(c)
 
 		if isloggedin {
-
-			if chekuser == ok {
-				return fmt.Sprint("checked")
+			if chekuser {
+				// if chekuser == ok {
+				// 	return fmt.Sprint("checked")
+				// }
 			}
 
 			c.HTML(http.StatusOK, "adminka.html", gin.H{"is_logged_in": isloggedin})
