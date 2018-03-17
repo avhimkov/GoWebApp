@@ -13,10 +13,11 @@
         </tr>
         </thead>
             <tbody>
+            {{$chek := .chek}}
             {{range .userlist}}
             <tr>
                     <td>{{.}}</td>
-                    <td><input id="admin" type="checkbox" {{.chek}}></td>
+                    <td><input id="admin" type="checkbox" {{$chek}}></td>
             </tr>
             {{end}}
         </tbody>

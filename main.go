@@ -224,40 +224,55 @@ func main() {
 	})
 
 	g.GET("/adminka", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
+		// isloggedin := isloggedin(c)
 		usercook, _ := userstate.UsernameCookie(c.Request)
-		chekuser := userstate.IsAdmin(usercook)
-
+		isloggedin := userstate.IsLoggedIn(usercook)
+		chekadmin := userstate.IsAdmin(usercook)
+		chek := ""
 		if isloggedin {
-			if chekuser {
-				listusers, _ := userstate.AllUsernames()
-				c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
+			listusers, _ := userstate.AllUsernames()
+			if chekadmin {
+				for _, i := range listusers {
+					fmt.Println(i)
+					cheked := userstate.IsAdmin(i)
+					fmt.Println(cheked)
+					if cheked {
+						chek = "checked"
+						fmt.Println(chek)
+					}
+				}
+				// c.String(http.StatusOK, "%s", chek)
+				// fmt.Sprint("checked")
 			}
+
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers, "chek": chek, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
 	})
 
-	g.POST("/adminka", func(c *gin.Context) {
+	/* g.POST("/adminka", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
-		chekuser := userstate.IsAdmin(usercook)
+		chekadmin := userstate.IsAdmin(usercook)
 
 		isloggedin := isloggedin(c)
 
+		chek := "checked"
 		if isloggedin {
-			if chekuser {
-				// if chekuser == ok {
-				// 	return fmt.Sprint("checked")
-				// }
+			if chekadmin {
+				if chekadmin {
+					c.String(http.StatusOK, "%s", chek)
+					// fmt.Sprint("checked")
+				}
 			}
 
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"chek": chek, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
-	})
+	}) */
 
 	/* 	g.GET("/clear", func(c *gin.Context) {
 		userstate.ClearCookie(c.Writer)
