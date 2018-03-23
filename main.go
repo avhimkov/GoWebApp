@@ -134,11 +134,17 @@ func main() {
 	})
 
 	g.GET("/listusers", func(c *gin.Context) {
+
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		chekadmin := userstate.IsAdmin(usercook)
+
 		isloggedin := isloggedin(c)
 
 		if isloggedin {
-			listusers, _ := userstate.AllUsernames()
-			c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
+			if chekadmin {
+				listusers, _ := userstate.AllUsernames()
+				c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
+			}
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
@@ -252,33 +258,6 @@ func main() {
 		}
 	})
 
-	/* g.POST("/adminka", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		chekadmin := userstate.IsAdmin(usercook)
-
-		isloggedin := isloggedin(c)
-
-		chek := "checked"
-		if isloggedin {
-			if chekadmin {
-				if chekadmin {
-					c.String(http.StatusOK, "%s", chek)
-					// fmt.Sprint("checked")
-				}
-			}
-
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"chek": chek, "is_logged_in": isloggedin})
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	}) */
-
-	/* 	g.GET("/clear", func(c *gin.Context) {
-		userstate.ClearCookie(c.Writer)
-		c.String(http.StatusOK, "Clearing cookie")
-	}) */
-
 	//Delete User from Base GET
 	g.GET("/delete", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
@@ -288,6 +267,17 @@ func main() {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
+	})
+
+	g.GET("/work", func(c *gin.Context) {
+		isloggedin := isloggedin(c)
+		if isloggedin {
+			c.HTML(http.StatusOK, "work.html", gin.H{"is_logged_in": isloggedin})
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+
 	})
 
 	//Delete User from Base POST
