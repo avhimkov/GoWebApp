@@ -4,21 +4,27 @@
 {{ template "header.html" .}}
 
 <h1>List Users</h1>
-<div class="col-sm-9">
+<div class="col-sm-4">
     <table class="table">
         <thead>
         <tr>
-            {{/*<th scope="col">#</th>*/}}
-            <th scope="col">Name users</th>
+            <th scope="col">ID</th>
+            <th scope="col">User</th>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Job</th>
         </tr>
         </thead>
             <tbody>
-            {{range .userlist}}
+                {{range .person}}
             <tr>
-                {{/*<th scope="row">1</th>*/}}
-                    <td>{{.}}</td>
+                <td>{{.ID}}</td>
+                <td>{{.User}}</td>
+                <td>{{.Name}}</td>
+                <td>{{.Age}}</td>
+                <td>{{.Job}}</td>
             </tr>
-            {{end}}
+                {{end}}
         </tbody>
     </table>
 </div>

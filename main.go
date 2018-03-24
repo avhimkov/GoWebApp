@@ -11,11 +11,11 @@ import (
 )
 
 type Person struct {
-	ID   string /* `form:"ID" storm:"id,increment" json:"ID"` */
+	ID   string `form:"ID" storm:"id,increment" json:"ID"`
 	User string
-	Name string /* `form:"Name" storm:"index" json:"Name"` */
-	Age  string /* `form:"Age" storm:"index" json:"Age"` */
-	Job  string /* `form:"Job" storm:"index" json:"Job"` */
+	Name string `form:"Name" storm:"index" json:"Name"`
+	Age  string `form:"Age" storm:"index" json:"Age"`
+	Job  string `form:"Job" storm:"index" json:"Job"`
 }
 
 func main() {
@@ -272,7 +272,13 @@ func main() {
 	g.GET("/work", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		if isloggedin {
-			c.HTML(http.StatusOK, "work.html", gin.H{"is_logged_in": isloggedin})
+			var person []Person
+			err := db.All(&person)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			c.HTML(http.StatusOK, "work.html", gin.H{"person": person, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
