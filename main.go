@@ -234,21 +234,20 @@ func main() {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 		chekadmin := userstate.IsAdmin(usercook)
+		cheked := true
 		chek := ""
 		if isloggedin {
 			listusers, _ := userstate.AllUsernames()
 			if chekadmin {
 				for _, i := range listusers {
 					fmt.Println(i)
-					cheked := userstate.IsAdmin(i)
+					cheked = userstate.IsAdmin(i)
 					fmt.Println(cheked)
 					if cheked {
 						chek = "checked"
 						fmt.Println(chek)
 					}
 				}
-				// c.String(http.StatusOK, "%s", chek)
-				// fmt.Sprint("checked")
 			}
 
 			c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers, "chek": chek, "is_logged_in": isloggedin})
