@@ -18,6 +18,17 @@ type Person struct {
 	Job  string `form:"Job" storm:"index" json:"Job"`
 }
 
+func SetupRouter() *gin.Engine {
+	g := gin.Default()
+
+	// v1 := router.Group("api/v1")
+	// {
+	// 	v1.GET("/instructions", GetInstructions)
+	// }
+
+	return g
+}
+
 func main() {
 
 	//ADD EXAMPLE BOLTDB
@@ -33,7 +44,8 @@ func main() {
 	}
 	defer db.Close()
 
-	g := gin.New()
+	// g := gin.New()
+	g := SetupRouter()
 
 	g.LoadHTMLGlob("templates/*.html")
 

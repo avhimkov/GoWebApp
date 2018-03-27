@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -10,31 +11,21 @@ import (
 )
 
 func Test_main(t *testing.T) {
-	// Switch to test mode so you don't get such noisy output
 	gin.SetMode(gin.TestMode)
+	testRouter := SetupRouter()
 
-	// Setup your router, just like you did in your main function, and
-	// register your routes
-	r := gin.Default()
+	body := bytes.NewBuffer([]byte("{\"event_status\": \"83\", \"event_name\": \"100\"}"))
 
-	/* r.GET("/users", GetUsers) */
-
-	// Create the mock request you'd like to test. Make sure the second argument
-	// here is the same as one of the routes you defined in the router setup
-	// block!
-	req, err := http.NewRequest(http.MethodGet, "/users", nil)
+	req, err := http.NewRequest("POST", "/api/v1/instructions", body)
+	req.Header.Set("Content-Type", "application/json")
 	if err != nil {
-		t.Fatalf("Couldn't create request: %v\n", err)
+		t.Errorf("Post hearteat failed with error %d.", err)
 	}
 
-	// Create a response recorder so you can inspect the response
-	w := httptest.NewRecorder()
+	resp := httptest.NewRecorder()
+	testRouter.ServeHTTP(resp, req)
 
-	// Perform the request
-	r.ServeHTTP(w, req)
-
-	// Check to see if the response was what you expected
-	if w.Code != http.StatusOK {
-		t.Fatalf("Expected to get status %d but instead got %d\n", http.StatusOK, w.Code)
+	if resp.Code != 201 {
+		t.Errorf("/api/v1/instructions failed with error code %d.", resp.Code)
 	}
 }
