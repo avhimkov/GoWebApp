@@ -18,6 +18,11 @@ type Person struct {
 	Job  string `form:"Job" storm:"index" json:"Job"`
 }
 
+//TODO
+type myForm struct {
+	Colors []string `form:"colors[]"`
+}
+
 func SetupRouter() *gin.Engine {
 	g := gin.Default()
 
@@ -246,28 +251,31 @@ func main() {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 		chekadmin := userstate.IsAdmin(usercook)
-		cheked := true
-		chek := ""
+		// cheked := true
+		// chek := ""
 		if isloggedin {
 			listusers, _ := userstate.AllUsernames()
 			if chekadmin {
 				for _, i := range listusers {
 					fmt.Println(i)
-					cheked = userstate.IsAdmin(i)
-					fmt.Println(cheked)
-					if cheked {
-						chek = "checked"
-						fmt.Println(chek)
-					}
+					// cheked = userstate.IsAdmin(i)
+					// fmt.Println(cheked)
+					// if cheked {
+					// 	chek = "checked"
+					// 	fmt.Println(chek)
+					// }
 				}
 			}
 
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers, "chek": chek, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers /* "chek": chek,  */, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
 	})
+
+	//TODO
+	g.POST("/adminka", formHandler)
 
 	//Delete User from Base GET
 	g.GET("/delete", func(c *gin.Context) {
@@ -381,3 +389,10 @@ func decode(data []byte) (*Person, error) {
 	}
 	return p, nil
 } */
+
+//TODO
+func formHandler(c *gin.Context) {
+	var fakeForm myForm
+	c.Bind(&fakeForm)
+	c.JSON(200, gin.H{"color": fakeForm.Colors})
+}

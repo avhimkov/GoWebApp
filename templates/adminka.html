@@ -12,14 +12,27 @@
             <th scope="col">Admin Users</th>
         </tr>
         </thead>
-            <tbody>
-            {{range .userlist}}
+            <tbody>            
             <!-- {{$chek := .chek}} -->
+            {{range .userlist}}
             <tr>
-                    <td>{{.}}</td>
-                    <td><input id="admin" type="checkbox" {{if .chek}} "checked" {{end}}></td>
+                <td>{{.}}</td>
             </tr>
             {{end}}
+
+
+            <form action="/" method="POST">
+                <p>Check some colors</p>
+                <label for="red">Red</label>
+                <input type="checkbox" name="colors[]" value="red" id="red" />
+                <label for="green">Green</label>
+                <input type="checkbox" name="colors[]" value="green" id="green" />
+                <label for="blue">Blue</label>
+                <input type="checkbox" name="colors[]" value="blue" id="blue" />
+                <input type="submit" />
+            </form>
+                        
+            <!-- <td><input id="admin" type="checkbox" {{if .chek}} "checked" {{end}}></td> -->
         </tbody>
     </table>
 </div>
