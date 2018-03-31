@@ -19,9 +19,10 @@ type Person struct {
 }
 
 //TODO
-type myForm struct {
-	Colors []string `form:"colors[]"`
-}
+// type myForm struct {
+// 	Admins
+// 	Colors []string `form:"colors[]"`
+// }
 
 func SetupRouter() *gin.Engine {
 	g := gin.Default()
@@ -275,7 +276,31 @@ func main() {
 	})
 
 	//TODO
-	g.POST("/adminka", formHandler)
+	// g.POST("/adminka", formHandler)
+	g.POST("/adminka", func(c *gin.Context) {
+		// isloggedin := isloggedin(c)
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+		chekadmin := userstate.IsAdmin(usercook)
+
+		// var fakeForm myForm
+		// c.Bind(&fakeForm)
+
+		cheked := true
+
+		if isloggedin {
+			listusers, _ := userstate.AllUsernames()
+			if chekadmin {
+				for _, i := range listusers {
+
+					fmt.Println(i)
+					cheked = userstate.IsAdmin(i)
+					c.Bind(&cheked)
+				}
+			}
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"cheked": cheked, "is_logged_in": isloggedin})
+		}
+	})
 
 	//Delete User from Base GET
 	g.GET("/delete", func(c *gin.Context) {
@@ -391,8 +416,8 @@ func decode(data []byte) (*Person, error) {
 } */
 
 //TODO
-func formHandler(c *gin.Context) {
-	var fakeForm myForm
-	c.Bind(&fakeForm)
-	c.JSON(200, gin.H{"color": fakeForm.Colors})
-}
+// func formHandler(c *gin.Context) {
+// 	var fakeForm myForm
+// 	c.Bind(&fakeForm)
+// 	c.JSON(200, gin.H{"color": fakeForm.Colors})
+// }
