@@ -286,7 +286,7 @@ func main() {
 		// var fakeForm myForm
 		// c.Bind(&fakeForm)
 
-		cheked := true
+		var cheked []bool
 
 		if isloggedin {
 			listusers, _ := userstate.AllUsernames()
@@ -294,7 +294,7 @@ func main() {
 				for _, i := range listusers {
 
 					fmt.Println(i)
-					cheked = userstate.IsAdmin(i)
+					cheked = append(cheked, userstate.IsAdmin(i))
 					c.Bind(&cheked)
 				}
 			}
