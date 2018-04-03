@@ -12,11 +12,11 @@
             <th scope="col">Admin Users</th>
             <th scope="col">Settings 1</th>
             <th scope="col">Settings 2</th>
-            
         </tr>
         </thead>
             <tbody>            
             <!-- {{$chek := .chek}} -->
+            <form action="adminka.html" method="post"></form>
             {{range .userlist}}
             <tr>
                 <td>{{.}}</td>
@@ -25,7 +25,9 @@
                 <td><input type="checkbox" name="cheked[]" value="true" id="true" /></td>
             </tr>
             {{end}}
-                        
+            <button type="submit">Submit</button>
+            <button type="submit" formmethod="post">Submit using POST</button>
+            </form>
             <!-- <td><input id="admin" type="checkbox" {{if .chek}} "checked" {{end}}></td> -->
         </tbody>
     </table>
