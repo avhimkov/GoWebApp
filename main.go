@@ -252,23 +252,20 @@ func main() {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 		chekadmin := userstate.IsAdmin(usercook)
-		// cheked := true
-		// chek := ""
+
+		// var cheked []bool
 		if isloggedin {
 			listusers, _ := userstate.AllUsernames()
 			if chekadmin {
 				for _, i := range listusers {
 					fmt.Println(i)
-					// cheked = userstate.IsAdmin(i)
+					// cheked = append(cheked, userstate.IsAdmin(i))
 					// fmt.Println(cheked)
-					// if cheked {
-					// 	chek = "checked"
-					// 	fmt.Println(chek)
-					// }
+					// c.Bind(&cheked)
 				}
 			}
 
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers /* "chek": chek,  */, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
@@ -277,30 +274,31 @@ func main() {
 
 	//TODO
 	// g.POST("/adminka", formHandler)
-	g.POST("/adminka", func(c *gin.Context) {
-		// isloggedin := isloggedin(c)
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
-		chekadmin := userstate.IsAdmin(usercook)
+	// g.POST("/adminka", func(c *gin.Context) {
+	// 	// isloggedin := isloggedin(c)
+	// 	usercook, _ := userstate.UsernameCookie(c.Request)
+	// 	isloggedin := userstate.IsLoggedIn(usercook)
+	// 	chekadmin := userstate.IsAdmin(usercook)
 
-		// var fakeForm myForm
-		// c.Bind(&fakeForm)
+	// 	// var fakeForm myForm
+	// 	// c.Bind(&fakeForm)
 
-		var cheked []bool
+	// 	var cheked []bool
 
-		if isloggedin {
-			listusers, _ := userstate.AllUsernames()
-			if chekadmin {
-				for _, i := range listusers {
+	// 	if isloggedin {
+	// 		listusers, _ := userstate.AllUsernames()
+	// 		if chekadmin {
+	// 			for _, i := range listusers {
 
-					fmt.Println(i)
-					cheked = append(cheked, userstate.IsAdmin(i))
-					c.Bind(&cheked)
-				}
-			}
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"cheked": cheked, "is_logged_in": isloggedin})
-		}
-	})
+	// 				fmt.Println(i)
+	// 				cheked = append(cheked, userstate.IsAdmin(i))
+	// 				fmt.Println(cheked)
+	// 				c.Bind(&cheked)
+	// 			}
+	// 		}
+	// 		c.HTML(http.StatusOK, "adminka.html", gin.H{"cheked": cheked, "is_logged_in": isloggedin})
+	// 	}
+	// })
 
 	//Delete User from Base GET
 	g.GET("/delete", func(c *gin.Context) {

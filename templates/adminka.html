@@ -17,20 +17,9 @@
             {{range .userlist}}
             <tr>
                 <td>{{.}}</td>
+                <td><input type="checkbox" name="cheked[]" value="true" id="true" /></td>
             </tr>
             {{end}}
-
-
-            <form action="/adminka" method="POST">
-                <p>Check some cheked</p>
-                <label for="red">true</label>
-                <input type="checkbox" name="cheked[]" value="true" id="true" />
-                <label for="green">true</label>
-                <input type="checkbox" name="cheked[]" value="true" id="true" />
-                <label for="blue">true</label>
-                <input type="checkbox" name="cheked[]" value="true" id="true" />
-                <input type="submit" />
-            </form>
                         
             <!-- <td><input id="admin" type="checkbox" {{if .chek}} "checked" {{end}}></td> -->
         </tbody>
