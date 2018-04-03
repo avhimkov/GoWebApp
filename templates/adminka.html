@@ -10,6 +10,9 @@
         <tr>
             <th scope="col">Users</th>
             <th scope="col">Admin Users</th>
+            <th scope="col">Settings 1</th>
+            <th scope="col">Settings 2</th>
+            
         </tr>
         </thead>
             <tbody>            
@@ -17,6 +20,8 @@
             {{range .userlist}}
             <tr>
                 <td>{{.}}</td>
+                <td><input type="checkbox" name="cheked[]" value="true" id="true" /></td>
+                <td><input type="checkbox" name="cheked[]" value="true" id="true" /></td>
                 <td><input type="checkbox" name="cheked[]" value="true" id="true" /></td>
             </tr>
             {{end}}
