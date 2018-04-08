@@ -16,18 +16,17 @@
         </thead>
             <tbody>            
             <!-- {{$chek := .chek}} -->
-            <form action="adminka.html" method="post"></form>
+            <!-- <form action="adminka.html" method="post"></form> -->
             {{range .userlist}}
             <tr>
                 <td>{{.}}</td>
-                <td><input type="checkbox" name="cheked[]" value="true" id="true" /></td>
-                <td><input type="checkbox" name="cheked[]" value="true" id="true" /></td>
-                <td><input type="checkbox" name="cheked[]" value="true" id="true" /></td>
+                <td><a href="/delete">
+                    <button>Admin Delet</button>
+                 </a></td>
             </tr>
             {{end}}
-            <button type="submit">Submit</button>
-            <button type="submit" formmethod="post">Submit using POST</button>
-            </form>
+            
+            <!-- </form> -->
             <!-- <td><input id="admin" type="checkbox" {{if .chek}} "checked" {{end}}></td> -->
         </tbody>
     </table>

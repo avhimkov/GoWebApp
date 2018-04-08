@@ -253,16 +253,19 @@ func main() {
 		isloggedin := userstate.IsLoggedIn(usercook)
 		chekadmin := userstate.IsAdmin(usercook)
 
+		// var fakeForm myForm
+		// c.Bind(&fakeForm)
+
 		// var cheked []bool
 		if isloggedin {
 			listusers, _ := userstate.AllUsernames()
 			if chekadmin {
-				for _, i := range listusers {
-					fmt.Println(i)
-					// cheked = append(cheked, userstate.IsAdmin(i))
-					// fmt.Println(cheked)
-					// c.Bind(&cheked)
-				}
+				// for _, i := range listusers {
+				// fmt.Println(i)
+				// cheked = append(cheked, userstate.IsAdmin(i))
+				// fmt.Println(cheked)
+				// c.Bind(&cheked)
+				// }
 			}
 
 			c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
@@ -280,23 +283,10 @@ func main() {
 	// 	isloggedin := userstate.IsLoggedIn(usercook)
 	// 	chekadmin := userstate.IsAdmin(usercook)
 
-	// 	// var fakeForm myForm
-	// 	// c.Bind(&fakeForm)
-
-	// 	var cheked []bool
-
 	// 	if isloggedin {
-	// 		listusers, _ := userstate.AllUsernames()
 	// 		if chekadmin {
-	// 			for _, i := range listusers {
-
-	// 				fmt.Println(i)
-	// 				cheked = append(cheked, userstate.IsAdmin(i))
-	// 				fmt.Println(cheked)
-	// 				c.Bind(&cheked)
-	// 			}
+	// 			c.HTML(http.StatusOK, "adminka.html", gin.H{"is_logged_in": isloggedin})
 	// 		}
-	// 		c.HTML(http.StatusOK, "adminka.html", gin.H{"cheked": cheked, "is_logged_in": isloggedin})
 	// 	}
 	// })
 
