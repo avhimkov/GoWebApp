@@ -20,9 +20,12 @@
             {{range .userlist}}
             <tr>
                 <td>{{.}}</td>
-                <td><a href="/delete">
-                    <button>Admin Delet</button>
-                 </a></td>
+                <td>
+                    <form action="/" method="POST">
+                        <input type="checkbox" name="colors[]" value="blue" id="blue" />
+                        <input type="submit" />
+                    </form>
+                </td>
             </tr>
             {{end}}
             

@@ -277,18 +277,24 @@ func main() {
 
 	//TODO
 	// g.POST("/adminka", formHandler)
-	// g.POST("/adminka", func(c *gin.Context) {
-	// 	// isloggedin := isloggedin(c)
-	// 	usercook, _ := userstate.UsernameCookie(c.Request)
-	// 	isloggedin := userstate.IsLoggedIn(usercook)
-	// 	chekadmin := userstate.IsAdmin(usercook)
+	g.POST("/adminka", func(c *gin.Context) {
+		// isloggedin := isloggedin(c)
+		listusers, _ := userstate.AllUsernames()
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+		chekadmin := userstate.IsAdmin(usercook)
+		request
 
-	// 	if isloggedin {
-	// 		if chekadmin {
-	// 			c.HTML(http.StatusOK, "adminka.html", gin.H{"is_logged_in": isloggedin})
-	// 		}
-	// 	}
-	// })
+		if isloggedin {
+			if chekadmin {
+				// var fakeForm myForm
+				// c.Bind(&fakeForm)
+				// c.JSON(200, gin.H{"color": fakeForm.Colors})
+
+				c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
+			}
+		}
+	})
 
 	//Delete User from Base GET
 	g.GET("/delete", func(c *gin.Context) {
