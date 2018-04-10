@@ -264,7 +264,6 @@ func main() {
 				// fmt.Println(i)
 				// cheked = append(cheked, userstate.IsAdmin(i))
 				// fmt.Println(cheked)
-				// c.Bind(&cheked)
 				// }
 			}
 
@@ -283,15 +282,23 @@ func main() {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 		chekadmin := userstate.IsAdmin(usercook)
-		request
+
+		var cheked []bool
 
 		if isloggedin {
 			if chekadmin {
-				// var fakeForm myForm
-				// c.Bind(&fakeForm)
-				// c.JSON(200, gin.H{"color": fakeForm.Colors})
 
-				c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
+				for _, i := range listusers {
+					// fmt.Println(i)
+					cheked = append(cheked, userstate.IsAdmin(i))
+					// fmt.Println(cheked)
+
+					c.Bind(cheked)
+					fmt.Println(chekadmin)
+				}
+
+				// c.JSON(200, gin.H{"chek": chekadmin})
+				c.HTML(http.StatusOK, "adminka.html", gin.H{"cheked": cheked, "userlist": listusers, "is_logged_in": isloggedin})
 			}
 		}
 	})
@@ -328,6 +335,14 @@ func main() {
 	g.POST("/delete", func(c *gin.Context) {
 		username := c.PostForm("username")
 		userstate.RemoveUser(username)
+		c.HTML(http.StatusOK, "delete.html", gin.H{})
+	})
+
+	//TODO
+	//Delete Admin status
+	g.POST("/adminoff/:id", func(c *gin.Context) {
+		userstate.IsAdmin("id")
+		userstate.RemoveAdminStatus("id")
 		c.HTML(http.StatusOK, "delete.html", gin.H{})
 	})
 

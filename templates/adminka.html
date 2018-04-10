@@ -21,14 +21,13 @@
             <tr>
                 <td>{{.}}</td>
                 <td>
-                    <form action="/" method="POST">
-                        <input type="checkbox" name="colors[]" value="blue" id="blue" />
+                        <form action="/adminka" method="POST">
+                        <input type="checkbox" name="cheked" value="true" id="true" />
                         <input type="submit" />
-                    </form>
+                        </form>
                 </td>
             </tr>
             {{end}}
-            
             <!-- </form> -->
             <!-- <td><input id="admin" type="checkbox" {{if .chek}} "checked" {{end}}></td> -->
         </tbody>
