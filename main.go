@@ -122,12 +122,10 @@ func main() {
 
 	g.GET("/login", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
-		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Login Page",
-			"is_logged_in": isloggedin})
+		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Login Page", "is_logged_in": isloggedin})
 	})
 
 	g.POST("/login", func(c *gin.Context) {
-
 		username := c.PostForm("username")
 		password := c.PostForm("password")
 		logintryst := userstate.CorrectPassword(username, password)
@@ -340,10 +338,11 @@ func main() {
 
 	//TODO
 	//Delete Admin status
-	g.POST("/adminoff/:id", func(c *gin.Context) {
-		userstate.IsAdmin("id")
-		userstate.RemoveAdminStatus("id")
-		c.HTML(http.StatusOK, "delete.html", gin.H{})
+	g.GET("/adminoff/:user", func(c *gin.Context) {
+		user := c.Param("user")
+		userstate.IsAdmin(user)
+		userstate.RemoveAdminStatus(user)
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	})
 
 	// Start serving the application
@@ -351,82 +350,18 @@ func main() {
 }
 
 // ProcessCheckboxes will process checkboxes
-func ProcessCheckboxes(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
-	fmt.Printf("%+v\n", r.Form)
-	productsSelected := r.Form["product_image_id"]
-	log.Println(contains(productsSelected, "Grape"))
-}
+// func ProcessCheckboxes(w http.ResponseWriter, r *http.Request) {
+// 	r.ParseForm()
+// 	fmt.Printf("%+v\n", r.Form)
+// 	productsSelected := r.Form["product_image_id"]
+// 	log.Println(contains(productsSelected, "Grape"))
+// }
 
-func contains(slice []string, item string) bool {
-	set := make(map[string]struct{}, len(slice))
-	for _, s := range slice {
-		set[s] = struct{}{}
-	}
-	_, ok := set[item]
-	return ok
-}
-
-/* func (p *Person) GobEncode() ([]byte, error) {
-	buf := new(bytes.Buffer)
-	enc := gob.NewEncoder(buf)
-	err := enc.Encode(p)
-	if err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-
-func GobDecode(data []byte) (*Person, error) {
-	var p *Person
-	buf := bytes.NewBuffer(data)
-	dec := gob.NewDecoder(buf)
-	err := dec.Decode(&p)
-	if err != nil {
-		return nil, err
-	}
-	return p, nil
-}
-
-func (p *Person) encode() ([]byte, error) {
-	enc, err := json.Marshal(p)
-	if err != nil {
-		return nil, err
-	}
-	return enc, nil
-}
-
-func decode(data []byte) (*Person, error) {
-	var p *Person
-	err := json.Unmarshal(data, &p)
-	if err != nil {
-		return nil, err
-	}
-	return p, nil
-} */
-
-/* func GetPerson(id string) (*Person, error) {
-	var p *Person
-	err := db.View(func(tx *bolt.Tx) error {
-		var err error
-		b := tx.Bucket([]byte("people"))
-		k := []byte(id)
-		p, err = decode(b.Get(k))
-		if err != nil {
-			return err
-		}
-		return nil
-	})
-	if err != nil {
-		fmt.Printf("Could not get Person ID %s", id)
-		return nil, err
-	}
-	return p, nil
-} */
-
-//TODO
-// func formHandler(c *gin.Context) {
-// 	var fakeForm myForm
-// 	c.Bind(&fakeForm)
-// 	c.JSON(200, gin.H{"color": fakeForm.Colors})
+// func contains(slice []string, item string) bool {
+// 	set := make(map[string]struct{}, len(slice))
+// 	for _, s := range slice {
+// 		set[s] = struct{}{}
+// 	}
+// 	_, ok := set[item]
+// 	return ok
 // }
