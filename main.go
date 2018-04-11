@@ -103,10 +103,12 @@ func main() {
 		}
 	})
 
+	// Registaration Users GET
 	g.GET("/register", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "register.html", gin.H{})
 	})
 
+	// Registaration Users OPOST
 	g.POST("/register", func(c *gin.Context) {
 
 		username := c.PostForm("username")
@@ -120,11 +122,13 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/", 302)
 	})
 
+	// Loging Users GET
 	g.GET("/login", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Login Page", "is_logged_in": isloggedin})
 	})
 
+	// Loging Users
 	g.POST("/login", func(c *gin.Context) {
 		username := c.PostForm("username")
 		password := c.PostForm("password")
@@ -143,12 +147,14 @@ func main() {
 		}
 	})
 
+	//Logout users
 	g.GET("/logout", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		userstate.Logout(usercook)
 		http.Redirect(c.Writer, c.Request, "/", 302)
 	})
 
+	//Logout users
 	g.GET("/listusers", func(c *gin.Context) {
 
 		usercook, _ := userstate.UsernameCookie(c.Request)
@@ -245,27 +251,24 @@ func main() {
 		c.HTML(http.StatusOK, "makeadmin.html", gin.H{})
 	})
 
+	//Administartort interface
 	g.GET("/adminka", func(c *gin.Context) {
-		// isloggedin := isloggedin(c)
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 		chekadmin := userstate.IsAdmin(usercook)
 
-		// var fakeForm myForm
-		// c.Bind(&fakeForm)
-
-		// var cheked []bool
+		var cheked []bool
 		if isloggedin {
 			listusers, _ := userstate.AllUsernames()
 			if chekadmin {
-				// for _, i := range listusers {
-				// fmt.Println(i)
-				// cheked = append(cheked, userstate.IsAdmin(i))
-				// fmt.Println(cheked)
-				// }
+				for _, i := range listusers {
+					fmt.Println(i)
+					cheked = append(cheked, userstate.IsAdmin(i))
+				}
+				fmt.Println(cheked)
 			}
 
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"listusers": listusers, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
@@ -274,32 +277,32 @@ func main() {
 
 	//TODO
 	// g.POST("/adminka", formHandler)
-	g.POST("/adminka", func(c *gin.Context) {
-		// isloggedin := isloggedin(c)
-		listusers, _ := userstate.AllUsernames()
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
-		chekadmin := userstate.IsAdmin(usercook)
+	// g.POST("/adminka", func(c *gin.Context) {
+	// 	// isloggedin := isloggedin(c)
+	// 	listusers, _ := userstate.AllUsernames()
+	// 	usercook, _ := userstate.UsernameCookie(c.Request)
+	// 	isloggedin := userstate.IsLoggedIn(usercook)
+	// 	chekadmin := userstate.IsAdmin(usercook)
 
-		var cheked []bool
+	// 	var cheked []bool
 
-		if isloggedin {
-			if chekadmin {
+	// 	if isloggedin {
+	// 		if chekadmin {
 
-				for _, i := range listusers {
-					// fmt.Println(i)
-					cheked = append(cheked, userstate.IsAdmin(i))
-					// fmt.Println(cheked)
+	// 			for _, i := range listusers {
+	// 				// fmt.Println(i)
+	// 				cheked = append(cheked, userstate.IsAdmin(i))
+	// 				// fmt.Println(cheked)
 
-					c.Bind(cheked)
-					fmt.Println(chekadmin)
-				}
+	// 				c.Bind(cheked)
+	// 				fmt.Println(chekadmin)
+	// 			}
 
-				// c.JSON(200, gin.H{"chek": chekadmin})
-				c.HTML(http.StatusOK, "adminka.html", gin.H{"cheked": cheked, "userlist": listusers, "is_logged_in": isloggedin})
-			}
-		}
-	})
+	// 			// c.JSON(200, gin.H{"chek": chekadmin})
+	// 			c.HTML(http.StatusOK, "adminka.html", gin.H{"cheked": cheked, "userlist": listusers, "is_logged_in": isloggedin})
+	// 		}
+	// 	}
+	// })
 
 	//Delete User from Base GET
 	g.GET("/delete", func(c *gin.Context) {
@@ -312,6 +315,7 @@ func main() {
 		}
 	})
 
+	//Work page TEST
 	g.GET("/work", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		if isloggedin {
@@ -336,7 +340,6 @@ func main() {
 		c.HTML(http.StatusOK, "delete.html", gin.H{})
 	})
 
-	//TODO
 	//Delete Admin status
 	g.GET("/adminoff/:user", func(c *gin.Context) {
 		user := c.Param("user")

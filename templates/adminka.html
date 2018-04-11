@@ -17,12 +17,13 @@
             <tbody>            
             <!-- {{$chek := .chek}} -->
             <!-- <form action="adminka.html" method="post"></form> -->
-            {{range .userlist}}
+            {{$user := .listusers}}
+            {{range .listusers}}
             <tr>
                 <td>{{.}}</td>
                 <td>
-                        <form action="/adminka" method="POST">
-                        <input type="checkbox" name="cheked" value="true" id="true" />
+                        <form action="/adminoff/:user" method="GET">
+                        <input type="checkbox" name= {{$user}} value= {{$user}} />
                         <input type="submit" />
                         </form>
                 </td>
