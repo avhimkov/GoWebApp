@@ -15,22 +15,17 @@
         </tr>
         </thead>
             <tbody>            
-            <!-- {{$chek := .chek}} -->
-            <!-- <form action="adminka.html" method="post"></form> -->
-            {{$user := .listusers}}
-            {{range .listusers}}
+            {{range $i, $e := .listusers}}
             <tr>
-                <td>{{.}}</td>
+                <td>{{$e}}</td>
                 <td>
-                        <form action="/adminoff/:user" method="GET">
-                        <input type="checkbox" name= {{$user}} value= {{$user}} />
-                        <input type="submit" />
+                        <form action="/adminoff/{{$e}}" method="GET">
+                        <input value="AdminOff" type="submit" />
                         </form>
                 </td>
             </tr>
             {{end}}
-            <!-- </form> -->
-            <!-- <td><input id="admin" type="checkbox" {{if .chek}} "checked" {{end}}></td> -->
+
         </tbody>
     </table>
 </div>
