@@ -1,54 +1,83 @@
 <!--menu.html-->
 
 <nav class="navbar navbar-default">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">
-                Home
-            </a>
-        </div>
-        <ul class="nav navbar-nav">
-        {{ if not .is_logged_in }}
-            <!--Display this link only when the user is not logged in-->
-            <li><a href="/register">Register</a></li>
-        {{end}}
         {{ if .is_logged_in }}
-        <!--Display this link only when the user is not logged in-->
-        <li><a href="/listusers">List users</a></li>
+        <div class="container">
+            <!-- <div class="header" style="background-color: burlywood;min-height: 6em">
+                <h3> This is Header-Area </h3> -->
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <!-- <a class="navbar-brand" href="/">Navbar</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button> -->
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            {{ if .is_logged_in }}
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+                                </li>
+                            {{end}}
+                            {{ if not .is_logged_in }}
+                                <li class="nav-item"><a href="/register">Register</a></li>
+                            {{end}}
+                            {{ if .is_logged_in }}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/listusers">List users</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/makeadmin">Make admin users</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/delete">Delete users</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/visitors">Visitors</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/base">Base Users</a>
+                                </li>
+                            {{end}}
+                            {{ if not .is_logged_in }}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/login">Login</a>
+                                </li>
+                            {{end}}
+                            {{ if .is_logged_in }}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/adminka">Adminka</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/work">Work</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Dropdown
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/logout">Logout</a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link disabled" href="#">Disabled</a>
+                                </li> -->
+                            {{end}}
+                        </ul>
+                        <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-1" type="submit">Search</button>
+                        </form>
+                    </div>
+                </nav>
+            <!-- </div> -->
         {{end}}
-        {{ if .is_logged_in }}
-        <!--Display this link only when the user is not logged in-->
-        <li><a href="/makeadmin">Make admin users</a></li>
-        {{end}}
-        {{ if .is_logged_in }}
-        <!--Display this link only when the user is not logged in-->
-        <li><a href="/delete">Delete users</a></li>
-        {{end}}
-        {{ if .is_logged_in }}
-        <!--Display this link only when the user is not logged in-->
-        <li><a href="/visitors">Visitors</a></li>
-        {{end}}
-        {{ if .is_logged_in }}
-        <!--Display this link only when the user is not logged in-->
-        <li><a href="/base">Base Users</a></li>
-        {{end}}
-        {{ if not .is_logged_in }}
-            <!--Display this link only when the user is not logged in-->
-            <li><a href="/login">Login</a></li>
-        {{end}}
-        {{ if .is_logged_in }}
-            <!--Display this link only when the user is logged in-->
-            <li><a href="/adminka">Adminka</a></li>
-        {{end}}  
-        {{ if .is_logged_in }}
-            <!--Display this link only when the user is logged in-->
-            <li><a href="/work">Work</a></li>
-        {{end}}
-        {{ if .is_logged_in }}
-            <!--Display this link only when the user is logged in-->
-            <li><a href="/logout">Logout</a></li>
-        {{end}}
-
         </ul>
     </div>
 </nav>
