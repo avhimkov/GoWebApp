@@ -4,30 +4,33 @@
 {{ template "header.html" .}}
 
 <h1>Adminka</h1>
-<div class="col-sm-4">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Users</th>
-            <th scope="col">Admin Users</th>
-            <th scope="col">Settings 1</th>
-            <th scope="col">Settings 2</th>
-        </tr>
-        </thead>
-            <tbody>            
-            {{range $i, $e := .listusers}}
-            <tr>
-                <td>{{$e}}</td>
-                <td>
-                        <form action="/adminoff/{{$e}}" method="GET">
-                        <input value="AdminOff" type="submit" />
-                        </form>
-                </td>
-            </tr>
-            {{end}}
-
-        </tbody>
-    </table>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Users</th>
+                        <th scope="col">Admin Users</th>
+                        <th scope="col">Settings 1</th>
+                        <th scope="col">Settings 2</th>
+                    </tr>
+                </thead>
+                <tbody>            
+                    {{range $i, $e := .listusers}}
+                    <tr>
+                        <td>{{$e}}</td>
+                        <td>
+                            <form action="/adminoff/{{$e}}" method="GET">
+                            <input value="AdminOff" type="submit" />
+                            </form>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+    </nav>
 </div>
 
 <!--Embed the footer.html template at this location-->

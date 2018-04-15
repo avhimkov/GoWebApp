@@ -4,29 +4,33 @@
 {{ template "header.html" .}}
 
 <h1>List Users</h1>
-<div class="col-sm-4">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">User</th>
-            <th scope="col">Name</th>
-            <th scope="col">Age</th>
-            <th scope="col">Job</th>
-        </tr>
-        </thead>
-            <tbody>
-                {{range .person}}
-            <tr>
-                <td>{{.ID}}</td>
-                <td>{{.User}}</td>
-                <td>{{.Name}}</td>
-                <td>{{.Age}}</td>
-                <td>{{.Job}}</td>
-            </tr>
-                {{end}}
-        </tbody>
-    </table>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Job</th>
+                </tr>
+                </thead>
+                    <tbody>
+                        {{range .person}}
+                    <tr>
+                        <td>{{.ID}}</td>
+                        <td>{{.User}}</td>
+                        <td>{{.Name}}</td>
+                        <td>{{.Age}}</td>
+                        <td>{{.Job}}</td>
+                    </tr>
+                        {{end}}
+                </tbody>
+            </table>
+        </div>
+    </nav>
 </div>
 
 <!--Embed the footer.html template at this location-->
