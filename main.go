@@ -26,7 +26,7 @@ type Person struct {
 
 func SetupRouter() *gin.Engine {
 	g := gin.Default()
-
+	g.LoadHTMLGlob("templates/*.html")
 	// v1 := router.Group("api/v1")
 	// {
 	// 	v1.GET("/instructions", GetInstructions)
@@ -44,16 +44,15 @@ func main() {
 	// Set the router as the default one provided by Gin
 	//router = gin.Default()
 
+	// g := gin.New()
+
 	db, err := storm.Open("db/data.db")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
-	// g := gin.New()
 	g := SetupRouter()
-
-	g.LoadHTMLGlob("templates/*.html")
 
 	perm, err := permissionbolt.New()
 	if err != nil {
