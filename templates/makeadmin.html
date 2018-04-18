@@ -3,10 +3,10 @@
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
 
-<h1>Login</h1>
-<div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+<h1>Makeadmin</h1>
+<div class="container jumbotron">
+    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
             <div class="panel-body">
                 <!--If there's an error, display the error-->
                 {{ if .ErrorTitle}}
@@ -23,8 +23,8 @@
                     <button type="submit" class="btn btn-primary">Confirm</button>
                 </form>
             </div>
-        </div>
-    </nav>
+        <!-- </div>
+    </nav> -->
 </div>
 
 <!--Embed the footer.html template at this location-->

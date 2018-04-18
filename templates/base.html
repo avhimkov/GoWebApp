@@ -3,31 +3,33 @@
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
        
-<h1>List Users</h1>
-<div class="card card-block">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Age</th>
-                    </tr>
-                    </thead>
-                        <tbody>
-                            {{range .person}}
+<h1>Base Users</h1>
+<div class="container jumbotron">
+    <div class="card card-block">
+        <div class="container">
+            <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
+                    <table class="table">
+                        <thead>
                         <tr>
-                            <td>{{.ID}}</td>
-                            <td>{{.Name}}</td>
-                            <td>{{.Age}}</td>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Age</th>
                         </tr>
-                            {{end}}
-                    </tbody>
-                </table>
-            </div>
-        </nav>
+                        </thead>
+                            <tbody>
+                                {{range .person}}
+                            <tr>
+                                <td>{{.ID}}</td>
+                                <td>{{.Name}}</td>
+                                <td>{{.Age}}</td>
+                            </tr>
+                                {{end}}
+                        </tbody>
+                    </table>
+                <!-- </div>
+            </nav> -->
+        </div>
     </div>
 </div>
 
