@@ -44,13 +44,14 @@ func main() {
 	// Set the router as the default one provided by Gin
 	//router = gin.Default()
 
+	// g := gin.New()
+
 	db, err := storm.Open("db/data.db")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
-	// g := gin.New()
 	g := SetupRouter()
 
 	g.LoadHTMLGlob("templates/*.html")
