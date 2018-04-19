@@ -3,7 +3,7 @@
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
 
-<h1>Adminka</h1>
+<h1>User Settings</h1>
 <div class="container jumbotron">
     <div class="card card-block">
         <div class="container">
@@ -33,7 +33,21 @@
             </table>
         <!-- </div>
     </nav> -->
+            
         </div>
+    </div>
+</div>
+
+<h1>Delet User</h1>
+<div class="container jumbotron">
+    <div class="panel-body">
+        <form class="form" action="/delete" method="POST">
+            <div class="form-group">
+                <label for="username">Mail</label>
+                <input type="text" name="username" class="form-control" id="username" placeholder="Username">
+            </div>
+            <button type="submit" class="btn btn-primary">Delete</button>
+        </form>
     </div>
 </div>
 

@@ -194,19 +194,19 @@ func main() {
 	})
 
 	//Register visitors GET
-	g.GET("/visitors", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
+	// g.GET("/visitors", func(c *gin.Context) {
+	// 	isloggedin := isloggedin(c)
 
-		if isloggedin {
-			c.HTML(http.StatusOK, "visitors.html", gin.H{"is_logged_in": isloggedin})
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
+	// 	if isloggedin {
+	// 		c.HTML(http.StatusOK, "visitors.html", gin.H{"is_logged_in": isloggedin})
+	// 	} else {
+	// 		c.AbortWithStatus(http.StatusForbidden)
+	// 		fmt.Fprint(c.Writer, "Permission denied!")
+	// 	}
+	// })
 
 	//Register visitors POST
-	g.POST("/visitors", func(c *gin.Context) {
+	g.POST("/base", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 
@@ -225,7 +225,7 @@ func main() {
 				db.Save(p)
 			}
 
-			http.Redirect(c.Writer, c.Request, "/visitors", 302)
+			http.Redirect(c.Writer, c.Request, "/base", 302)
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
@@ -305,15 +305,15 @@ func main() {
 	// })
 
 	//Delete User from Base GET
-	g.GET("/delete", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
-		if isloggedin {
-			c.HTML(http.StatusOK, "delete.html", gin.H{"is_logged_in": isloggedin})
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
+	// g.GET("/delete", func(c *gin.Context) {
+	// 	isloggedin := isloggedin(c)
+	// 	if isloggedin {
+	// 		c.HTML(http.StatusOK, "delete.html", gin.H{"is_logged_in": isloggedin})
+	// 	} else {
+	// 		c.AbortWithStatus(http.StatusForbidden)
+	// 		fmt.Fprint(c.Writer, "Permission denied!")
+	// 	}
+	// })
 
 	//Work page TEST
 	g.GET("/work", func(c *gin.Context) {
