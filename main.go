@@ -244,13 +244,6 @@ func main() {
 
 	})
 
-	//Make user as admin POST
-	g.POST("/makeadmin", func(c *gin.Context) {
-		username := c.PostForm("username")
-		userstate.SetAdminStatus(username)
-		c.HTML(http.StatusOK, "makeadmin.html", gin.H{})
-	})
-
 	//Administartort interface
 	g.GET("/adminka", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
@@ -333,11 +326,20 @@ func main() {
 
 	})
 
+	//Make user as admin POST
+	g.GET("/makeadmin/:user", func(c *gin.Context) {
+		user := c.Param("user")
+		// username := c.PostForm(user)
+		userstate.SetAdminStatus(user)
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
+	})
+
 	//Delete User from Base POST
-	g.POST("/delete", func(c *gin.Context) {
-		username := c.PostForm("username")
-		userstate.RemoveUser(username)
-		c.HTML(http.StatusOK, "delete.html", gin.H{})
+	g.GET("/delete/:user", func(c *gin.Context) {
+		user := c.Param("user")
+		// username := c.PostForm(user)
+		userstate.RemoveUser(user)
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	})
 
 	//Delete Admin status

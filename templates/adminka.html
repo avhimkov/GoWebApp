@@ -7,15 +7,13 @@
 <div class="container jumbotron">
     <div class="card card-block">
         <div class="container">
-    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">Users</th>
-                        <th scope="col">Admin Users</th>
-                        <th scope="col">Settings 1</th>
-                        <th scope="col">Settings 2</th>
+                        <th scope="col">Admin Off</th>
+                        <th scope="col">Delet User</th>
+                        <th scope="col">Make Admin</th>
                     </tr>
                 </thead>
                 <tbody>            
@@ -24,30 +22,24 @@
                         <td>{{$e}}</td>
                         <td>
                             <form action="/adminoff/{{$e}}" method="GET">
-                            <input value="AdminOff" type="submit" />
+                                <input value="AdminOff" class="btn btn-primary" type="submit" />
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/delete/{{$e}}" method="GET">
+                                <input value="Delete" class="btn btn-primary" type="submit" />
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/makeadmin/{{$e}}" method="GET">
+                                <input value="Make admin" class="btn btn-primary" type="submit" />
                             </form>
                         </td>
                     </tr>
                     {{end}}
                 </tbody>
             </table>
-        <!-- </div>
-    </nav> -->
-            
         </div>
-    </div>
-</div>
-
-<h1>Delet User</h1>
-<div class="container jumbotron">
-    <div class="panel-body">
-        <form class="form" action="/delete" method="POST">
-            <div class="form-group">
-                <label for="username">Mail</label>
-                <input type="text" name="username" class="form-control" id="username" placeholder="Username">
-            </div>
-            <button type="submit" class="btn btn-primary">Delete</button>
-        </form>
     </div>
 </div>
 
