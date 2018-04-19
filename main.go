@@ -154,25 +154,6 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/", 302)
 	})
 
-	//Logout users
-	g.GET("/listusers", func(c *gin.Context) {
-
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		chekadmin := userstate.IsAdmin(usercook)
-
-		isloggedin := isloggedin(c)
-
-		if isloggedin {
-			if chekadmin {
-				listusers, _ := userstate.AllUsernames()
-				c.HTML(http.StatusOK, "listusers.html", gin.H{"userlist": listusers, "is_logged_in": isloggedin})
-			}
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
-
 	//List register users
 	g.GET("/base", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
@@ -192,18 +173,6 @@ func main() {
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
 	})
-
-	//Register visitors GET
-	// g.GET("/visitors", func(c *gin.Context) {
-	// 	isloggedin := isloggedin(c)
-
-	// 	if isloggedin {
-	// 		c.HTML(http.StatusOK, "visitors.html", gin.H{"is_logged_in": isloggedin})
-	// 	} else {
-	// 		c.AbortWithStatus(http.StatusForbidden)
-	// 		fmt.Fprint(c.Writer, "Permission denied!")
-	// 	}
-	// })
 
 	//Register visitors POST
 	g.POST("/base", func(c *gin.Context) {
@@ -232,18 +201,6 @@ func main() {
 		}
 	})
 
-	//Make user as admin GET
-	g.GET("/makeadmin", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
-		if isloggedin {
-			c.HTML(http.StatusOK, "makeadmin.html", gin.H{"is_logged_in": isloggedin})
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-
-	})
-
 	//Administartort interface
 	g.GET("/adminka", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
@@ -267,46 +224,6 @@ func main() {
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
 	})
-
-	//TODO
-	// g.POST("/adminka", formHandler)
-	// g.POST("/adminka", func(c *gin.Context) {
-	// 	// isloggedin := isloggedin(c)
-	// 	listusers, _ := userstate.AllUsernames()
-	// 	usercook, _ := userstate.UsernameCookie(c.Request)
-	// 	isloggedin := userstate.IsLoggedIn(usercook)
-	// 	chekadmin := userstate.IsAdmin(usercook)
-
-	// 	var cheked []bool
-
-	// 	if isloggedin {
-	// 		if chekadmin {
-
-	// 			for _, i := range listusers {
-	// 				// fmt.Println(i)
-	// 				cheked = append(cheked, userstate.IsAdmin(i))
-	// 				// fmt.Println(cheked)
-
-	// 				c.Bind(cheked)
-	// 				fmt.Println(chekadmin)
-	// 			}
-
-	// 			// c.JSON(200, gin.H{"chek": chekadmin})
-	// 			c.HTML(http.StatusOK, "adminka.html", gin.H{"cheked": cheked, "userlist": listusers, "is_logged_in": isloggedin})
-	// 		}
-	// 	}
-	// })
-
-	//Delete User from Base GET
-	// g.GET("/delete", func(c *gin.Context) {
-	// 	isloggedin := isloggedin(c)
-	// 	if isloggedin {
-	// 		c.HTML(http.StatusOK, "delete.html", gin.H{"is_logged_in": isloggedin})
-	// 	} else {
-	// 		c.AbortWithStatus(http.StatusForbidden)
-	// 		fmt.Fprint(c.Writer, "Permission denied!")
-	// 	}
-	// })
 
 	//Work page TEST
 	g.GET("/work", func(c *gin.Context) {
@@ -353,20 +270,3 @@ func main() {
 	// Start serving the application
 	g.Run(":3000")
 }
-
-// ProcessCheckboxes will process checkboxes
-// func ProcessCheckboxes(w http.ResponseWriter, r *http.Request) {
-// 	r.ParseForm()
-// 	fmt.Printf("%+v\n", r.Form)
-// 	productsSelected := r.Form["product_image_id"]
-// 	log.Println(contains(productsSelected, "Grape"))
-// }
-
-// func contains(slice []string, item string) bool {
-// 	set := make(map[string]struct{}, len(slice))
-// 	for _, s := range slice {
-// 		set[s] = struct{}{}
-// 	}
-// 	_, ok := set[item]
-// 	return ok
-// }

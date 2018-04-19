@@ -46,16 +46,20 @@
                 <thead>
                 <tr>
                     <th scope="col">ID</th>
+                    <th scope="col">User</th>
                     <th scope="col">Name</th>
                     <th scope="col">Age</th>
+                    <th scope="col">Job</th>
                 </tr>
                 </thead>
                     <tbody>
                         {{range .person}}
                     <tr>
                         <td>{{.ID}}</td>
+                        <td>{{.User}}</td>
                         <td>{{.Name}}</td>
                         <td>{{.Age}}</td>
+                        <td>{{.Job}}</td>
                     </tr>
                         {{end}}
                 </tbody>
