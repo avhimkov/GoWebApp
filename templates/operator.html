@@ -1,0 +1,77 @@
+<!--base.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+
+<h1>Input Visitors</h1>
+<div class="container jumbotron">
+    <div class="container">
+        <div class="panel-body">
+            <!--If there's an error, display the error-->
+            {{ if .ErrorTitle}}
+                <p class="bg-danger">
+                {{.ErrorTitle}}: {{.ErrorMessage}}
+                </p>
+            {{end}}
+            <!--Create a form that POSTs to the `/u/register` route-->
+            <form class="form-inline" action="/operator" method="POST">
+                <!-- <div class="input-group mb-2 mr-sm-3 mb-sm-0">
+                    <label class="sr-only" for="inlineFormInput">ID</label>
+                    <input type="text" name="ID" class="form-control" id="id" name="id" placeholder="ID">
+                </div> -->
+                <div class="input-group mb-2 mr-sm-3 mb-sm-0">
+                    <label class="sr-only" for="inlineFormInput">Имя посетителя</label>
+                    <input type="text" name="Name" class="form-control" id="name" placeholder="Name">
+                </div>
+                <div class="input-group mb-2 mr-sm-3 mb-sm-0">
+                    <label class="sr-only" for="inlineFormInput">Название услуги</label>
+                    <input type="text" name="NameService" class="form-control" id="nameservice" placeholder="NameService">
+                </div>
+                <div class="input-group mb-2 mr-sm-3 mb-sm-0">
+                    <label class="sr-only" for="inlineFormInput">Дата</label>
+                    <input type="text" name="date" class="form-control" id="date" placeholder="Date">
+                </div>
+                <div class="input-group mb-2 mr-sm-3 mb-sm-0">
+                    <label class="sr-only" for="inlineFormInput">Номер услуги</label>
+                    <input type="text" name="Number" class="form-control" id="number" placeholder="Number">
+                </div>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+    </div>
+</div>
+       
+<h1>Список услуги</h1>
+<div class="container jumbotron">
+    <div class="card card-block">
+        <div class="container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <!-- <th scope="col">ID</th> -->
+                    <th scope="col">Имя посетителя</th>
+                    <th scope="col">Название услуги</th>
+                    <th scope="col">Дата</th>
+                    <th scope="col">Номер услуги</th>
+                </tr>
+                </thead>
+                    <tbody>
+                        {{range .person}}
+                    <tr>
+                        <!-- <td>{{.ID}}</td> -->
+                        <td>{{.User}}</td>
+                        <td>{{.Name}}</td>
+                        <td>{{.NameService}}</td>
+                        <td>{{.Date}}</td>
+                        <td>{{.Number}}</td>
+                    </tr>
+                        {{end}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}

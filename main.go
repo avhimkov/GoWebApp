@@ -11,11 +11,12 @@ import (
 )
 
 type Person struct {
-	ID   string `form:"ID" storm:"id,increment" json:"ID"`
-	User string
-	Name string `form:"Name" storm:"index" json:"Name"`
-	Age  string `form:"Age" storm:"index" json:"Age"`
-	Job  string `form:"Job" storm:"index" json:"Job"`
+	ID          string `form:"ID" storm:"id,increment" json:"ID"`
+	User        string
+	Name        string `form:"Name" storm:"index" json:"Name"`
+	NameService string `form:"NameService" storm:"index" json:"NameService"`
+	Date        string `form:"Date" storm:"index" json:"Date"`
+	Number      string `form:"Number" storm:"index" json:"Number"`
 }
 
 //TODO
@@ -183,11 +184,12 @@ func main() {
 
 			id := c.PostForm("ID")
 			name := c.PostForm("Name")
+			nameservice := c.PostForm("NameService")
 			age := c.PostForm("Age")
 			job := c.PostForm("Job")
 
 			peeps := []*Person{
-				{id, usercook, name, age, job},
+				{id, usercook, name, nameservice, age, job},
 			}
 
 			for _, p := range peeps {
