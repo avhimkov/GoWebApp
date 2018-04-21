@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-default">
     <div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> -->
             <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
                 <ul class="navbar-nav mr-auto">
                     {{ if .is_logged_in }}
@@ -15,10 +15,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/kontroler">Контролер</a>
                         </li>
-                        <li class="nav-item">
-                                <a class="nav-link" href="/adminka">Админка</a>
-                        </li>
-                        <li class="nav-item dropdown">
+                    {{end}}
+                    {{ if .is_admin }}
+                    <li class="nav-item">
+                            <a class="nav-link" href="/adminka">Админка</a>
+                    </li>
+                    {{end}}
+                        <!-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -27,7 +30,8 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">Something else here</a>
                             </div>
-                        </li>
+                        </li> -->
+                    {{ if .is_logged_in }}
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">Выход</a>
                         </li>
@@ -35,20 +39,20 @@
                             <a class="nav-link disabled" href="#">Disabled</a>
                         </li> -->
                     {{end}}
-                    {{ if not .is_logged_in }}
+                    <!-- {{ if not .is_logged_in }}
                         <li class="nav-item">
                             <a class="nav-link" href="/register">Регистрация</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/login">Вход</a>
                         </li>
-                    {{end}}
+                    {{end}} -->
                 </ul>
                 <!-- <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-1" type="submit">Search</button>
                 </form> -->
             <!-- </div> -->
-        </nav>
+        <!-- </nav> -->
     </div>
 </nav>
