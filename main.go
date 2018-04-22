@@ -11,19 +11,19 @@ import (
 )
 
 type Person struct {
-	ID          string `form:"ID" storm:"id,increment" json:"ID"`
+	ID          int `storm:"id,increment"`
 	User        string
-	Name        string `form:"Name" storm:"index" json:"Name"`
-	NameService string `form:"NameService" storm:"index" json:"NameService"`
-	Date        string `form:"Date" storm:"index" json:"Date"`
-	Number      string `form:"Number" storm:"index" json:"Number"`
+	Name        string `storm:"index"`
+	NameService string `storm:"index"`
+	Date        string `storm:"index"`
+	Number      string `storm:"index"`
+	// ID          int `form:"ID" storm:"id,increment" json:"ID"`
+	// User        string
+	// Name        string `form:"Name" storm:"index" json:"Name"`
+	// NameService string `form:"NameService" storm:"index" json:"NameService"`
+	// Date        string `form:"Date" storm:"index" json:"Date"`
+	// Number      string `form:"Number" storm:"index" json:"Number"`
 }
-
-//TODO
-// type myForm struct {
-// 	Admins
-// 	Colors []string `form:"colors[]"`
-// }
 
 func SetupRouter() *gin.Engine {
 	g := gin.Default()
@@ -51,6 +51,12 @@ func main() {
 	}
 	defer db.Close()
 
+	// db.Update(func(tx *bolt.Tx) error {
+	// 	b := tx.Bucket([]byte("bucketName"))
+	// 	err := b.Delete([]byte("keyToDelete"))
+	// 	return err
+	// })
+
 	// g := gin.New()
 	g := SetupRouter()
 
@@ -61,8 +67,8 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	// Blank slate, no default permissions
-	//perm.Clear()
+	//	Blank slate, no default permissions
+	//	perm.Clear()
 
 	// Set up a middleware handler for Gin, with a custom "permission denied" message.
 	permissionHandler := func(c *gin.Context) {
@@ -95,14 +101,14 @@ func main() {
 		return isloggedin
 	}
 
-	// g.GET("/", func(c *gin.Context) {
-	// 	isloggedin := isloggedin(c)
-	// 	if isloggedin {
-	// 		c.HTML(http.StatusOK, "operator.html", gin.H{"is_logged_in": isloggedin})
-	// 	} else {
-	// 		c.Redirect(307, "/login")
-	// 	}
-	// })
+	g.GET("/", func(c *gin.Context) {
+		isloggedin := isloggedin(c)
+		if isloggedin {
+			c.HTML(http.StatusOK, "operator.html", gin.H{"is_logged_in": isloggedin})
+		} else {
+			http.Redirect(c.Writer, c.Request, "/login", 302)
+		}
+	})
 
 	// Registaration Users GET
 	g.GET("/register", func(c *gin.Context) {
@@ -124,7 +130,8 @@ func main() {
 	})
 
 	// Loging Users GET
-	g.GET("/", func(c *gin.Context) {
+	g.GET("/login", func(c *gin.Context) {
+
 		isloggedin := isloggedin(c)
 		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Login Page", "is_logged_in": isloggedin})
 	})
@@ -152,7 +159,7 @@ func main() {
 	g.GET("/logout", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		userstate.Logout(usercook)
-		http.Redirect(c.Writer, c.Request, "/", 302)
+		http.Redirect(c.Writer, c.Request, "/login", 302)
 	})
 
 	//operator register users
@@ -169,6 +176,36 @@ func main() {
 
 			c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin})
 
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+	})
+
+	//Register visitors POST
+	g.POST("/operator", func(c *gin.Context) {
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+
+		if isloggedin {
+
+			// id := c.PostForm("id")
+			// id := c.PostForm("id")
+			name := c.PostForm("name")
+			nameservice := c.PostForm("nameservice")
+			date := c.PostForm("date")
+			number := c.PostForm("number")
+
+			peeps := []*Person{
+				{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
+			}
+
+			for _, p := range peeps {
+				fmt.Println(p)
+				db.Save(p)
+			}
+
+			http.Redirect(c.Writer, c.Request, "/operator", 302)
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
@@ -196,20 +233,20 @@ func main() {
 	})
 
 	//Register visitors POST
-	g.POST("/operator", func(c *gin.Context) {
+	g.POST("/kontroler", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 
 		if isloggedin {
 
-			id := c.PostForm("ID")
-			name := c.PostForm("Name")
-			nameservice := c.PostForm("NameService")
-			age := c.PostForm("Date")
-			job := c.PostForm("Number")
+			// id := c.PostForm("id")
+			name := c.PostForm("name")
+			nameservice := c.PostForm("nameservice")
+			date := c.PostForm("date")
+			number := c.PostForm("number")
 
 			peeps := []*Person{
-				{id, usercook, name, nameservice, age, job},
+				{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
 			}
 
 			for _, p := range peeps {
@@ -241,7 +278,7 @@ func main() {
 				fmt.Println(cheked)
 				fmt.Println(isadmin)
 			}
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"listusers": listusers, "is_admin": isadmin, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"listusers": listusers, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")

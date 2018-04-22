@@ -15,12 +15,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/kontroler">Контролер</a>
                         </li>
+
                     {{end}}
-                    {{ if .is_admin }}
-                    <li class="nav-item">
-                            <a class="nav-link" href="/adminka">Админка</a>
-                    </li>
-                    {{end}}
+
                         <!-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
@@ -32,6 +29,9 @@
                             </div>
                         </li> -->
                     {{ if .is_logged_in }}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/adminka">Админка</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">Выход</a>
                         </li>
