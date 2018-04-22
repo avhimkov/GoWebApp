@@ -95,14 +95,14 @@ func main() {
 		return isloggedin
 	}
 
-	g.GET("/", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
-		if isloggedin {
-			c.HTML(http.StatusOK, "index.html", gin.H{"is_logged_in": isloggedin})
-		} else {
-			c.Redirect(307, "/login")
-		}
-	})
+	// g.GET("/", func(c *gin.Context) {
+	// 	isloggedin := isloggedin(c)
+	// 	if isloggedin {
+	// 		c.HTML(http.StatusOK, "operator.html", gin.H{"is_logged_in": isloggedin})
+	// 	} else {
+	// 		c.Redirect(307, "/login")
+	// 	}
+	// })
 
 	// Registaration Users GET
 	g.GET("/register", func(c *gin.Context) {
@@ -124,7 +124,7 @@ func main() {
 	})
 
 	// Loging Users GET
-	g.GET("/login", func(c *gin.Context) {
+	g.GET("/", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Login Page", "is_logged_in": isloggedin})
 	})
@@ -138,7 +138,7 @@ func main() {
 		if logintryst == true {
 			userstate.Login(c.Writer, username)
 			// c.HTML(http.StatusOK, "index.html", gin.H{"title": "Successful Login"})
-			http.Redirect(c.Writer, c.Request, "/", 302)
+			http.Redirect(c.Writer, c.Request, "/operator", 302)
 		} else {
 
 			// c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized"})

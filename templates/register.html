@@ -1,0 +1,36 @@
+<!--register.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+<h1>Регистрация пользователя</h1>
+<div class="container jumbotron">
+    <div class="panel-body">
+        <!--If there's an error, display the error-->
+        {{ if .ErrorTitle}}
+            <p class="bg-danger">
+            {{.ErrorTitle}}: {{.ErrorMessage}}
+            </p>
+        {{end}}
+        <!--Create a form that POSTs to the `/u/register` route-->
+        <form class="form" action="/register" method="POST">
+            <div class="form-group">
+                <label for="username">Имя</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Иван">
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" name="password" class="form-control" id="password" placeholder="password">
+            </div>
+            <div class="form-group">
+                <label for="mail">Почта</label>
+                <input type="email" name="mail" class="form-control" id="mail" placeholder="example@mail.ru">
+            </div>
+            <button type="submit" class="btn btn-primary">Регистрация</button>
+        </form>
+    </div>
+</div>
+
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}

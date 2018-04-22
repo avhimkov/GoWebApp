@@ -42,36 +42,37 @@
     </div>
 </div>
        
-h1>Список услуги</h1>
+<h1>Список услуги</h1>
 <div class="container jumbotron">
     <div class="card card-block">
-        <div class="container">
-            <table class="table">
+        <!-- <div class="container"> -->
+            <table class="table table-striped table-bordered" style="width:100%">
                 <thead>
-                    <tr>
-                        <!-- <th scope="col">ID</th> -->
-                        <th scope="col">№</th>
-                        <th scope="col">Имя посетителя</th>
-                        <th scope="col">Название услуги</th>
-                        <th scope="col">Дата</th>
-                        <th scope="col">Номер услуги</th>
-                    </tr>
+                <tr>
+                    <!-- <th scope="col">ID</th> -->
+                    <th scope="col">№</th>
+                    <th scope="col">Оператор</th>
+                    <th scope="col">Имя посетителя</th>
+                    <th scope="col">Название услуги</th>
+                    <th scope="col">Дата</th>
+                    <th scope="col">Номер услуги</th>
+                </tr>
                 </thead>
                     <tbody>
                         {{range $i, $e := .person}}
-                        <tr>
-                            <!-- <td>{{.ID}}</td> -->
-                            <td>{{$i}}</td>
-                            <td>{{$e.User}}</td>
-                            <td>{{$e.Name}}</td>
-                            <td>{{$e.NameService}}</td>
-                            <td>{{$e.Date}}</td>
-                            <td>{{$e.Number}}</td>
-                        </tr>
-                        {{end}}
+                    <tr>
+                        <!-- <td>{{.ID}}</td> -->
+                        <td>{{$i}}</td>
+                        <td>{{$e.User}}</td>
+                        <td>{{$e.Name}}</td>
+                        <td>{{$e.NameService}}</td>
+                        <td>{{$e.Date}}</td>
+                        <td>{{$e.Number}}</td>
+                    </tr>
+                    {{end}}
                 </tbody>
             </table>
-        </div>
+        <!-- </div> -->
     </div>
 </div>
 
