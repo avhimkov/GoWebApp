@@ -4,29 +4,46 @@
 {{ template "header.html" .}}
 
 <h1>Список услуги</h1>
-<div class="container jumbotron">
-    <div class="card card-block">
-        <!-- <div class="container"> -->
-            <table id="table" 
-            data-toggle="table"
-            data-search="true"
-            data-filter-control="true" 
-            data-show-export="true"
-            data-click-to-select="true">
+<!-- <div class="container jumbotron"> -->
+    <!-- <div class="card card-block"> -->
+        <div class="container">
+                <table id="table" 
+                    data-toggle="table"
+                    data-search="true"
+                    data-filter-control="true" 
+                    data-show-export="true"
+                    data-click-to-select="true">
+                <!-- <table id="table" data-toggle="table" data-show-export="true" data-pagination="true" data-click-to-select="true" data-toolbar="#toolbar"> -->
                 <thead>
                 <tr>
-                    <th scope="col">№</th>
-                    <th scope="col">Оператор</th>
-                    <th scope="col">Имя посетителя</th>
-                    <th scope="col">Название услуги</th>
-                    <th scope="col">Дата</th>
-                    <th scope="col">Номер услуги</th>
+                    <!-- checkbox -->
+                    <!-- <th class="pr-md-3 pr-5">
+                            <input type="checkbox" class="filled-in" id="checkbox123">
+                            <label for="checkbox123" class="label-table"></label>
+                    </th> -->
+
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-sortable="true">№</th>
+                    <!-- <th data-sortable="true" data-filter-control="select" data-field="User">Оператор</th> -->
+                    <th data-sortable="true" data-field="User">Оператор</th>
+                    <th data-sortable="true" data-field="Name">Имя посетителя</th>
+                    <th data-sortable="true" data-field="NameService">Название услуги</th>
+                    <th data-sortable="true" data-field="Date">Дата</th>
+                    <th data-sortable="true" data-field="Number">Номер услуги</th>
                 </tr>
                 </thead>
                     <tbody>
                         {{range $i, $e := .person}}
                     <tr>
                         <!-- <td>{{.ID}}</td> -->
+                        <!-- <td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td> -->
+
+                        <!-- checkbox -->
+                        <!-- <td scope="row" class="pr-md-3 pr-5">
+                                <input type="checkbox" class="filled-in" id="checkbox124">
+                                <label for="checkbox124" class="label-table"></label>
+                        </td> -->
+                        <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
                         <td>{{$i}}</td>
                         <td>{{$e.User}}</td>
                         <td>{{$e.Name}}</td>
@@ -37,9 +54,16 @@
                     {{end}}
                 </tbody>
             </table>
-        <!-- </div> -->
-    </div>
-</div>
+            <!-- <div id="toolbar">
+                    <select class="form-control">
+                        <option value="">Export Basic</option>
+                        <option value="all">Export All</option>
+                        <option value="selected">Export Selected</option>
+                    </select>
+                </div> -->
+        </div>
+    <!-- </div> -->
+<!-- </div> -->
 
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}
