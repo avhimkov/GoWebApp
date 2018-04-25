@@ -189,8 +189,6 @@ func main() {
 
 		if isloggedin {
 
-			// id := c.PostForm("id")
-			// id := c.PostForm("id")
 			name := c.PostForm("name")
 			nameservice := c.PostForm("nameservice")
 			date := c.PostForm("date")
@@ -284,24 +282,6 @@ func main() {
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
 	})
-
-	//Work page TEST
-	// g.GET("/work", func(c *gin.Context) {
-	// 	isloggedin := isloggedin(c)
-	// 	if isloggedin {
-	// 		var person []Person
-	// 		err := db.All(&person)
-	// 		if err != nil {
-	// 			log.Fatal(err)
-	// 		}
-
-	// 		c.HTML(http.StatusOK, "work.html", gin.H{"person": person, "is_logged_in": isloggedin})
-	// 	} else {
-	// 		c.AbortWithStatus(http.StatusForbidden)
-	// 		fmt.Fprint(c.Writer, "Permission denied!")
-	// 	}
-
-	// })
 
 	//Make user as admin POST
 	g.GET("/makeadmin/:user", func(c *gin.Context) {
