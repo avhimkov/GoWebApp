@@ -251,7 +251,55 @@ func main() {
 				db.Save(p)
 			}
 
-			http.Redirect(c.Writer, c.Request, "/operator", 302)
+			http.Redirect(c.Writer, c.Request, "/kontroler", 302)
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+	})
+
+	//konsult register users
+	g.GET("/konsult", func(c *gin.Context) {
+		isloggedin := isloggedin(c)
+
+		if isloggedin {
+
+			var person []Person
+			err := db.All(&person)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			c.HTML(http.StatusOK, "konsult.html", gin.H{"person": person, "is_logged_in": isloggedin})
+
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+	})
+
+	//konsult visitors POST
+	g.POST("/konsult", func(c *gin.Context) {
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+
+		if isloggedin {
+
+			// id := c.PostForm("id")
+			name := c.PostForm("name")
+			nameservice := c.PostForm("nameservice")
+			date := c.PostForm("date")
+			number := c.PostForm("number")
+
+			peeps := []*Person{
+				{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
+			}
+
+			for _, p := range peeps {
+				db.Save(p)
+			}
+
+			http.Redirect(c.Writer, c.Request, "/konsult", 302)
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
