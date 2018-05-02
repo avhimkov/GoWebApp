@@ -2,93 +2,108 @@
 
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
-
-<h1>Регистрация услуги</h1>
-<div class="container jumbotron">
-    <div class="container">
-        <div class="panel-body">
-            <!--If there's an error, display the error-->
-            {{ if .ErrorTitle}}
-                <p class="bg-danger">
-                {{.ErrorTitle}}: {{.ErrorMessage}}
-                </p>
-            {{end}}
-            <form class="form-inline" action="/operator" method="POST">
-                <div class="input-group mb-2 mr-sm-3 mb-sm-0">
-                    <label class="sr-only" for="inlineFormInput">Имя заявителя</label>
-                    <input type="text" name="name" class="form-control" id="name" placeholder="Имя посетителя">
-                </div>
-                <div class="input-group mb-2 mr-sm-3 mb-sm-0">
-                    <label class="sr-only" for="inlineFormInput">Название услуги</label>
-                    <select name="select" class="form-control"> <!--Supplement an id here instead of using 'name'-->
-                        <option value="value1">Услуга 1</option>
-                        <option value="value1">Услуга 2</option>
-                        <option value="value1">Услуга 3</option>
-                      </select>
-                    <!-- <input type="text" name="text" class="form-control" id="nameservice" placeholder="Название услуги"> -->
-                    <!-- <input type="text" name="nameservice" class="form-control" id="nameservice" placeholder="Название услуги"> -->
-                </div>
-                <div class="input-group mb-2 mr-sm-3 mb-sm-0">
-                    <label class="sr-only" for="inlineFormInput">Название под услуги</label>
-                    <select name="select" class="form-control"> <!--Supplement an id here instead of using 'name'-->
-                        <option value="value1">Услуга 1</option>
-                        <option value="value1">Услуга 2</option>
-                        <option value="value1">Услуга 3</option>
-                    </select>
-                    <!-- <input type="text" name="text" class="form-control" id="nameservice" placeholder="Название услуги"> -->
-                    <!-- <input type="text" name="nameservice" class="form-control" id="nameservice" placeholder="Название услуги"> -->
-                </div>
-                
-                <div class="input-group mb-2 mr-sm-3 mb-sm-0">
-                    <label class="sr-only" for="inlineFormInput">Дата</label>
-                    <!-- <input id="date" type="date"> -->
-                    <input type="datetime-local" name="datetime" class="form-control" id="date" placeholder="Дата">
-                </div>
-                <div class="input-group mb-2 mr-sm-3 mb-sm-0">
-                    <label class="sr-only" for="inlineFormInput">Номер услуги</label>
-                    <input type="number" name="number" class="form-control" id="number" placeholder="Номер услуги" min="0">
-                </div>
-                <button type="submit" class="btn btn-primary">Сохранить</button>
-            </form>
-        </div>
+<p></p>
+<div class="card">
+<h3 class="card-header">Регистрация услуги</h3>
+    <div class="card-body">
+        <!--If there's an error, display the error-->
+        {{ if .ErrorTitle}}
+            <p class="bg-danger">
+            {{.ErrorTitle}}: {{.ErrorMessage}}
+            </p>
+        {{end}}
+        <form class="form-inline" action="/operator" method="POST">
+            <div class="input-group mb-2 mr-sm-3 mb-sm-0">
+                <label class="sr-only" for="inlineFormInput">Имя заявителя</label>
+                <input type="text" name="name" class="form-control" id="name" placeholder="Имя посетителя">
+            </div>
+            <div class="input-group mb-2 mr-sm-3 mb-sm-0">
+                <label class="sr-only" for="inlineFormInput">Название услуги</label>
+                <select name="select" class="form-control"> <!--Supplement an id here instead of using 'name'-->
+                    <option value="value1">Услуга 1</option>
+                    <option value="value1">Услуга 2</option>
+                    <option value="value1">Услуга 3</option>
+                </select>
+                <!-- <input type="text" name="text" class="form-control" id="nameservice" placeholder="Название услуги"> -->
+                <!-- <input type="text" name="nameservice" class="form-control" id="nameservice" placeholder="Название услуги"> -->
+            </div>
+            <div class="input-group mb-2 mr-sm-3 mb-sm-0">
+                <label class="sr-only" for="inlineFormInput">Название под услуги</label>
+                <select name="select" class="form-control"> <!--Supplement an id here instead of using 'name'-->
+                    <option value="value1">Услуга 1</option>
+                    <option value="value1">Услуга 2</option>
+                    <option value="value1">Услуга 3</option>
+                </select>
+                <!-- <input type="text" name="text" class="form-control" id="nameservice" placeholder="Название услуги"> -->
+                <!-- <input type="text" name="nameservice" class="form-control" id="nameservice" placeholder="Название услуги"> -->
+            </div>
+            
+            <div class="input-group mb-2 mr-sm-3 mb-sm-0">
+                <label class="sr-only" for="inlineFormInput">Дата</label>
+                <!-- <input id="date" type="date"> -->
+                <input type="datetime-local" name="datetime" class="form-control" id="date" placeholder="Дата">
+            </div>
+            <div class="input-group mb-2 mr-sm-3 mb-sm-0">
+                <label class="sr-only" for="inlineFormInput">Номер услуги</label>
+                <input type="number" name="number" class="form-control" id="number" placeholder="Адрес" min="0">
+            </div>
+            <div class="input-group mb-2 mr-sm-3 mb-sm-0">
+                <label class="sr-only" for="inlineFormInput">Телефон</label>
+                <!-- <input type="tel" pattern="8-[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" id="phone" placeholder="Телефон"> -->
+                <input type="text" id="phone" class="form-control" >
+                    <script>
+                        $(function(){
+                        //Использование параметра completed
+                            $("#phone").mask("8(999) 999-9999");
+                        });
+                    </script>
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
     </div>
 </div>
-       
-<h1>Список услуги</h1>
-<div class="container">
-    <table id="table" 
-           data-toggle="table"
-           data-search="true"
-           data-filter-control="true" 
-           data-show-export="true"
-           data-click-to-select="true">
-        <thead>
-            <tr>
-                <th data-field="state" data-checkbox="true"></th>
-                <th data-sortable="true">№</th>
-                <!-- <th data-sortable="true" data-field="User">Оператор</th> -->
-                <th data-sortable="true" data-field="Name">Имя заявитель</th>
-                <th data-sortable="true" data-field="NameService">Название услуги</th>
-                <th data-sortable="true" data-field="NameService">Под услуга</th>
-                <th data-sortable="true" data-field="Date">Дата</th>
-                <th data-sortable="true" data-field="Number">Номер услуги</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{range $i, $e := .person}}
-            <tr>
-                <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
-                <td>{{$i}}</td>
-                <!-- <td>{{$e.User}}</td> -->
-                <td>{{$e.Name}}</td>
-                <td>{{$e.NameService}}</td>
-                <td>{{$e.NameService}}</td>
-                <td>{{$e.Date}}</td>
-                <td>{{$e.Number}}</td>
-            </tr>
-            {{end}}
-        </tbody>
-    </table>
+ 
+<p></p>
+<!-- <h1>Список услуги</h1> -->
+<div class="card">
+    <h3 class="card-header panel-success white-text">Список услуги</h3>
+    <div class="card-body">
+        <table id="table" 
+            data-toggle="table"
+            data-search="true"
+            data-filter-control="true" 
+            data-show-export="true"
+            data-click-to-select="true">
+            <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-sortable="true">№</th>
+                    <!-- <th data-sortable="true" data-field="User">Оператор</th> -->
+                    <th data-sortable="true" data-field="Name">Имя заявитель</th>
+                    <th data-sortable="true" data-field="NameService">Название услуги</th>
+                    <th data-sortable="true" data-field="NameService">Под услуга</th>
+                    <th data-sortable="true" data-field="Date">Дата</th>
+                    <th data-sortable="true" data-field="Number">Номер услуги</th>
+                    <th data-sortable="true" data-field="Phone">Телефон</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range $i, $e := .person}}
+                <tr>
+                    <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
+                    <td>{{$i}}</td>
+                    <!-- <td>{{$e.User}}</td> -->
+                    <td>{{$e.Name}}</td>
+                    <td>{{$e.NameService}}</td>
+                    <td>{{$e.NameService}}</td>
+                    <td>{{$e.Date}}</td>
+                    <td>{{$e.Number}}</td>
+                    <td>{{$e.Phone}}</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!--Embed the footer.html template at this location-->

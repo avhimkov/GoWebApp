@@ -13,15 +13,15 @@ import (
 type Person struct {
 	ID          int `storm:"id,increment"` //`form:"ID" storm:"id,increment" json:"ID"`
 	User        string
-	Name        string `storm:"index"`
-	SubName     string `storm:"index"`
-	NameService string `storm:"index"`
-	Date        string `storm:"index"`
-	Address     string `storm:"index"`
-	Location    string `storm:"index"`
-	Number      string `storm:"index"`
-	Phone       string `storm:"index"`
-	Note        string `storm:"index"`
+	Name        string `storm:"index"` //Заявитель
+	SubName     string `storm:"index"` //Представитель заявитель
+	NameService string `storm:"index"` //Услуга
+	Date        string `storm:"index"` //Дата
+	Address     string `storm:"index"` //Адрес
+	Location    string `storm:"index"` //Место оператора
+	Number      string `storm:"index"` //
+	Phone       string `storm:"index"` //Телефон
+	Note        string `storm:"index"` //Примечание
 }
 
 func SetupRouter() *gin.Engine {
