@@ -11,18 +11,17 @@ import (
 )
 
 type Person struct {
-	ID          int `storm:"id,increment"`
+	ID          int `storm:"id,increment"` //`form:"ID" storm:"id,increment" json:"ID"`
 	User        string
 	Name        string `storm:"index"`
+	SubName     string `storm:"index"`
 	NameService string `storm:"index"`
 	Date        string `storm:"index"`
+	Address     string `storm:"index"`
+	Location    string `storm:"index"`
 	Number      string `storm:"index"`
-	// ID          int `form:"ID" storm:"id,increment" json:"ID"`
-	// User        string
-	// Name        string `form:"Name" storm:"index" json:"Name"`
-	// NameService string `form:"NameService" storm:"index" json:"NameService"`
-	// Date        string `form:"Date" storm:"index" json:"Date"`
-	// Number      string `form:"Number" storm:"index" json:"Number"`
+	Phone       string `storm:"index"`
+	Note        string `storm:"index"`
 }
 
 func SetupRouter() *gin.Engine {

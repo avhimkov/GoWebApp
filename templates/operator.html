@@ -20,15 +20,33 @@
                 </div>
                 <div class="input-group mb-2 mr-sm-3 mb-sm-0">
                     <label class="sr-only" for="inlineFormInput">Название услуги</label>
-                    <input type="text" name="nameservice" class="form-control" id="nameservice" placeholder="Название услуги">
+                    <select name="select" class="form-control"> <!--Supplement an id here instead of using 'name'-->
+                        <option value="value1">Услуга 1</option>
+                        <option value="value1">Услуга 2</option>
+                        <option value="value1">Услуга 3</option>
+                      </select>
+                    <!-- <input type="text" name="text" class="form-control" id="nameservice" placeholder="Название услуги"> -->
+                    <!-- <input type="text" name="nameservice" class="form-control" id="nameservice" placeholder="Название услуги"> -->
                 </div>
                 <div class="input-group mb-2 mr-sm-3 mb-sm-0">
+                    <label class="sr-only" for="inlineFormInput">Название под услуги</label>
+                    <select name="select" class="form-control"> <!--Supplement an id here instead of using 'name'-->
+                        <option value="value1">Услуга 1</option>
+                        <option value="value1">Услуга 2</option>
+                        <option value="value1">Услуга 3</option>
+                    </select>
+                    <!-- <input type="text" name="text" class="form-control" id="nameservice" placeholder="Название услуги"> -->
+                    <!-- <input type="text" name="nameservice" class="form-control" id="nameservice" placeholder="Название услуги"> -->
+                </div>
+                
+                <div class="input-group mb-2 mr-sm-3 mb-sm-0">
                     <label class="sr-only" for="inlineFormInput">Дата</label>
-                    <input type="text" name="date" class="form-control" id="date" placeholder="Дата">
+                    <!-- <input id="date" type="date"> -->
+                    <input type="datetime-local" name="datetime" class="form-control" id="date" placeholder="Дата">
                 </div>
                 <div class="input-group mb-2 mr-sm-3 mb-sm-0">
                     <label class="sr-only" for="inlineFormInput">Номер услуги</label>
-                    <input type="text" name="number" class="form-control" id="number" placeholder="Номер услуги">
+                    <input type="number" name="number" class="form-control" id="number" placeholder="Номер услуги" min="0">
                 </div>
                 <button type="submit" class="btn btn-primary">Сохранить</button>
             </form>
@@ -57,7 +75,7 @@
             </tr>
         </thead>
         <tbody>
-                {{range $i, $e := .person}}
+            {{range $i, $e := .person}}
             <tr>
                 <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
                 <td>{{$i}}</td>
