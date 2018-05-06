@@ -13,7 +13,7 @@
             {{.ErrorTitle}}: {{.ErrorMessage}}
             </p>
         {{end}}
-        <!--Create a form that POSTs to the `/u/register` route-->
+        <!--Create a form that POSTs to route-->
         <form class="form" action="/register" method="POST">
             <div class="form-group">
                 <label for="username">Имя</label>
@@ -31,7 +31,6 @@
         </form>
     </div>
 </div>
-
 
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}

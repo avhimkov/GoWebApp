@@ -3,73 +3,46 @@
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
 
-<!-- <h1>Список услуги</h1> -->
-<!-- <div class="container jumbotron"> -->
-    <!-- <div class="card card-block"> -->
 <p></p>
 <div class="card">
     <h3 class="card-header panel-success white-text">Список услуги</h3>
     <div class="card-body">
-    <table id="table" 
-            data-toggle="table"
-            data-search="true"
-            data-filter-control="true" 
-            data-show-export="true"
-            data-click-to-select="true">
-        <!-- <table id="table" data-toggle="table" data-show-export="true" data-pagination="true" data-click-to-select="true" data-toolbar="#toolbar"> -->
-        <thead>
-        <tr>
-            <!-- checkbox -->
-            <!-- <th class="pr-md-3 pr-5">
-                    <input type="checkbox" class="filled-in" id="checkbox123">
-                    <label for="checkbox123" class="label-table"></label>
-            </th> -->
-
-            <th data-field="state" data-checkbox="true"></th>
-            <th data-sortable="true">№</th>
-            <!-- <th data-sortable="true" data-filter-control="select" data-field="User">Оператор</th> -->
-            <th data-sortable="true" data-filter-control="input" data-field="User">Оператор</th>
-            <th data-sortable="true" data-filter-control="select" data-field="Name">Имя заявителя</th>
-            <th data-sortable="true" data-filter-control="input" data-field="NameService">Название услуги</th>
-            <th data-sortable="true" data-filter-control="input" data-field="UnderNameService">Под услуга</th>
-            <th data-sortable="true" data-filter-control="input" data-field="Date">Дата</th>
-            <th data-sortable="true" data-filter-control="input" data-field="Number">Номер услуги</th>
-        </tr>
-        </thead>
-            <tbody>
-                {{range $i, $e := .person}}
+        <table id="table" 
+                data-toggle="table"
+                data-search="true"
+                data-filter-control="true" 
+                data-show-export="true"
+                data-click-to-select="true">
+            <thead>
             <tr>
-                <!-- <td>{{.ID}}</td> -->
-                <!-- <td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td> -->
-
-                <!-- checkbox -->
-                <!-- <td scope="row" class="pr-md-3 pr-5">
-                        <input type="checkbox" class="filled-in" id="checkbox124">
-                        <label for="checkbox124" class="label-table"></label>
-                </td> -->
-                <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
-                <td>{{$i}}</td>
-                <td>{{$e.User}}</td>
-                <td>{{$e.Name}}</td>
-                <td>{{$e.NameService}}</td>
-                <td>{{$e.NameService}}</td>
-                <td>{{$e.Date}}</td>
-                <td>{{$e.Number}}</td>
+                <th data-field="state" data-checkbox="true"></th>
+                <th data-sortable="true">№</th>
+                <th data-sortable="true" data-filter-control="input" data-field="User">Оператор</th>
+                <th data-sortable="true" data-filter-control="select" data-field="Name">Имя заявителя</th>
+                <th data-sortable="true" data-filter-control="input" data-field="NameService">Название услуги</th>
+                <th data-sortable="true" data-filter-control="input" data-field="UnderNameService">Под услуга</th>
+                <th data-sortable="true" data-filter-control="input" data-field="Date">Дата</th>
+                <th data-sortable="true" data-filter-control="input" data-field="Number">Номер услуги</th>
             </tr>
-            {{end}}
-        </tbody>
-    </table>
-        <!-- <div id="toolbar">
-                <select class="form-control">
-                    <option value="">Export Basic</option>
-                    <option value="all">Export All</option>
-                    <option value="selected">Export Selected</option>
-                </select>
-            </div> -->
+            </thead>
+                <tbody>
+                    {{range $i, $e := .person}}
+                <tr>
+                    <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
+                    <td>{{$i}}</td>
+                    <td>{{$e.User}}</td>
+                    <td>{{$e.Name}}</td>
+                    <td>{{$e.NameService}}</td>
+                    <td>{{$e.NameService}}</td>
+                    <td>{{$e.Date}}</td>
+                    <td>{{$e.Number}}</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
     </div>
 </div>
-    <!-- </div> -->
-<!-- </div> -->
+
 
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}
