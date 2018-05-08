@@ -26,7 +26,9 @@ type Person struct {
 
 func SetupRouter() *gin.Engine {
 	g := gin.Default()
-
+	// g.Use(static.Serve("/assets", static.LocalFile("/assets", false)))
+	g.Static("/css", "./assets")
+	g.Static("/js", "./assets")
 	// v1 := router.Group("api/v1")
 	// {
 	// 	v1.GET("/instructions", GetInstructions)
