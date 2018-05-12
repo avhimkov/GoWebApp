@@ -358,3 +358,56 @@ func main() {
 	// Start serving the application
 	g.Run(":3000")
 }
+
+func editTable(c *gin.Context) {
+
+	// Update multiple fields
+	err := db.Update(&User{ID: 10, Name: "Jack", Age: 45})
+
+	// Update a single field
+	err := db.UpdateField(&User{ID: 10}, "Age", 0)
+
+	// var b Booking
+	// if err := c.ShouldBindWith(&b, binding.Query); err == nil {
+	// 	c.JSON(http.StatusOK, gin.H{"message": "Booking dates are valid!"})
+	// } else {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// }
+
+	// Find all users with an ID between 10 and 100
+	// err = db.Select(q.Gte("ID", 10), q.Lte("ID", 100)).Find(&users)
+
+	// // Nested matchers
+	// err = db.Select(q.Or(
+	// q.Gt("ID", 50),
+	// q.Lt("Age", 21),
+	// q.And(
+	// 	q.Eq("Group", "admin"),
+	// 	q.Gte("Age", 21),
+	// ),
+	// )).Find(&users)
+
+	// query := db.Select(q.Gte("ID", 10), q.Lte("ID", 100)).Limit(10).Skip(5).Reverse().OrderBy("Age", "Name")
+
+	// // Find multiple records
+	// err = query.Find(&users)
+	// // or
+	// err = db.Select(q.Gte("ID", 10), q.Lte("ID", 100)).Limit(10).Skip(5).Reverse().OrderBy("Age", "Name").Find(&users)
+
+	// // Find first record
+	// err = query.First(&user)
+	// // or
+	// err = db.Select(q.Gte("ID", 10), q.Lte("ID", 100)).Limit(10).Skip(5).Reverse().OrderBy("Age", "Name").First(&user)
+
+	// // Delete all matching records
+	// err = query.Delete(new(User))
+
+	// // Fetching records one by one (useful when the bucket contains a lot of records)
+	// query = db.Select(q.Gte("ID", 10),q.Lte("ID", 100)).OrderBy("Age", "Name")
+
+	// err = query.Each(new(User), func(record interface{}) error) {
+	// u := record.(*User)
+	// ...
+	// return nil
+	// }
+}
