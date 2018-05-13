@@ -1,0 +1,22 @@
+<!--editTabel.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+<p></p>
+<div class="card">
+    <h3 class="card-header panel-success white-text">Редактировать</h3>
+    <div class="card-body">
+    {{range $i, $e := .person}}
+        <form method="POST" action="update">
+            <input type="hidden" name="uid" value="{{ .Id }}" />
+            <label> Name </label><input type="text" name="name" value="{{ .Name }}"  /><br />
+            <label> City </label><input type="text" name="city" value="{{ .City }}"  /><br />
+            <input type="submit" value="Save user" />
+        </form><br />   
+    {{end}} 
+    </div>
+</div>
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}

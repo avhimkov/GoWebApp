@@ -355,6 +355,39 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	})
 
+	//Delete Admin status
+	g.GET("/edit/:id", func(c *gin.Context) {
+		id := c.Param("id")
+		userstate.IsAdmin(id)
+		userstate.RemoveAdminStatus(id)
+
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+
+		if isloggedin {
+
+			name := c.PostForm("name")
+			nameservice := c.PostForm("nameservice")
+			date := c.PostForm("date")
+			number := c.PostForm("number")
+
+			peeps := []*Person{
+				{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
+			}
+
+			for _, p := range peeps {
+				fmt.Println(p)
+				db.Update(p)
+			}
+
+			http.Redirect(c.Writer, c.Request, "/edit", 302)
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+		// http.Redirect(c.Writer, c.Request, "/adminka", 302)
+	})
+
 	// Start serving the application
 	g.Run(":3000")
 }
@@ -362,10 +395,10 @@ func main() {
 func editTable(c *gin.Context) {
 
 	// Update multiple fields
-	err := db.Update(&User{ID: 10, Name: "Jack", Age: 45})
+	// err := db.Update(&User{ID: 10, Name: "Jack", Age: 45})
 
 	// Update a single field
-	err := db.UpdateField(&User{ID: 10}, "Age", 0)
+	// err := db.UpdateField(&User{ID: 10}, "Age", 0)
 
 	// var b Booking
 	// if err := c.ShouldBindWith(&b, binding.Query); err == nil {
