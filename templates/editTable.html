@@ -5,6 +5,79 @@
 
 <p></p>
 <div class="card">
+<h3 class="card-header">Редактировать</h3>
+    <div class="card-body">
+        <!--If there's an error, display the error-->
+        {{ if .ErrorTitle}}
+            <p class="bg-danger">
+            {{.ErrorTitle}}: {{.ErrorMessage}}
+            </p>
+        {{end}}
+        {{range $i, $e := .person}}
+        <div class="col-sm-12">
+            <form class="form" action="/operator" method="POST">
+                <div class="form-row">
+                    <div class="col">
+                        <label class="sr-only" for="inlineFormInput">Имя заявителя</label>
+                        <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" placeholder="Имя посетителя" value="{{$e.Name}}">
+                    </div>
+                    <p></p>
+                    <div class="col">
+                        <label class="sr-only" for="inlineFormInput">Название услуги</label>
+                        <select name="select" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                            <option value="value1">Услуга 1</option>
+                            <option value="value1">Услуга 2</option>
+                            <option value="value1">Услуга 3</option>
+                        </select>
+                    </div>
+                    <p></p>
+                    <div class="col">
+                        <label class="sr-only" for="inlineFormInput">Название под услуги</label>
+                        <select name="select" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                            <option value="value1">Услуга 1</option>
+                            <option value="value1">Услуга 2</option>
+                            <option value="value1">Услуга 3</option>
+                        </select>
+                    </div>
+                    <!-- <input type="text" name="text" class="form-control" id="nameservice" placeholder="Название услуги"> -->
+                    <!-- <input type="text" name="nameservice" class="form-control" id="nameservice" placeholder="Название услуги"> -->
+                </div>
+                <p></p>
+                <div class="form-row">
+                    <div class="col">
+                        <label class="sr-only" for="inlineFormInput">Дата</label>
+                        <!-- <input id="date" type="date"> -->
+                        <input type="datetime-local" name="datetime" class="form-control" id="date" placeholder="Дата" value="{{$e.Date}}">
+                    </div>
+                    <p></p>
+                    <div class="col">
+                        <label class="sr-only" for="inlineFormInput">Адрес</label>
+                        <input type="text" name="text" class="form-control" id="text" placeholder="Адрес" value="{{$e.Name}}">
+                    </div>
+                    <p></p>
+                    <div class="col">
+                        <label class="sr-only" for="inlineFormInput">Телефон</label>
+                        <input type="text" id="phone" class="form-control" value="{{$e.Phone}}">
+                            <script>
+                                $(function(){
+                                //Использование параметра completed
+                                    $("#phone").mask("8(999) 999-9999");
+                                });
+                            </script>
+                    </div>
+                </div>
+                
+                <p></p>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+            {{end}}
+        </div>
+        
+    </div>
+</div>
+
+<!-- <p></p>
+<div class="card">
     <h3 class="card-header panel-success white-text">Редактировать</h3>
     <div class="card-body">
     {{range $i, $e := .person}}
@@ -16,7 +89,7 @@
         </form><br />   
     {{end}} 
     </div>
-</div>
+</div> -->
 
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}
