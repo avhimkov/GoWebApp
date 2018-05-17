@@ -358,9 +358,22 @@ func main() {
 	//Delete Admin status
 	g.GET("/edit/:id", func(c *gin.Context) {
 		id := c.Param("id")
-		userstate.IsAdmin(id)
-		userstate.RemoveAdminStatus(id)
+		fmt.Println(id)
+		qid := c.Query(id)
+		fmt.Println(qid)
 
+		var person []Person
+		err := db.Find(Person, id, &person)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Found", len(person))
+
+		http.Redirect(c.Writer, c.Request, "/edit", 302)
+	})
+
+	//Delete Admin status
+	g.GET("/edit", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 
@@ -376,16 +389,15 @@ func main() {
 			}
 
 			for _, p := range peeps {
-				fmt.Println(p)
+				// fmt.Println(p)
 				db.Update(p)
 			}
-
-			http.Redirect(c.Writer, c.Request, "/edit", 302)
+			c.HTML(http.StatusOK, "editTable.html", gin.H{"peeps": peeps, "is_logged_in": isloggedin})
+			// http.Redirect(c.Writer, c.Request, "/edit", 302)
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
-		// http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	})
 
 	// Start serving the application

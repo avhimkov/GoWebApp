@@ -93,6 +93,7 @@
                     <th data-sortable="true" data-filter-control="input" data-field="Date">Дата</th>
                     <th data-sortable="true" data-filter-control="input" data-field="Number">Номер услуги</th>
                     <th data-sortable="true" data-filter-control="input" data-field="Phone">Телефон</th>
+                    <th data-field="Edit">Редактировать</th>
                 </tr>
             </thead>
             <tbody>
@@ -107,6 +108,11 @@
                     <td>{{$e.Date}}</td>
                     <td>{{$e.Number}}</td>
                     <td>{{$e.Phone}}</td>
+                    <td>
+                        <form action="/edit/{{$e.ID}}" method="GET">
+                            <input value="edit"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                        </form>
+                    </td>
                 </tr>
                 {{end}}
             </tbody>
