@@ -355,19 +355,27 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	})
 
-	//Delete Admin status
-	g.GET("/edit/:id", func(c *gin.Context) {
+	g.GET("/removeval/:id", func(c *gin.Context) {
 		id := c.Param("id")
 		fmt.Println(id)
-		qid := c.Query(id)
-		fmt.Println(qid)
+		// username := c.PostForm(user)
+		// userstate.RemoveUser(user)
+		http.Redirect(c.Writer, c.Request, "/operator", 302)
+	})
 
-		var person []Person
-		err := db.Find(Person, id, &person)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println("Found", len(person))
+	//Delete Admin status
+	g.GET("/edit/:uid", func(c *gin.Context) {
+		uid := c.Param("uid")
+		fmt.Println(uid)
+		// qid := c.Query(id)
+		// fmt.Println(qid)
+
+		// var person []Person
+		// err := db.Find(Person, id, &person)
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+		// fmt.Println("Found", len(person))
 
 		http.Redirect(c.Writer, c.Request, "/edit", 302)
 	})

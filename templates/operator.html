@@ -94,6 +94,7 @@
                     <th data-sortable="true" data-filter-control="input" data-field="Number">Номер услуги</th>
                     <th data-sortable="true" data-filter-control="input" data-field="Phone">Телефон</th>
                     <th data-field="Edit">Редактировать</th>
+                    <th data-field="Edit">Удаление</th>
                 </tr>
             </thead>
             <tbody>
@@ -111,6 +112,11 @@
                     <td>
                         <form action="/edit/{{$e.ID}}" method="GET">
                             <input value="edit"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/removeval/{{$e.ID}}" method="GET">
+                            <input value="removeval"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
                         </form>
                     </td>
                 </tr>
