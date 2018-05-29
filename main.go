@@ -357,30 +357,10 @@ func main() {
 	})
 
 	//Delete value on id
-	g.GET("/removeval/:id", func(c *gin.Context) {
-		id := c.Param("id")
-		fmt.Println(id)
-		// username := c.PostForm(user)
-		// userstate.RemoveUser(user)
-		http.Redirect(c.Writer, c.Request, "/operator", 302)
-	})
+	g.GET("/removeval/:id", Remove)
 
 	//Edit data
-	g.GET("/edit/:uid", func(c *gin.Context) {
-		uid := c.Param("uid")
-		fmt.Println(uid)
-		// qid := c.Query(id)
-		// fmt.Println(qid)
-
-		// var person []Person
-		// err := db.Find(Person, id, &person)
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-		// fmt.Println("Found", len(person))
-
-		http.Redirect(c.Writer, c.Request, "/edit", 302)
-	})
+	g.GET("/edit/:uid", EditValue)
 
 	//Edit
 	g.GET("/edit", func(c *gin.Context) {
@@ -412,4 +392,32 @@ func main() {
 
 	// Start serving the application
 	g.Run(":3000")
+}
+
+func Edit(c *gin.Context) {
+
+}
+
+func EditValue(c *gin.Context) {
+	uid := c.Param("uid")
+	fmt.Println(uid)
+	// qid := c.Query(id)
+	// fmt.Println(qid)
+
+	// var person []Person
+	// err := db.Find(Person, id, &person)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println("Found", len(person))
+
+	http.Redirect(c.Writer, c.Request, "/edit", 302)
+}
+
+func Remove(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println(id)
+	// username := c.PostForm(user)
+	// userstate.RemoveUser(user)
+	http.Redirect(c.Writer, c.Request, "/operator", 302)
 }
