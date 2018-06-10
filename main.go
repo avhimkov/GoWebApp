@@ -25,10 +25,20 @@ type Person struct {
 	Note        string `storm:"index"` //Примечание
 }
 
+//open database
+func DB() *storm.DB {
+	db, err := storm.Open("db/data.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	// defer db.Close()
+	return db
+}
+
 func SetupRouter() *gin.Engine {
 	g := gin.Default()
-	// g.Use(static.Serve("/assets", static.LocalFile("/assets", false)))
 
+	// g.Use(static.Serve("/assets", static.LocalFile("/assets", false)))
 	// v1 := router.Group("api/v1")
 	// {
 	// 	v1.GET("/instructions", GetInstructions)
@@ -46,10 +56,7 @@ func main() {
 	// Set the router as the default one provided by Gin
 	//router = gin.Default()
 
-	db, err := storm.Open("db/data.db")
-	if err != nil {
-		log.Fatal(err)
-	}
+	db := DB()
 	defer db.Close()
 
 	// db.Update(func(tx *bolt.Tx) error {
@@ -161,6 +168,55 @@ func main() {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		userstate.Logout(usercook)
 		http.Redirect(c.Writer, c.Request, "/login", 302)
+	})
+
+	//Administartort interface
+	g.GET("/adminka", func(c *gin.Context) {
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+		isadmin := userstate.IsAdmin(usercook)
+
+		var cheked []bool
+		if isloggedin {
+			listusers, _ := userstate.AllUsernames()
+			fmt.Println(isadmin)
+			if isadmin {
+				for _, i := range listusers {
+					fmt.Println(i)
+					cheked = append(cheked, userstate.IsAdmin(i))
+				}
+				fmt.Println(cheked)
+				fmt.Println(isadmin)
+			}
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"listusers": listusers, "is_logged_in": isloggedin})
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+	})
+
+	//Make user as admin POST
+	g.GET("/makeadmin/:user", func(c *gin.Context) {
+		user := c.Param("user")
+		// username := c.PostForm(user)
+		userstate.SetAdminStatus(user)
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
+	})
+
+	//Delete User from Base POST
+	g.GET("/delete/:user", func(c *gin.Context) {
+		user := c.Param("user")
+		// username := c.PostForm(user)
+		userstate.RemoveUser(user)
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
+	})
+
+	//Delete Admin status
+	g.GET("/adminoff/:user", func(c *gin.Context) {
+		user := c.Param("user")
+		userstate.IsAdmin(user)
+		userstate.RemoveAdminStatus(user)
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	})
 
 	//operator register users
@@ -307,55 +363,6 @@ func main() {
 		}
 	})
 
-	//Administartort interface
-	g.GET("/adminka", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
-		isadmin := userstate.IsAdmin(usercook)
-
-		var cheked []bool
-		if isloggedin {
-			listusers, _ := userstate.AllUsernames()
-			fmt.Println(isadmin)
-			if isadmin {
-				for _, i := range listusers {
-					fmt.Println(i)
-					cheked = append(cheked, userstate.IsAdmin(i))
-				}
-				fmt.Println(cheked)
-				fmt.Println(isadmin)
-			}
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"listusers": listusers, "is_logged_in": isloggedin})
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
-
-	//Make user as admin POST
-	g.GET("/makeadmin/:user", func(c *gin.Context) {
-		user := c.Param("user")
-		// username := c.PostForm(user)
-		userstate.SetAdminStatus(user)
-		http.Redirect(c.Writer, c.Request, "/adminka", 302)
-	})
-
-	//Delete User from Base POST
-	g.GET("/delete/:user", func(c *gin.Context) {
-		user := c.Param("user")
-		// username := c.PostForm(user)
-		userstate.RemoveUser(user)
-		http.Redirect(c.Writer, c.Request, "/adminka", 302)
-	})
-
-	//Delete Admin status
-	g.GET("/adminoff/:user", func(c *gin.Context) {
-		user := c.Param("user")
-		userstate.IsAdmin(user)
-		userstate.RemoveAdminStatus(user)
-		http.Redirect(c.Writer, c.Request, "/adminka", 302)
-	})
-
 	//Delete value on id
 	g.GET("/removeval/:id", Remove)
 
@@ -397,18 +404,13 @@ func main() {
 // func Logger() gin.HandlerFunc {
 // 	return func(c *gin.Context) {
 // 		t := time.Now()
-
 // 		// Set example variable
 // 		c.Set("example", "12345")
-
 // 		// before request
-
 // 		c.Next()
-
 // 		// after request
 // 		latency := time.Since(t)
 // 		log.Print(latency)
-
 // 		// access the status we are sending
 // 		status := c.Writer.Status()
 // 		log.Println(status)

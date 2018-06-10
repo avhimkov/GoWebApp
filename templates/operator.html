@@ -77,11 +77,11 @@
     <h3 class="card-header panel-success white-text">Список услуги</h3>
     <div class="card-body">
         <table id="table" 
-            data-toggle="table"
-            data-search="true"
-            data-filter-control="true" 
-            data-show-export="true"
-            data-click-to-select="true">
+                data-toggle="table"
+                data-search="true"
+                data-filter-control="true" 
+                data-show-export="true"
+                data-click-to-select="true">
             <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
@@ -93,35 +93,35 @@
                     <th data-sortable="true" data-filter-control="input" data-field="Date">Дата</th>
                     <th data-sortable="true" data-filter-control="input" data-field="Number">Номер услуги</th>
                     <th data-sortable="true" data-filter-control="input" data-field="Phone">Телефон</th>
-                    <th data-field="Edit">Редактировать</th>
-                    <th data-field="Edit">Удаление</th>
+                    <th data-field="Edit">Редакт..</th>
+                    <th data-field="Delete">Удаление</th>
                 </tr>
             </thead>
-            <tbody>
-                {{range $i, $e := .person}}
-                <tr>
-                    <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
-                    <td>{{$i}}</td>
-                    <!-- <td>{{$e.User}}</td> -->
-                    <td>{{$e.Name}}</td>
-                    <td>{{$e.NameService}}</td>
-                    <td>{{$e.NameService}}</td>
-                    <td>{{$e.Date}}</td>
-                    <td>{{$e.Number}}</td>
-                    <td>{{$e.Phone}}</td>
-                    <td>
-                        <form action="/edit/{{$e.ID}}" method="GET">
-                            <input value="edit"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/removeval/{{$e.ID}}" method="GET">
-                            <input value="removeval"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
-                        </form>
-                    </td>
-                </tr>
-                {{end}}
-            </tbody>
+                <tbody>
+                    {{range $i, $e := .person}}
+                    <tr>
+                        <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
+                        <td>{{$i}}</td>
+                        <!-- <td>{{$e.User}}</td> -->
+                        <td>{{$e.Name}}</td>
+                        <td>{{$e.NameService}}</td>
+                        <td>{{$e.NameService}}</td>
+                        <td>{{$e.Date}}</td>
+                        <td>{{$e.Number}}</td>
+                        <td>{{$e.Phone}}</td>
+                        <td>
+                            <form action="/edit/{{$e.ID}}" method="GET">
+                                <input value="edit"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/removeval/{{$e.ID}}" method="GET">
+                                <input value="rem_val"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                            </form>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
         </table>
     </div>
 </div>
