@@ -25,6 +25,8 @@ type Person struct {
 	Note        string `storm:"index"` //Примечание
 }
 
+var perm, _ = permissionbolt.New()
+
 //open database
 func DB() *storm.DB {
 	db, err := storm.Open("db/data.db")
@@ -36,7 +38,24 @@ func DB() *storm.DB {
 }
 
 func SetupRouter() *gin.Engine {
+
+	//ADD EXAMPLE BOLTDB
+	// Set Gin to production mode
+	//gin.SetMode(gin.ReleaseMode)
+
+	// Set the router as the default one provided by Gin
+	//router = gin.Default()
+
 	g := gin.Default()
+	g.Static("/assets", "./assets")
+	g.LoadHTMLGlob("templates/*.html")
+
+	// g := gin.New()
+
+	// Logging middleware
+	g.Use(gin.Logger())
+	// Recovery middleware
+	g.Use(gin.Recovery())
 
 	// g.Use(static.Serve("/assets", static.LocalFile("/assets", false)))
 	// v1 := router.Group("api/v1")
@@ -49,13 +68,6 @@ func SetupRouter() *gin.Engine {
 
 func main() {
 
-	//ADD EXAMPLE BOLTDB
-	// Set Gin to production mode
-	//gin.SetMode(gin.ReleaseMode)
-
-	// Set the router as the default one provided by Gin
-	//router = gin.Default()
-
 	db := DB()
 	defer db.Close()
 
@@ -65,15 +77,12 @@ func main() {
 	// 	return err
 	// })
 
-	// g := gin.New()
 	g := SetupRouter()
-	g.Static("/assets", "./assets")
-	g.LoadHTMLGlob("templates/*.html")
 
-	perm, err := permissionbolt.New()
-	if err != nil {
-		log.Fatalln(err)
-	}
+	// perm, err := permissionbolt.New()
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
 
 	//	Blank slate, no default permissions
 	//	perm.Clear()
@@ -91,14 +100,8 @@ func main() {
 		c.Next()
 	}
 
-	// Logging middleware
-	g.Use(gin.Logger())
-
 	// Enable the permissionbolt middleware, must come before recovery
 	g.Use(permissionHandler)
-
-	// Recovery middleware
-	g.Use(gin.Recovery())
 
 	// Get the userstate, used in the handlers below
 	userstate := perm.UserState()
@@ -170,6 +173,30 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/login", 302)
 	})
 
+	//Make user as admin POST
+	g.GET("/makeadmin/:user", func(c *gin.Context) {
+		user := c.Param("user")
+		// username := c.PostForm(user)
+		userstate.SetAdminStatus(user)
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
+	})
+
+	//Delete User from Base POST
+	g.GET("/delete/:user", func(c *gin.Context) {
+		user := c.Param("user")
+		// username := c.PostForm(user)
+		userstate.RemoveUser(user)
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
+	})
+
+	//Delete Admin status
+	g.GET("/adminoff/:user", func(c *gin.Context) {
+		user := c.Param("user")
+		userstate.IsAdmin(user)
+		userstate.RemoveAdminStatus(user)
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
+	})
+
 	//Administartort interface
 	g.GET("/adminka", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
@@ -193,30 +220,6 @@ func main() {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
-	})
-
-	//Make user as admin POST
-	g.GET("/makeadmin/:user", func(c *gin.Context) {
-		user := c.Param("user")
-		// username := c.PostForm(user)
-		userstate.SetAdminStatus(user)
-		http.Redirect(c.Writer, c.Request, "/adminka", 302)
-	})
-
-	//Delete User from Base POST
-	g.GET("/delete/:user", func(c *gin.Context) {
-		user := c.Param("user")
-		// username := c.PostForm(user)
-		userstate.RemoveUser(user)
-		http.Redirect(c.Writer, c.Request, "/adminka", 302)
-	})
-
-	//Delete Admin status
-	g.GET("/adminoff/:user", func(c *gin.Context) {
-		user := c.Param("user")
-		userstate.IsAdmin(user)
-		userstate.RemoveAdminStatus(user)
-		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	})
 
 	//operator register users
@@ -290,29 +293,22 @@ func main() {
 	//Register visitors POST
 	g.POST("/kontroler", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
 
-		if isloggedin {
+		// id := c.PostForm("id")
+		name := c.PostForm("name")
+		nameservice := c.PostForm("nameservice")
+		date := c.PostForm("date")
+		number := c.PostForm("number")
 
-			// id := c.PostForm("id")
-			name := c.PostForm("name")
-			nameservice := c.PostForm("nameservice")
-			date := c.PostForm("date")
-			number := c.PostForm("number")
-
-			peeps := []*Person{
-				{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
-			}
-
-			for _, p := range peeps {
-				db.Save(p)
-			}
-
-			http.Redirect(c.Writer, c.Request, "/kontroler", 302)
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
+		peeps := []*Person{
+			{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
 		}
+
+		for _, p := range peeps {
+			db.Save(p)
+		}
+
+		http.Redirect(c.Writer, c.Request, "/kontroler", 302)
 	})
 
 	//konsult register users
@@ -338,29 +334,22 @@ func main() {
 	//konsult visitors POST
 	g.POST("/konsult", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
 
-		if isloggedin {
+		// id := c.PostForm("id")
+		name := c.PostForm("name")
+		nameservice := c.PostForm("nameservice")
+		date := c.PostForm("date")
+		number := c.PostForm("number")
 
-			// id := c.PostForm("id")
-			name := c.PostForm("name")
-			nameservice := c.PostForm("nameservice")
-			date := c.PostForm("date")
-			number := c.PostForm("number")
-
-			peeps := []*Person{
-				{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
-			}
-
-			for _, p := range peeps {
-				db.Save(p)
-			}
-
-			http.Redirect(c.Writer, c.Request, "/konsult", 302)
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
+		peeps := []*Person{
+			{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
 		}
+
+		for _, p := range peeps {
+			db.Save(p)
+		}
+
+		http.Redirect(c.Writer, c.Request, "/konsult", 302)
 	})
 
 	//Delete value on id
