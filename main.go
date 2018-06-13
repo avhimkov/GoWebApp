@@ -359,35 +359,61 @@ func main() {
 	g.GET("/edit/:uid", EditValue)
 
 	//Edit
-	g.GET("/edit", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
+	// g.GET("/edit", func(c *gin.Context) {
+	// 	usercook, _ := userstate.UsernameCookie(c.Request)
+	// 	isloggedin := userstate.IsLoggedIn(usercook)
 
-		if isloggedin {
+	// 	if isloggedin {
 
-			name := c.PostForm("name")
-			nameservice := c.PostForm("nameservice")
-			date := c.PostForm("date")
-			number := c.PostForm("number")
+	// 		name := c.PostForm("name")
+	// 		nameservice := c.PostForm("nameservice")
+	// 		date := c.PostForm("date")
+	// 		number := c.PostForm("number")
 
-			peeps := []*Person{
-				{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
-			}
+	// 		peeps := []*Person{
+	// 			{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
+	// 		}
 
-			for _, p := range peeps {
-				// fmt.Println(p)
-				db.Update(p)
-			}
-			c.HTML(http.StatusOK, "editTable.html", gin.H{"peeps": peeps, "is_logged_in": isloggedin})
-			// http.Redirect(c.Writer, c.Request, "/edit", 302)
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
+	// 		for _, p := range peeps {
+	// 			// fmt.Println(p)
+	// 			db.Update(p)
+	// 		}
+	// 		c.HTML(http.StatusOK, "editTable.html", gin.H{"peeps": peeps, "is_logged_in": isloggedin})
+	// 		// http.Redirect(c.Writer, c.Request, "/edit", 302)
+	// 	} else {
+	// 		c.AbortWithStatus(http.StatusForbidden)
+	// 		fmt.Fprint(c.Writer, "Permission denied!")
+	// 	}
+	// })
 
 	// Start serving the application
 	g.Run(":3000")
+}
+
+func EditValue(c *gin.Context) {
+	// db := DB()
+
+	uid := c.Param("uid")
+	fmt.Println(uid)
+	qid := c.Query(uid)
+	fmt.Println(qid)
+
+	// var person []Person
+	// err := db.Find(uid, qid, &person)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println("Found", len(person))
+
+	http.Redirect(c.Writer, c.Request, "/edit", 302)
+}
+
+func Remove(c *gin.Context) {
+	id := c.Param("id")
+	fmt.Println(id)
+	// username := c.PostForm(user)
+	// userstate.RemoveUser(user)
+	http.Redirect(c.Writer, c.Request, "/operator", 302)
 }
 
 // func Logger() gin.HandlerFunc {
@@ -405,27 +431,3 @@ func main() {
 // 		log.Println(status)
 // 	}
 // }
-
-func EditValue(c *gin.Context) {
-	uid := c.Param("uid")
-	fmt.Println(uid)
-	// qid := c.Query(id)
-	// fmt.Println(qid)
-
-	// var person []Person
-	// err := db.Find(Person, id, &person)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// fmt.Println("Found", len(person))
-
-	http.Redirect(c.Writer, c.Request, "/edit", 302)
-}
-
-func Remove(c *gin.Context) {
-	id := c.Param("id")
-	fmt.Println(id)
-	// username := c.PostForm(user)
-	// userstate.RemoveUser(user)
-	http.Redirect(c.Writer, c.Request, "/operator", 302)
-}
