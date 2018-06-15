@@ -356,47 +356,23 @@ func main() {
 	g.GET("/removeval/:id", Remove)
 
 	//Edit data
-	g.GET("/edit/:uid", EditValue)
+	// g.GET("/edit/:uid", EditValue)
 
 	//Edit
-	// g.GET("/edit", func(c *gin.Context) {
-	// 	usercook, _ := userstate.UsernameCookie(c.Request)
-	// 	isloggedin := userstate.IsLoggedIn(usercook)
-
-	// 	if isloggedin {
-
-	// 		name := c.PostForm("name")
-	// 		nameservice := c.PostForm("nameservice")
-	// 		date := c.PostForm("date")
-	// 		number := c.PostForm("number")
-
-	// 		peeps := []*Person{
-	// 			{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
-	// 		}
-
-	// 		for _, p := range peeps {
-	// 			// fmt.Println(p)
-	// 			db.Update(p)
-	// 		}
-	// 		c.HTML(http.StatusOK, "editTable.html", gin.H{"peeps": peeps, "is_logged_in": isloggedin})
-	// 		// http.Redirect(c.Writer, c.Request, "/edit", 302)
-	// 	} else {
-	// 		c.AbortWithStatus(http.StatusForbidden)
-	// 		fmt.Fprint(c.Writer, "Permission denied!")
-	// 	}
-	// })
+	g.GET("/edit", EditValue)
 
 	// Start serving the application
 	g.Run(":3000")
 }
 
 func EditValue(c *gin.Context) {
-	// db := DB()
+	db := DB()
 
 	uid := c.Param("uid")
 	fmt.Println(uid)
-	qid := c.Query(uid)
-	fmt.Println(qid)
+
+	// qid := c.Query(uid)
+	// fmt.Println(qid)
 
 	// var person []Person
 	// err := db.Find(uid, qid, &person)
@@ -405,7 +381,24 @@ func EditValue(c *gin.Context) {
 	// }
 	// fmt.Println("Found", len(person))
 
-	http.Redirect(c.Writer, c.Request, "/edit", 302)
+	name := c.PostForm("name")
+	nameservice := c.PostForm("nameservice")
+	date := c.PostForm("date")
+	number := c.PostForm("number")
+
+	peeps := []*Person{
+		{Name: name, NameService: nameservice, Date: date, Number: number},
+	}
+
+	for _, p := range peeps {
+		// fmt.Println(p)
+		db.Update(p)
+	}
+	c.HTML(http.StatusOK, "editTable.html", gin.H{"peeps": peeps})
+	// http.Redirect(c.Writer, c.Request, "/edit", 302)
+
+	c.HTML(http.StatusOK, "editTable.html", gin.H{"uid": uid})
+	// http.Redirect(c.Writer, c.Request, "/editTable", 302)
 }
 
 func Remove(c *gin.Context) {
