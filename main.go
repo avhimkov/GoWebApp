@@ -27,6 +27,11 @@ type Person struct {
 
 var perm, _ = permissionbolt.New()
 
+// perm, err := permissionbolt.New()
+// if err != nil {
+// 	log.Fatalln(err)
+// }
+
 //open database
 func DB() *storm.DB {
 	db, err := storm.Open("db/data.db")
@@ -39,12 +44,8 @@ func DB() *storm.DB {
 
 func SetupRouter() *gin.Engine {
 
-	//ADD EXAMPLE BOLTDB
 	// Set Gin to production mode
 	//gin.SetMode(gin.ReleaseMode)
-
-	// Set the router as the default one provided by Gin
-	//router = gin.Default()
 
 	g := gin.Default()
 	g.Static("/assets", "./assets")
@@ -71,18 +72,7 @@ func main() {
 	db := DB()
 	defer db.Close()
 
-	// db.Update(func(tx *bolt.Tx) error {
-	// 	b := tx.Bucket([]byte("bucketName"))
-	// 	err := b.Delete([]byte("keyToDelete"))
-	// 	return err
-	// })
-
 	g := SetupRouter()
-
-	// perm, err := permissionbolt.New()
-	// if err != nil {
-	// 	log.Fatalln(err)
-	// }
 
 	//	Blank slate, no default permissions
 	//	perm.Clear()
@@ -155,11 +145,8 @@ func main() {
 
 		if logintryst == true {
 			userstate.Login(c.Writer, username)
-			// c.HTML(http.StatusOK, "index.html", gin.H{"title": "Successful Login"})
 			http.Redirect(c.Writer, c.Request, "/operator", 302)
 		} else {
-
-			// c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized"})
 			c.HTML(http.StatusBadRequest, "login.html", gin.H{
 				"ErrorTitle":   "Login Failed",
 				"ErrorMessage": "Invalid credentials provided"})
@@ -176,7 +163,6 @@ func main() {
 	//Make user as admin POST
 	g.GET("/makeadmin/:user", func(c *gin.Context) {
 		user := c.Param("user")
-		// username := c.PostForm(user)
 		userstate.SetAdminStatus(user)
 		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	})
@@ -184,7 +170,6 @@ func main() {
 	//Delete User from Base POST
 	g.GET("/delete/:user", func(c *gin.Context) {
 		user := c.Param("user")
-		// username := c.PostForm(user)
 		userstate.RemoveUser(user)
 		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	})
@@ -408,19 +393,3 @@ func Remove(c *gin.Context) {
 	// userstate.RemoveUser(user)
 	http.Redirect(c.Writer, c.Request, "/operator", 302)
 }
-
-// func Logger() gin.HandlerFunc {
-// 	return func(c *gin.Context) {
-// 		t := time.Now()
-// 		// Set example variable
-// 		c.Set("example", "12345")
-// 		// before request
-// 		c.Next()
-// 		// after request
-// 		latency := time.Since(t)
-// 		log.Print(latency)
-// 		// access the status we are sending
-// 		status := c.Writer.Status()
-// 		log.Println(status)
-// 	}
-// }
