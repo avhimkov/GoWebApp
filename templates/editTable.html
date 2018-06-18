@@ -5,7 +5,7 @@
 
 <p></p>
 <div class="card">
-<h3 class="card-header">Редактировать</h3>
+<h3 class="card-header">Редактирование</h3>
     <div class="card-body">
         <!--If there's an error, display the error-->
         {{ if .ErrorTitle}}
@@ -13,13 +13,13 @@
             {{.ErrorTitle}}: {{.ErrorMessage}}
             </p>
         {{end}}
-        {{range $i, $e := .peeps}}
+        {{range $i, $e := .person}}
         <div class="col-sm-12">
             <form class="form" action="/operator" method="POST">
                 <div class="form-row">
                     <div class="col">
                         <label class="sr-only" for="inlineFormInput">Имя заявителя</label>
-                        <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" placeholder="Имя посетителя" value="{{$e.Name}}">
+                        <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" value="$e.Name" placeholder="Имя посетителя">
                     </div>
                     <p></p>
                     <div class="col">
@@ -39,25 +39,23 @@
                             <option value="value1">Услуга 3</option>
                         </select>
                     </div>
-                    <!-- <input type="text" name="text" class="form-control" id="nameservice" placeholder="Название услуги"> -->
-                    <!-- <input type="text" name="nameservice" class="form-control" id="nameservice" placeholder="Название услуги"> -->
                 </div>
                 <p></p>
                 <div class="form-row">
                     <div class="col">
                         <label class="sr-only" for="inlineFormInput">Дата</label>
                         <!-- <input id="date" type="date"> -->
-                        <input type="datetime-local" name="datetime" class="form-control" id="date" placeholder="Дата" value="{{$e.Date}}">
+                        <input type="datetime-local" name="datetime" class="form-control" id="date" value="$e.Date" placeholder="Дата">
                     </div>
                     <p></p>
                     <div class="col">
                         <label class="sr-only" for="inlineFormInput">Адрес</label>
-                        <input type="text" name="text" class="form-control" id="text" placeholder="Адрес" value="{{$e.Name}}">
+                        <input type="text" name="text" class="form-control" id="text" value="$e.Address" placeholder="Адрес">
                     </div>
                     <p></p>
                     <div class="col">
                         <label class="sr-only" for="inlineFormInput">Телефон</label>
-                        <input type="text" id="phone" class="form-control" value="{{$e.Phone}}">
+                        <input type="text" id="phone" value="$e.Phone" class="form-control" >
                             <script>
                                 $(function(){
                                 //Использование параметра completed
@@ -66,13 +64,11 @@
                             </script>
                     </div>
                 </div>
-                
                 <p></p>
                 <button type="submit" class="btn btn-primary">Сохранить</button>
             </form>
-            {{end}}
+        {{end}}
         </div>
-        
     </div>
 </div>
 

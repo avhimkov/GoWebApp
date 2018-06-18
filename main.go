@@ -344,47 +344,79 @@ func main() {
 	// g.GET("/edit/:uid", EditValue)
 
 	//Edit
-	g.GET("/edit", EditValue)
+	// g.GET("/edit", EditValue)
+	// g.GET("/editTable", func(c *gin.Context) {
+
+	// 	c.HTML(http.StatusOK, "editTable.html", gin.H{})
+
+	// })
+
+	g.GET("/edit/:uid", func(c *gin.Context) {
+		uid := c.Param("uid")
+		fmt.Println(uid)
+
+		var person []Person
+		err := db.Find("Name", uid, &person)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Found", person)
+
+		for _, person := range peeps {
+			db.Save(p)
+		}
+
+		// name := c.("name")
+		// nameservice := c.PostForm("nameservice")
+		// date := c.PostForm("date")
+		// number := c.PostForm("number")
+
+		// peeps := []*Person{
+		// 	{Name: name, NameService: nameservice, Date: date, Number: number},
+		// }
+
+		c.HTML(http.StatusOK, "editTable.html", gin.H{"person": person, "uid": uid})
+	})
 
 	// Start serving the application
 	g.Run(":3000")
 }
 
-func EditValue(c *gin.Context) {
-	db := DB()
+// func EditValue(c *gin.Context) {
+// 	db := DB()
 
-	uid := c.Param("uid")
-	fmt.Println(uid)
+// 	uid := c.Param("uid")
+// 	fmt.Println(uid)
 
-	// qid := c.Query(uid)
-	// fmt.Println(qid)
+// 	// qid := c.Query(uid)
+// 	// fmt.Println(qid)
 
-	// var person []Person
-	// err := db.Find(uid, qid, &person)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// fmt.Println("Found", len(person))
+// 	var person []Person
+// 	err := db.Find("Name", uid, &person)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	fmt.Println("Found", person)
 
-	name := c.PostForm("name")
-	nameservice := c.PostForm("nameservice")
-	date := c.PostForm("date")
-	number := c.PostForm("number")
+// name := c.PostForm("name")
+// nameservice := c.PostForm("nameservice")
+// date := c.PostForm("date")
+// number := c.PostForm("number")
 
-	peeps := []*Person{
-		{Name: name, NameService: nameservice, Date: date, Number: number},
-	}
+// peeps := []*Person{
+// 	{Name: name, NameService: nameservice, Date: date, Number: number},
+// }
 
-	for _, p := range peeps {
-		// fmt.Println(p)
-		db.Update(p)
-	}
-	c.HTML(http.StatusOK, "editTable.html", gin.H{"peeps": peeps})
-	// http.Redirect(c.Writer, c.Request, "/edit", 302)
+// for _, p := range peeps {
+// 	// fmt.Println(p)
+// 	db.Update(p)
+// }
+// c.HTML(http.StatusOK, "editTable.html", gin.H{"peeps": peeps})
+// http.Redirect(c.Writer, c.Request, "/edit", 302)
 
-	c.HTML(http.StatusOK, "editTable.html", gin.H{"uid": uid})
-	// http.Redirect(c.Writer, c.Request, "/editTable", 302)
-}
+// c.HTML(http.StatusOK, "editTable.html", gin.H{"uid": uid})
+// http.Redirect(c.Writer, c.Request, "/editTable", 302)
+// }
 
 func Remove(c *gin.Context) {
 	id := c.Param("id")
