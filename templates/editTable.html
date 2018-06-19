@@ -19,12 +19,12 @@
                 <div class="form-row">
                     <div class="col">
                         <label class="sr-only" for="inlineFormInput">Имя заявителя</label>
-                        <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" value="$e.Name" placeholder="Имя посетителя">
+                        <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" value={{$e.Name}} placeholder="Имя посетителя">
                     </div>
                     <p></p>
                     <div class="col">
                         <label class="sr-only" for="inlineFormInput">Название услуги</label>
-                        <select name="select" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                        <select name="select" value={{$e.NameService}} class="form-control mr-sm-2 mb-2 mb-sm-0"> 
                             <option value="value1">Услуга 1</option>
                             <option value="value1">Услуга 2</option>
                             <option value="value1">Услуга 3</option>
@@ -33,7 +33,7 @@
                     <p></p>
                     <div class="col">
                         <label class="sr-only" for="inlineFormInput">Название под услуги</label>
-                        <select name="select" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                        <select name="select" value={{$e.NameService}} class="form-control mr-sm-2 mb-2 mb-sm-0"> 
                             <option value="value1">Услуга 1</option>
                             <option value="value1">Услуга 2</option>
                             <option value="value1">Услуга 3</option>
@@ -45,17 +45,17 @@
                     <div class="col">
                         <label class="sr-only" for="inlineFormInput">Дата</label>
                         <!-- <input id="date" type="date"> -->
-                        <input type="datetime-local" name="datetime" class="form-control" id="date" value="$e.Date" placeholder="Дата">
+                        <input type="datetime-local" name="datetime" class="form-control" id="date" value={{$e.Date}} placeholder="Дата">
                     </div>
                     <p></p>
                     <div class="col">
                         <label class="sr-only" for="inlineFormInput">Адрес</label>
-                        <input type="text" name="text" class="form-control" id="text" value="$e.Address" placeholder="Адрес">
+                        <input type="text" name="text" class="form-control" id="text" value={{$e.Address}} placeholder="Адрес">
                     </div>
                     <p></p>
                     <div class="col">
                         <label class="sr-only" for="inlineFormInput">Телефон</label>
-                        <input type="text" id="phone" value="$e.Phone" class="form-control" >
+                        <input type="text" id="phone" value={{$e.Phone}} class="form-control">
                             <script>
                                 $(function(){
                                 //Использование параметра completed
@@ -71,21 +71,5 @@
         </div>
     </div>
 </div>
-
-<!-- <p></p>
-<div class="card">
-    <h3 class="card-header panel-success white-text">Редактировать</h3>
-    <div class="card-body">
-    {{range $i, $e := .person}}
-        <form method="POST" action="update">
-            <input type="hidden" name="uid" value="{{ .Id }}" />
-            <label> Name </label><input type="text" name="name" value="{{ .Name }}"  /><br />
-            <label> City </label><input type="text" name="city" value="{{ .City }}"  /><br />
-            <input type="submit" value="Save user" />
-        </form><br />   
-    {{end}} 
-    </div>
-</div> -->
-
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}

@@ -352,30 +352,61 @@ func main() {
 	// })
 
 	g.GET("/edit/:uid", func(c *gin.Context) {
+		// isloggedin := isloggedin(c)
+
 		uid := c.Param("uid")
 		fmt.Println(uid)
+
+		// if isloggedin {
 
 		var person []Person
 		err := db.Find("Name", uid, &person)
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("Found", person)
+		fmt.Println(person)
 
-		for _, person := range peeps {
-			db.Save(p)
-		}
+		// for _, person := range peeps {
+		// 	db.Save(p)
+		// }
 
-		// name := c.("name")
-		// nameservice := c.PostForm("nameservice")
-		// date := c.PostForm("date")
-		// number := c.PostForm("number")
+		// name := c.PostForm(person.Name)
+		// nameservice := c.PostForm(person.NameService)
+		// date := c.PostForm(person.Date)
+		// number := c.PostForm(person.Number)
 
 		// peeps := []*Person{
 		// 	{Name: name, NameService: nameservice, Date: date, Number: number},
 		// }
+		// "person": person
+		c.HTML(http.StatusOK, "editTable.html", gin.H{"person": person})
 
-		c.HTML(http.StatusOK, "editTable.html", gin.H{"person": person, "uid": uid})
+		// } else {
+		// 	c.AbortWithStatus(http.StatusForbidden)
+		// 	fmt.Fprint(c.Writer, "Permission denied!")
+		// }
+	})
+
+	g.POST("/edit", func(c *gin.Context) {
+		usercook, _ := userstate.UsernameCookie(c.Request)
+
+		// id := c.PostForm("id")
+		name := c.PostForm("name")
+		nameservice := c.PostForm("nameservice")
+		// nameservice := c.PostForm("nameservice")
+		date := c.PostForm("date")
+		address := c.PostForm("address")
+		number := c.PostForm("number")
+
+		peeps := []*Person{
+			{User: usercook, Name: name, NameService: nameservice, Date: date, Address: address, Number: number},
+		}
+
+		for _, p := range peeps {
+			db.Save(p)
+		}
+
+		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
 
 	// Start serving the application
