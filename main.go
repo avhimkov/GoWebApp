@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/asdine/storm"
+	"github.com/asdine/storm/q"
 	"github.com/gin-gonic/gin"
 	"github.com/xyproto/permissionbolt"
 )
@@ -388,7 +389,12 @@ func main() {
 	})
 
 	g.POST("/edit", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
+		uid := c.Param("uid")
+		fmt.Println(uid)
+
+		// if isloggedin {
+
+		var person []Person
 
 		// id := c.PostForm("id")
 		name := c.PostForm("name")
@@ -399,12 +405,13 @@ func main() {
 		number := c.PostForm("number")
 
 		peeps := []*Person{
-			{User: usercook, Name: name, NameService: nameservice, Date: date, Address: address, Number: number},
+			{Name: name, NameService: nameservice, Date: date, Address: address, Number: number},
 		}
 
-		for _, p := range peeps {
-			db.Save(p)
-		}
+		// query := db.Select("Name", uid, &person)
+		query := db.Select(q.Eq("Name", uid))
+		query.Update(peeps)
+		// db.Update(peeps)
 
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
