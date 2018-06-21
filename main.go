@@ -409,8 +409,9 @@ func main() {
 		}
 
 		// query := db.Select("Name", uid, &person)
-		query := db.Select(q.Eq("Name", uid))
-		query.Update(peeps)
+		// query := db.Select(q.Eq("Name", uid))
+		query := db.Select(q.Eq("Name", uid)).Find(peeps)
+		err = query.Update(new(&peeps))
 		// db.Update(peeps)
 
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
