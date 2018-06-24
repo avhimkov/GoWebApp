@@ -1,12 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/asdine/storm"
-	"github.com/asdine/storm/q"
 	"github.com/gin-gonic/gin"
 	"github.com/xyproto/permissionbolt"
 )
@@ -129,6 +130,40 @@ func main() {
 		userstate.MarkConfirmed(username)
 
 		http.Redirect(c.Writer, c.Request, "/", 302)
+	})
+
+	g.POST("/upload", func(c *gin.Context) {
+
+		// name := c.PostForm("name")
+		// email := c.PostForm("email")
+
+		file, err := os.Open("file.txt")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer file.Close()
+
+		scanner := bufio.NewScanner(file)
+
+		for scanner.Scan() { // internally, it advances token based on sperator
+			fmt.Println(scanner.Text())  // token in unicode-char
+			fmt.Println(scanner.Bytes()) // token in bytes
+
+		}
+
+		// // Source
+		// file, _ := c.FormFile("file")
+		// src, _ := file.Open()
+		// defer src.Close()
+
+		// // Destination
+		// dst, _ := os.Create(file.Filename)
+		// defer dst.Close()
+
+		// // Copy
+		// io.Copy(dst, src)
+
+		// c.String(http.StatusOK, fmt.Sprintf("File %s uploaded successfully with fields name=%s and email=%s.", file.Filename, name, email))
 	})
 
 	// Loging Users GET
@@ -394,24 +429,24 @@ func main() {
 
 		// if isloggedin {
 
-		var person []Person
+		// var person []Person
 
 		// id := c.PostForm("id")
-		name := c.PostForm("name")
-		nameservice := c.PostForm("nameservice")
+		// name := c.PostForm("name")
 		// nameservice := c.PostForm("nameservice")
-		date := c.PostForm("date")
-		address := c.PostForm("address")
-		number := c.PostForm("number")
+		// nameservice := c.PostForm("nameservice")
+		// date := c.PostForm("date")
+		// address := c.PostForm("address")
+		// number := c.PostForm("number")
 
-		peeps := []*Person{
-			{Name: name, NameService: nameservice, Date: date, Address: address, Number: number},
-		}
+		// peeps := []*Person{
+		// 	{Name: name, NameService: nameservice, Date: date, Address: address, Number: number},
+		// }
 
 		// query := db.Select("Name", uid, &person)
 		// query := db.Select(q.Eq("Name", uid))
-		query := db.Select(q.Eq("Name", uid)).Find(peeps)
-		err = query.Update(new(&peeps))
+		// query := db.Select(q.Eq("Name", uid)).Find(peeps)
+		// err = query.Update(new(&peeps))
 		// db.Update(peeps)
 
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
