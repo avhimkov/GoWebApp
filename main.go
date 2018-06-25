@@ -2,7 +2,10 @@ package main
 
 import (
 	"bufio"
+	"encoding/csv"
+	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -137,19 +140,27 @@ func main() {
 		// name := c.PostForm("name")
 		// email := c.PostForm("email")
 
-		file, err := os.Open("file.txt")
-		if err != nil {
-			log.Fatal(err)
+		csvFile, _ := os.Open("people.csv")
+		reader := csv.NewReader(bufio.NewReader(csvFile))
+		var people []Person
+		for {
+			line, error := reader.Read()
+			if error == io.EOF {
+				break
+			} else if error != nil {
+				log.Fatal(error)
+			}
+			people = append(people, Person{
+				Firstname: line[0],
+				Lastname:  line[1],
+				Address: &Address{
+					City:  line[2],
+					State: line[3],
+				},
+			})
 		}
-		defer file.Close()
-
-		scanner := bufio.NewScanner(file)
-
-		for scanner.Scan() { // internally, it advances token based on sperator
-			fmt.Println(scanner.Text())  // token in unicode-char
-			fmt.Println(scanner.Bytes()) // token in bytes
-
-		}
+		peopleJson, _ := json.Marshal(people)
+		fmt.Println(string(peopleJson))
 
 		// // Source
 		// file, _ := c.FormFile("file")
