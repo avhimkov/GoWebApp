@@ -126,23 +126,26 @@ func main() {
 
 		username := c.PostForm("username")
 		pass := c.PostForm("password")
-		message := c.PostForm("email")
+		mail := c.PostForm("email")
 
-		userstate.AddUser(username, pass, message)
+		userstate.AddUser(username, pass, mail)
 		userstate.Login(c.Writer, username)
 		userstate.MarkConfirmed(username)
 
 		http.Redirect(c.Writer, c.Request, "/", 302)
 	})
 
-	g.POST("/upload", func(c *gin.Context) {
+	g.POST("/uploadUsers", func(c *gin.Context) {
 
-		// name := c.PostForm("name")
-		// email := c.PostForm("email")
+		type Users struct {
+			User    string
+			Address string
+			Pass    string
+		}
 
 		csvFile, _ := os.Open("people.csv")
 		reader := csv.NewReader(bufio.NewReader(csvFile))
-		var people []Person
+		var people []Users
 		for {
 			line, error := reader.Read()
 			if error == io.EOF {
@@ -150,31 +153,22 @@ func main() {
 			} else if error != nil {
 				log.Fatal(error)
 			}
-			people = append(people, Person{
-				Firstname: line[0],
-				Lastname:  line[1],
-				Address: &Address{
-					City:  line[2],
-					State: line[3],
-				},
+			people = append(people, Users{
+				User:    line[0],
+				Pass:    line[1],
+				Address: line[2],
 			})
 		}
+
+		for _, p := range people {
+			userstate.AddUser(p.User, p.Pass, p.Address)
+			userstate.Login(c.Writer, p.User)
+			userstate.MarkConfirmed(p.User)
+		}
+
 		peopleJson, _ := json.Marshal(people)
 		fmt.Println(string(peopleJson))
 
-		// // Source
-		// file, _ := c.FormFile("file")
-		// src, _ := file.Open()
-		// defer src.Close()
-
-		// // Destination
-		// dst, _ := os.Create(file.Filename)
-		// defer dst.Close()
-
-		// // Copy
-		// io.Copy(dst, src)
-
-		// c.String(http.StatusOK, fmt.Sprintf("File %s uploaded successfully with fields name=%s and email=%s.", file.Filename, name, email))
 	})
 
 	// Loging Users GET
