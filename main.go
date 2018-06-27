@@ -11,6 +11,7 @@ import (
 	"os"
 
 	"github.com/asdine/storm"
+	"github.com/asdine/storm/q"
 	"github.com/gin-gonic/gin"
 	"github.com/xyproto/permissionbolt"
 )
@@ -379,18 +380,28 @@ func main() {
 	})
 
 	//Delete value on id
-	g.GET("/removeval/:id", Remove)
+	// g.GET("/removeval/:id", Remove)
+	g.GET("/removeval/:id", func(c *gin.Context) {
+		// db := DB()
+		id := c.Param("id")
+
+		// var person []*Person
+
+		query := db.Select(q.Eq("Name", id))
+		// _ = query.Find(person)
+		_ = query.Delete(new(Person))
+
+		// err := db.Remove(&Person)
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+
+		fmt.Println(id)
+		http.Redirect(c.Writer, c.Request, "/operator", 302)
+	})
 
 	//Edit data
 	// g.GET("/edit/:uid", EditValue)
-
-	//Edit
-	// g.GET("/edit", EditValue)
-	// g.GET("/editTable", func(c *gin.Context) {
-
-	// 	c.HTML(http.StatusOK, "editTable.html", gin.H{})
-
-	// })
 
 	g.GET("/edit/:uid", func(c *gin.Context) {
 		// isloggedin := isloggedin(c)
@@ -461,6 +472,25 @@ func main() {
 	g.Run(":3000")
 }
 
+func Remove(c *gin.Context) {
+	// db := DB()
+	// id := c.Param("id")
+
+	// var person []*Person
+
+	// query := db.Select(q.Eq("ID", id))
+	// _ = query.Find(person)
+	// _ = query.Delete(person)
+
+	// err := db.Remove(&Person)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// fmt.Println(id)
+	http.Redirect(c.Writer, c.Request, "/operator", 302)
+}
+
 // func EditValue(c *gin.Context) {
 // 	db := DB()
 
@@ -496,11 +526,3 @@ func main() {
 // c.HTML(http.StatusOK, "editTable.html", gin.H{"uid": uid})
 // http.Redirect(c.Writer, c.Request, "/editTable", 302)
 // }
-
-func Remove(c *gin.Context) {
-	id := c.Param("id")
-	fmt.Println(id)
-	// username := c.PostForm(user)
-	// userstate.RemoveUser(user)
-	http.Redirect(c.Writer, c.Request, "/operator", 302)
-}
