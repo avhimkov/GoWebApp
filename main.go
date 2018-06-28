@@ -380,90 +380,30 @@ func main() {
 	})
 
 	//Delete value on id
-	// g.GET("/removeval/:id", Remove)
 	g.GET("/removeval/:id", func(c *gin.Context) {
-		// db := DB()
 		id := c.Param("id")
 
-		// var person []*Person
-
 		query := db.Select(q.Eq("Name", id))
-		// _ = query.Find(person)
 		_ = query.Delete(new(Person))
-
-		// err := db.Remove(&Person)
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
 
 		fmt.Println(id)
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
 
-	//Edit data
-	// g.GET("/edit/:uid", EditValue)
-
 	g.GET("/edit/:uid", func(c *gin.Context) {
-		// isloggedin := isloggedin(c)
 
 		uid := c.Param("uid")
 		fmt.Println(uid)
 
-		// if isloggedin {
+		query := db.Select(q.Eq("Name", uid))
+		_ = query.Delete(new(Person))
 
-		var person []Person
-		err := db.Find("Name", uid, &person)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(person)
-
-		// for _, person := range peeps {
-		// 	db.Save(p)
-		// }
-
-		// name := c.PostForm(person.Name)
-		// nameservice := c.PostForm(person.NameService)
-		// date := c.PostForm(person.Date)
-		// number := c.PostForm(person.Number)
-
-		// peeps := []*Person{
-		// 	{Name: name, NameService: nameservice, Date: date, Number: number},
-		// }
-		// "person": person
-		c.HTML(http.StatusOK, "editTable.html", gin.H{"person": person})
-
-		// } else {
-		// 	c.AbortWithStatus(http.StatusForbidden)
-		// 	fmt.Fprint(c.Writer, "Permission denied!")
-		// }
+		c.HTML(http.StatusOK, "editTable.html", gin.H{"uid": uid})
 	})
 
 	g.POST("/edit", func(c *gin.Context) {
 		uid := c.Param("uid")
 		fmt.Println(uid)
-
-		// if isloggedin {
-
-		// var person []Person
-
-		// id := c.PostForm("id")
-		// name := c.PostForm("name")
-		// nameservice := c.PostForm("nameservice")
-		// nameservice := c.PostForm("nameservice")
-		// date := c.PostForm("date")
-		// address := c.PostForm("address")
-		// number := c.PostForm("number")
-
-		// peeps := []*Person{
-		// 	{Name: name, NameService: nameservice, Date: date, Address: address, Number: number},
-		// }
-
-		// query := db.Select("Name", uid, &person)
-		// query := db.Select(q.Eq("Name", uid))
-		// query := db.Select(q.Eq("Name", uid)).Find(peeps)
-		// err = query.Update(new(&peeps))
-		// db.Update(peeps)
 
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
@@ -471,58 +411,3 @@ func main() {
 	// Start serving the application
 	g.Run(":3000")
 }
-
-func Remove(c *gin.Context) {
-	// db := DB()
-	// id := c.Param("id")
-
-	// var person []*Person
-
-	// query := db.Select(q.Eq("ID", id))
-	// _ = query.Find(person)
-	// _ = query.Delete(person)
-
-	// err := db.Remove(&Person)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// fmt.Println(id)
-	http.Redirect(c.Writer, c.Request, "/operator", 302)
-}
-
-// func EditValue(c *gin.Context) {
-// 	db := DB()
-
-// 	uid := c.Param("uid")
-// 	fmt.Println(uid)
-
-// 	// qid := c.Query(uid)
-// 	// fmt.Println(qid)
-
-// 	var person []Person
-// 	err := db.Find("Name", uid, &person)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	fmt.Println("Found", person)
-
-// name := c.PostForm("name")
-// nameservice := c.PostForm("nameservice")
-// date := c.PostForm("date")
-// number := c.PostForm("number")
-
-// peeps := []*Person{
-// 	{Name: name, NameService: nameservice, Date: date, Number: number},
-// }
-
-// for _, p := range peeps {
-// 	// fmt.Println(p)
-// 	db.Update(p)
-// }
-// c.HTML(http.StatusOK, "editTable.html", gin.H{"peeps": peeps})
-// http.Redirect(c.Writer, c.Request, "/edit", 302)
-
-// c.HTML(http.StatusOK, "editTable.html", gin.H{"uid": uid})
-// http.Redirect(c.Writer, c.Request, "/editTable", 302)
-// }
