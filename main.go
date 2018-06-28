@@ -390,20 +390,19 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
 
-	g.GET("/edit/:uid", func(c *gin.Context) {
+	g.GET("/edit", func(c *gin.Context) {
 
-		uid := c.Param("uid")
-		fmt.Println(uid)
-
-		query := db.Select(q.Eq("Name", uid))
-		_ = query.Delete(new(Person))
-
-		c.HTML(http.StatusOK, "editTable.html", gin.H{"uid": uid})
+		c.HTML(http.StatusOK, "editTable.html", gin.H{})
 	})
 
-	g.POST("/edit", func(c *gin.Context) {
+	g.POST("/edit/:uid", func(c *gin.Context) {
 		uid := c.Param("uid")
 		fmt.Println(uid)
+
+		err := db.UpdateField(&Person{Name: uid}, "Age", 0)
+		if err != nil {
+			log.Fatal(err)
+		}
 
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
