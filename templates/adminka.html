@@ -2,45 +2,46 @@
 
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
-
-<p></p>
-<div class="card">
-        <h3 class="card-header panel-success white-text">Настройки пользователей</h3>
-        <div class="card-body">
-    <table class="table"
-        data-toggle="table"
-        data-click-to-select="true">
-        <thead>
-            <tr>
-                <th data-sortable="true" data-field="Users">Users</th>
-                <th>Admin Off</th>
-                <th>Delet User</th>
-                <th>Make Admin</th>
-            </tr>
-        </thead>
-        <tbody>            
-            {{range $i, $e := .listusers}}
-            <tr>
-                <td>{{$e}}</td>
-                <td>
-                    <form action="/adminoff/{{$e}}" method="GET">
-                        <input value="AdminOff"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
-                    </form>
-                </td>
-                <td>
-                    <form action="/delete/{{$e}}" method="GET">
-                        <input value="Delete"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
-                    </form>
-                </td>
-                <td>
-                    <form action="/makeadmin/{{$e}}" method="GET">
-                        <input value="Make admin"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
-                    </form>
-                </td>
-            </tr>
-            {{end}}
-        </tbody>
-    </table>
+<div class="container">
+    <p></p>
+    <div class="card">
+            <h3 class="card-header panel-success white-text">Настройки пользователей</h3>
+            <div class="card-body">
+        <table class="table"
+            data-toggle="table"
+            data-click-to-select="true">
+            <thead>
+                <tr>
+                    <th data-sortable="true" data-field="Users">Users</th>
+                    <th>Admin Off</th>
+                    <th>Delet User</th>
+                    <th>Make Admin</th>
+                </tr>
+            </thead>
+            <tbody>            
+                {{range $i, $e := .listusers}}
+                <tr>
+                    <td>{{$e}}</td>
+                    <td>
+                        <form action="/adminoff/{{$e}}" method="GET">
+                            <input value="AdminOff"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/delete/{{$e}}" method="GET">
+                            <input value="Delete"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/makeadmin/{{$e}}" method="GET">
+                            <input value="Make admin"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!--Embed the footer.html template at this location-->

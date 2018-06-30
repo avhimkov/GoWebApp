@@ -277,12 +277,18 @@ func main() {
 		if isloggedin {
 
 			name := c.PostForm("name")
+			subname := c.PostForm("subname")
 			nameservice := c.PostForm("nameservice")
 			date := c.PostForm("date")
+			address := c.PostForm("address")
+			loc := c.PostForm("loc")
 			number := c.PostForm("number")
+			phone := c.PostForm("phone")
+			note := c.PostForm("note")
 
 			peeps := []*Person{
-				{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
+				{User: usercook, Name: name, SubName: subname, NameService: nameservice,
+					Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
 			}
 
 			for _, p := range peeps {
@@ -323,12 +329,18 @@ func main() {
 
 		// id := c.PostForm("id")
 		name := c.PostForm("name")
+		subname := c.PostForm("subname")
 		nameservice := c.PostForm("nameservice")
 		date := c.PostForm("date")
+		address := c.PostForm("address")
+		loc := c.PostForm("loc")
 		number := c.PostForm("number")
+		phone := c.PostForm("phone")
+		note := c.PostForm("note")
 
 		peeps := []*Person{
-			{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
+			{User: usercook, Name: name, SubName: subname, NameService: nameservice,
+				Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
 		}
 
 		for _, p := range peeps {
@@ -364,12 +376,18 @@ func main() {
 
 		// id := c.PostForm("id")
 		name := c.PostForm("name")
+		subname := c.PostForm("subname")
 		nameservice := c.PostForm("nameservice")
 		date := c.PostForm("date")
+		address := c.PostForm("address")
+		loc := c.PostForm("loc")
 		number := c.PostForm("number")
+		phone := c.PostForm("phone")
+		note := c.PostForm("note")
 
 		peeps := []*Person{
-			{User: usercook, Name: name, NameService: nameservice, Date: date, Number: number},
+			{User: usercook, Name: name, SubName: subname, NameService: nameservice,
+				Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
 		}
 
 		for _, p := range peeps {
@@ -383,29 +401,44 @@ func main() {
 	g.GET("/removeval/:id", func(c *gin.Context) {
 		id := c.Param("id")
 
-		query := db.Select(q.Eq("Name", id))
+		query := db.Select(q.Eq("ID", id))
 		_ = query.Delete(new(Person))
 
 		fmt.Println(id)
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
 
-	g.GET("/edit", func(c *gin.Context) {
-
-		c.HTML(http.StatusOK, "editTable.html", gin.H{})
-	})
-
-	g.POST("/edit/:uid", func(c *gin.Context) {
-		uid := c.Param("uid")
-		fmt.Println(uid)
-
-		err := db.UpdateField(&Person{Name: uid}, "Age", 0)
-		if err != nil {
-			log.Fatal(err)
+	g.GET("/edit/:id", func(c *gin.Context) {
+		isloggedin := isloggedin(c)
+		id := c.Param("id")
+		if isloggedin {
+			findVal := db.Select(q.Eq("ID", id))
+			c.Bind(findVal)
+			c.HTML(http.StatusOK, "editTable.html", gin.H{"findVal": findVal})
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
 		}
 
-		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
+
+	// g.POST("/edit/:uid", func(c *gin.Context) {
+	// 	isloggedin := isloggedin(c)
+	// 	uid := c.Param("uid")
+	// 	fmt.Println(uid)
+
+	// 	if isloggedin {
+	// 		err := db.UpdateField(&Person{Name: uid}, "Age", 0)
+	// 		if err != nil {
+	// 			log.Fatal(err)
+	// 		}
+
+	// 		http.Redirect(c.Writer, c.Request, "/operator", 302)
+	// 	} else {
+	// 		c.AbortWithStatus(http.StatusForbidden)
+	// 		fmt.Fprint(c.Writer, "Permission denied!")
+	// 	}
+	// })
 
 	// Start serving the application
 	g.Run(":3000")

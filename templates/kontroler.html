@@ -2,6 +2,7 @@
 
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
+<div class="container-fluid">
 
 <p></p>
 <div class="card">
@@ -24,12 +25,15 @@
 
                 <th data-field="state" data-checkbox="true"></th>
                 <th data-sortable="true">№</th>
-                <th data-sortable="true" data-filter-control="input" data-field="User">Оператор</th>
-                <th data-sortable="true" data-filter-control="select" data-field="Name">Имя заявителя</th>
-                <th data-sortable="true" data-filter-control="input" data-field="NameService">Название услуги</th>
-                <th data-sortable="true" data-filter-control="input" data-field="UnderNameService">Под услуга</th>
-                <th data-sortable="true" data-filter-control="input" data-field="Date">Дата</th>
-                <th data-sortable="true" data-filter-control="input" data-field="Number">Номер услуги</th>
+                <th data-sortable="true" data-filter-control="input" data-field="Name">Имя заявитель</th>
+                <th data-sortable="true" data-filter-control="input" data-field="SubName">Название услуги</th>
+                <th data-sortable="true" data-filter-control="input" data-field="NameService">Под услуга</th>
+                <th data-sortable="true" data-filter-control="input" data-field="Date">Под услуга</th>
+                <th data-sortable="true" data-filter-control="input" data-field="Address">Адрес</th>
+                <th data-sortable="true" data-filter-control="input" data-field="Location">Место оператора</th>
+                <th data-sortable="true" data-filter-control="input" data-field="Number">Номер</th>
+                <th data-sortable="true" data-filter-control="input" data-field="Phone">Телефон</th>
+                <th data-sortable="true" data-filter-control="input" data-field="Note">Нотация</th>
             </tr>
             </thead>
                 <tbody>
@@ -45,18 +49,21 @@
                         </td> -->
                         <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
                         <td>{{$i}}</td>
-                        <td>{{$e.User}}</td>
                         <td>{{$e.Name}}</td>
-                        <td>{{$e.NameService}}</td>
+                        <td>{{$e.SubName}}</td>
                         <td>{{$e.NameService}}</td>
                         <td>{{$e.Date}}</td>
+                        <td>{{$e.Address}}</td>
+                        <td>{{$e.Location}}</td>
                         <td>{{$e.Number}}</td>
+                        <td>{{$e.Phone}}</td>
+                        <td>{{$e.Note}}</td>
                     </tr>
                     {{end}}
             </tbody>
         </table>
     </div>
 </div>
-
+</div>
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}
