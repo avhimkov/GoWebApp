@@ -2,94 +2,87 @@
 
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
-
-<p></p>
-<div class="card">
-<h3 class="card-header">Редактирование</h3>
-    <div class="card-body">
-        <!--If there's an error, display the error-->
-        {{ if .ErrorTitle}}
-            <p class="bg-danger">
-            {{.ErrorTitle}}: {{.ErrorMessage}}
-            </p>
-        {{end}}
-        {{range $i, $e := .findVal}}
-        <div class="col-sm-12">
-            <form class="form" action="/operator" method="POST">
-                <div class="form-row">
-                    <div class="col">
-                        <label class="sr-only" for="inlineFormInput">Имя заявителя</label>
-                        <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" placeholder="Имя заявителя">
-                    </div>
-                    <p></p>
-                    <div class="col">
-                        <label class="sr-only" for="inlineFormInput">Представитель заявителя</label>
-                        <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" id="subname" placeholder="Представитель заявителя">
-                        <!-- <select name="select" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
-                            <option value="value1">Услуга 1</option>
-                            <option value="value1">Услуга 2</option>
-                            <option value="value1">Услуга 3</option>
-                        </select> -->
-                    </div>
-                    <p></p>
-                    <div class="col">
-                        <label class="sr-only" for="inlineFormInput">Название услуги</label>
-                        <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" id="nameservice" placeholder="Название услуги">
-                        <!-- <select name="select" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
-                            <option value="value1">Услуга 1</option>
-                            <option value="value1">Услуга 2</option>
-                            <option value="value1">Услуга 3</option>
-                        </select> -->
-                    </div>
-                    <!-- <input type="text" name="text" class="form-control" id="nameservice" placeholder="Название услуги"> -->
-                    <!-- <input type="text" name="nameservice" class="form-control" id="nameservice" placeholder="Название услуги"> -->
-                </div>
-                <p></p>
-                <div class="form-row">
-                    <div class="col">
-                        <label class="sr-only" for="inlineFormInput">Дата</label>
-                        <!-- <input id="date" type="date"> -->
-                        <input type="datetime-local" name="date" class="form-control" id="date" placeholder="Дата">
-                    </div>
-                    <p></p>
-                    <div class="col">
-                        <label class="sr-only" for="inlineFormInput">Адрес</label>
-                        <input type="text" name="address" class="form-control" id="address" placeholder="Адрес">
-                    </div>
-                    <div class="col">
-                        <label class="sr-only" for="inlineFormInput">Место оператора</label>
-                        <input type="text" name="loc" class="form-control" id="loc" placeholder="Место оператора">
-                    </div>
-                    
-                </div>
-                <p></p>
-                <div class="form-row">
-                    <p></p>
-                    <div class="col">
-                        <label class="sr-only" for="inlineFormInput">Номер</label>
-                        <input type="text" name="number" class="form-control" id="number" placeholder="Номер">
-                    </div>
-                    <p></p>
-                    <div class="col">
-                        <label class="sr-only" for="inlineFormInput">Телефон</label>
-                        <input type="text" name="phone" id="phone" class="form-control" >
-                            <script>
-                                $(function(){
-                                //Использование параметра completed
-                                    $("#phone").mask("8(999) 999-9999");
-                                });
-                            </script>
-                    </div>
-                    <p></p>
-                    <div class="col">
-                        <label class="sr-only" for="inlineFormInput">Описание</label>
-                        <input type="text" name="note" class="form-control" id="note" placeholder="Описание">
-                    </div>
-                </div>
-            <p></p>
-            <button type="submit" class="btn btn-primary">Сохранить</button>
-        </form>
-        {{end}}
+<div class="container-fluid">
+    <p></p>
+    <div class="card">
+    <h3 class="card-header">Редактирование</h3>
+        <div class="card-body">
+            <!--If there's an error, display the error-->
+            <div class="col-sm-12">
+                    {{range $i, $e := .person}}
+                    <form class="form" action="/operator" method="POST">
+                            <div class="form-row">
+                                <div class="col">
+                                    <label class="sr-only" for="inlineFormInput">Имя заявителя</label>
+                                    <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" value="$e.Name" id="name" placeholder="Имя заявителя">
+                                </div>
+                                <p></p>
+                                <div class="col">
+                                    <label class="sr-only" for="inlineFormInput">Представитель заявителя</label>
+                                    <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" value="$e.SubName" id="subname" placeholder="Представитель заявителя">
+        
+                                </div>
+                                <p></p>
+                                <div class="col">
+                                    <label class="sr-only" for="inlineFormInput">Название услуги</label>
+                                    <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" value="$e.NameService" id="nameservice" placeholder="Название услуги">
+                                </div>
+                            </div>
+                            <p></p>
+                            <div class="form-row">
+                                <div class="col">
+                                    <label class="sr-only" for="inlineFormInput">Дата</label>
+                                    <input type="datetime-local" name="date" class="form-control" value="$e.Date" id="date" placeholder="Дата">
+                                </div>
+                                <p></p>
+                                <div class="col">
+                                    <label class="sr-only" for="inlineFormInput">Адрес</label>
+                                    <input type="text" name="address" class="form-control" value="$e.Address" id="address" placeholder="Адрес">
+                                </div>
+                                <div class="col">
+                                    <label class="sr-only" for="inlineFormInput">Место оператора</label>
+                                    <!-- <input type="text" name="loc" class="form-control" id="loc" placeholder="Место оператора"> -->
+                                    <select name="loc" id="loc" placeholder="Место оператора" value="$e.Location" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                        <option value="value1">Оператор 1</option>
+                                        <option value="value1">Оператор 2</option>
+                                        <option value="value1">Оператор 3</option>
+                                        <option value="value1">Оператор 4</option>
+                                        <option value="value1">Оператор 5</option>
+                                        <option value="value1">Оператор 6</option>
+                                        <option value="value1">Оператор 7</option>
+                                    </select>
+                                </div>
+                                
+                            </div>
+                            <p></p>
+                            <div class="form-row">
+                                <p></p>
+                                <div class="col">
+                                    <label class="sr-only" for="inlineFormInput">Номер</label>
+                                    <input type="text" name="number" class="form-control" value="$e.Number" id="number" placeholder="Номер">
+                                </div>
+                                <p></p>
+                                <div class="col">
+                                    <label class="sr-only" for="inlineFormInput">Телефон</label>
+                                    <input type="text" name="phone" id="phone" value="$e.Phone" class="form-control" >
+                                        <script>
+                                            $(function(){
+                                            //Использование параметра completed
+                                                $("#phone").mask("8(999) 999-9999");
+                                            });
+                                        </script>
+                                </div>
+                                <p></p>
+                                <div class="col">
+                                    <label class="sr-only" for="inlineFormInput">Описание</label>
+                                    <input type="text" name="note" class="form-control" value="$e.Note" id="note" placeholder="Описание">
+                                </div>
+                            </div>
+                        <p></p>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </form>
+                    {{end}}
+            </div>
         </div>
     </div>
 </div>

@@ -409,17 +409,20 @@ func main() {
 	})
 
 	g.GET("/edit/:id", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
 		id := c.Param("id")
+		var person Person
+		isloggedin := isloggedin(c)
+
 		if isloggedin {
 			findVal := db.Select(q.Eq("ID", id))
-			c.Bind(findVal)
-			c.HTML(http.StatusOK, "editTable.html", gin.H{"findVal": findVal})
+			findVal.First(&person)
+			fmt.Println(person)
+
+			c.HTML(http.StatusOK, "editTable.html", gin.H{"person": person, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
-
 	})
 
 	// g.POST("/edit/:uid", func(c *gin.Context) {
