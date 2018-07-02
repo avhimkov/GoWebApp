@@ -1,4 +1,4 @@
-<!--editTable.html-->
+<!--edittable.html-->
 
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
@@ -9,40 +9,41 @@
         <div class="card-body">
             <!--If there's an error, display the error-->
             <div class="col-sm-12">
-                    {{range $i, $e := .person}}
+                    {{ range .person }}
                     <form class="form" action="/operator" method="POST">
                             <div class="form-row">
                                 <div class="col">
                                     <label class="sr-only" for="inlineFormInput">Имя заявителя</label>
-                                    <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" value="$e.Name" id="name" placeholder="Имя заявителя">
+                                    <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" value="{{.Name}}" id="name" placeholder="Имя заявителя">
                                 </div>
                                 <p></p>
                                 <div class="col">
                                     <label class="sr-only" for="inlineFormInput">Представитель заявителя</label>
-                                    <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" value="$e.SubName" id="subname" placeholder="Представитель заявителя">
+                                    <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" value="{{.SubName}}" id="subname" placeholder="Представитель заявителя">
         
                                 </div>
                                 <p></p>
                                 <div class="col">
                                     <label class="sr-only" for="inlineFormInput">Название услуги</label>
-                                    <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" value="$e.NameService" id="nameservice" placeholder="Название услуги">
+                                    <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" value="{{.NameService}}" id="nameservice" placeholder="Название услуги">
                                 </div>
+                                
                             </div>
                             <p></p>
                             <div class="form-row">
                                 <div class="col">
                                     <label class="sr-only" for="inlineFormInput">Дата</label>
-                                    <input type="datetime-local" name="date" class="form-control" value="$e.Date" id="date" placeholder="Дата">
+                                    <input type="datetime-local" name="date" class="form-control" value="{{.Date}}" id="date" placeholder="Дата">
                                 </div>
                                 <p></p>
                                 <div class="col">
                                     <label class="sr-only" for="inlineFormInput">Адрес</label>
-                                    <input type="text" name="address" class="form-control" value="$e.Address" id="address" placeholder="Адрес">
+                                    <input type="text" name="address" class="form-control" value="{{.Address}}" id="address" placeholder="Адрес">
                                 </div>
                                 <div class="col">
                                     <label class="sr-only" for="inlineFormInput">Место оператора</label>
                                     <!-- <input type="text" name="loc" class="form-control" id="loc" placeholder="Место оператора"> -->
-                                    <select name="loc" id="loc" placeholder="Место оператора" value="$e.Location" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                    <select name="loc" id="loc" placeholder="Место оператора" value="{{.Location}}" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
                                         <option value="value1">Оператор 1</option>
                                         <option value="value1">Оператор 2</option>
                                         <option value="value1">Оператор 3</option>
@@ -52,19 +53,18 @@
                                         <option value="value1">Оператор 7</option>
                                     </select>
                                 </div>
-                                
                             </div>
                             <p></p>
                             <div class="form-row">
                                 <p></p>
                                 <div class="col">
                                     <label class="sr-only" for="inlineFormInput">Номер</label>
-                                    <input type="text" name="number" class="form-control" value="$e.Number" id="number" placeholder="Номер">
+                                    <input type="text" name="number" class="form-control" value="{{.Number}}" id="number" placeholder="Номер">
                                 </div>
                                 <p></p>
                                 <div class="col">
                                     <label class="sr-only" for="inlineFormInput">Телефон</label>
-                                    <input type="text" name="phone" id="phone" value="$e.Phone" class="form-control" >
+                                    <input type="text" name="phone" id="phone" value="{{.Phone}}" class="form-control" >
                                         <script>
                                             $(function(){
                                             //Использование параметра completed
@@ -75,7 +75,7 @@
                                 <p></p>
                                 <div class="col">
                                     <label class="sr-only" for="inlineFormInput">Описание</label>
-                                    <input type="text" name="note" class="form-control" value="$e.Note" id="note" placeholder="Описание">
+                                    <input type="text" name="note" class="form-control" value="{{.Note}}" id="note" placeholder="Описание">
                                 </div>
                             </div>
                         <p></p>

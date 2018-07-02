@@ -260,6 +260,7 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
+			fmt.Println(person)
 
 			c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin})
 
@@ -402,7 +403,7 @@ func main() {
 		id := c.Param("id")
 
 		query := db.Select(q.Eq("ID", id))
-		_ = query.Delete(new(Person))
+		query.Delete(new(Person))
 
 		fmt.Println(id)
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
@@ -410,15 +411,19 @@ func main() {
 
 	g.GET("/edit/:id", func(c *gin.Context) {
 		id := c.Param("id")
-		var person Person
 		isloggedin := isloggedin(c)
 
 		if isloggedin {
+			var person Person
 			findVal := db.Select(q.Eq("ID", id))
-			findVal.First(&person)
+			err := findVal.First(&person)
+			if err != nil {
+				log.Fatal(err)
+			}
+			// c.Bind(&person)
 			fmt.Println(person)
 
-			c.HTML(http.StatusOK, "editTable.html", gin.H{"person": person, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "edittable.html", gin.H{"person": person, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
