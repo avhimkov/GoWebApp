@@ -10,7 +10,7 @@
             <!--If there's an error, display the error-->
             <div class="col-sm-12">
                     {{ range .person }}
-                    <form class="form" action="/operator" method="POST">
+                    <form class="form" action="/edit/:uid" method="POST">
                             <div class="form-row">
                                 <div class="col">
                                     <label class="sr-only" for="inlineFormInput">Имя заявителя</label>

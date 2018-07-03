@@ -20,15 +20,15 @@ import (
 type Person struct {
 	ID          int `storm:"id,increment"` //`form:"ID" storm:"id,increment" json:"ID"`
 	User        string
-	Name        string `storm:"index"` //Заявитель
-	SubName     string `storm:"index"` //Представитель заявитель
-	NameService string `storm:"index"` //Услуга
-	Date        string `storm:"index"` //Дата
-	Address     string `storm:"index"` //Адрес
-	Location    string `storm:"index"` //Место оператора
-	Number      string `storm:"index"` //
-	Phone       string `storm:"index"` //Телефон
-	Note        string `storm:"index"` //Примечание
+	Name        string `storm:"index" form:"name" binding:"required"`        //Заявитель
+	SubName     string `storm:"index" form:"subname" binding:"required"`     //Представитель заявитель
+	NameService string `storm:"index" form:"nameservice" binding:"required"` //Услуга
+	Date        string `storm:"index" form:"date" binding:"required"`        //Дата
+	Address     string `storm:"index" form:"address" binding:"required"`     //Адрес
+	Location    string `storm:"index" form:"location" binding:"required"`    //Место оператора
+	Number      string `storm:"index" form:"number" binding:"required"`      //
+	Phone       string `storm:"index" form:"phone" binding:"required"`       //Телефон
+	Note        string `storm:"index" form:"note" binding:"required"`        //Примечание
 }
 
 var perm, _ = permissionbolt.New()
@@ -420,7 +420,7 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			// c.Bind(&person)
+			c.Bind(&person)
 			fmt.Println(person)
 
 			c.HTML(http.StatusOK, "edittable.html", gin.H{"person": person, "is_logged_in": isloggedin})
@@ -430,23 +430,37 @@ func main() {
 		}
 	})
 
-	// g.POST("/edit/:uid", func(c *gin.Context) {
-	// 	isloggedin := isloggedin(c)
-	// 	uid := c.Param("uid")
-	// 	fmt.Println(uid)
+	g.POST("/edit/:id", func(c *gin.Context) {
+		isloggedin := isloggedin(c)
+		id := c.Param("id")
+		fmt.Println(id)
 
-	// 	if isloggedin {
-	// 		err := db.UpdateField(&Person{Name: uid}, "Age", 0)
-	// 		if err != nil {
-	// 			log.Fatal(err)
-	// 		}
+		if isloggedin {
+			name := c.PostForm("name")
+			subname := c.PostForm("subname")
+			nameservice := c.PostForm("nameservice")
+			date := c.PostForm("date")
+			address := c.PostForm("address")
+			loc := c.PostForm("loc")
+			number := c.PostForm("number")
+			phone := c.PostForm("phone")
+			note := c.PostForm("note")
 
-	// 		http.Redirect(c.Writer, c.Request, "/operator", 302)
-	// 	} else {
-	// 		c.AbortWithStatus(http.StatusForbidden)
-	// 		fmt.Fprint(c.Writer, "Permission denied!")
-	// 	}
-	// })
+			person := []*Person{
+				{Name: name, SubName: subname, NameService: nameservice,
+					Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
+			}
+			err := db.Update(&person)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			http.Redirect(c.Writer, c.Request, "/operator", 302)
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+	})
 
 	// Start serving the application
 	g.Run(":3000")
