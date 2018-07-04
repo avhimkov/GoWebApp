@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/asdine/storm"
 	"github.com/asdine/storm/q"
@@ -302,6 +303,49 @@ func main() {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
+	})
+
+	g.POST("/uploadValue", func(c *gin.Context) {
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+
+		csvFile, _ := os.Open("value.csv")
+		reader := csv.NewReader(bufio.NewReader(csvFile))
+
+		peeps := []*Person{}
+
+		for {
+			line, error := reader.Read()
+			if error == io.EOF {
+				break
+			} else if error != nil {
+				log.Fatal(error)
+			}
+
+			peeps = append(peeps, Person{
+				ID:          strconv.Atoi(line[0]),
+				User:        line[1],
+				Name:        line[2],
+				SubName:     line[3],
+				NameService: line[4],
+				Date:        line[5],
+				Address:     line[6],
+				Location:    line[7],
+				Number:      line[8],
+				Phone:       line[9],
+				Note:        line[10],
+			})
+
+		}
+
+		for _, p := range peeps {
+			fmt.Println(p)
+			db.Save(p)
+		}
+
+		peepsJson, _ := json.Marshal(peeps)
+		fmt.Println(string(peepsJson))
+
 	})
 
 	//operator register users
