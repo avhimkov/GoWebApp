@@ -20,15 +20,15 @@ import (
 type Person struct {
 	ID          int `storm:"id,increment"` //`form:"ID" storm:"id,increment" json:"ID"`
 	User        string
-	Name        string `storm:"index" form:"name" binding:"required"`        //Заявитель
-	SubName     string `storm:"index" form:"subname" binding:"required"`     //Представитель заявитель
-	NameService string `storm:"index" form:"nameservice" binding:"required"` //Услуга
-	Date        string `storm:"index" form:"date" binding:"required"`        //Дата
-	Address     string `storm:"index" form:"address" binding:"required"`     //Адрес
-	Location    string `storm:"index" form:"location" binding:"required"`    //Место оператора
-	Number      string `storm:"index" form:"number" binding:"required"`      //
-	Phone       string `storm:"index" form:"phone" binding:"required"`       //Телефон
-	Note        string `storm:"index" form:"note" binding:"required"`        //Примечание
+	Name        string `storm:"index" json:"name" form:"name" binding:"required"`               //Заявитель
+	SubName     string `storm:"index" json:"subname" form:"subname" binding:"required"`         //Представитель заявитель
+	NameService string `storm:"index" json:"nameservice" form:"nameservice" binding:"required"` //Услуга
+	Date        string `storm:"index" json:"date" form:"date" binding:"required"`               //Дата
+	Address     string `storm:"index" json:"address" form:"address" binding:"required"`         //Адрес
+	Location    string `storm:"index" json:"location" form:"location" binding:"required"`       //Место оператора
+	Number      string `storm:"index" json:"number" form:"number" binding:"required"`           //
+	Phone       string `storm:"index" json:"phone" form:"phone" binding:"required"`             //Телефон
+	Note        string `storm:"index" json:"note" form:"note" binding:"required"`               //Примечание
 }
 
 var perm, _ = permissionbolt.New()
@@ -325,46 +325,47 @@ func main() {
 		}
 	})
 
-	// g.POST("/uploadValue", func(c *gin.Context) {
-	// 	usercook, _ := userstate.UsernameCookie(c.Request)
-	// 	isloggedin := userstate.IsLoggedIn(usercook)
+	g.POST("/uploadValue", func(c *gin.Context) {
+		// usercook, _ := userstate.UsernameCookie(c.Request)
+		// isloggedin := userstate.IsLoggedIn(usercook)
 
-	// 	csvFile, _ := os.Open("value.csv")
-	// 	reader := csv.NewReader(bufio.NewReader(csvFile))
+		csvFile, _ := os.Open("value.csv")
+		reader := csv.NewReader(bufio.NewReader(csvFile))
+		defer csvFile.Close()
 
-	// 	peeps := []*Person{}
+		var peeps []Person
 
-	// 	for {
-	// 		line, error := reader.Read()
-	// 		if error == io.EOF {
-	// 			break
-	// 		} else if error != nil {
-	// 			log.Fatal(error)
-	// 		}
+		for {
+			line, error := reader.Read()
+			if error == io.EOF {
+				break
+			} else if error != nil {
+				log.Fatal(error)
+			}
 
-	// 		peeps = append(peeps, Person{
-	// 			ID:          strconv.Atoi(line[0]),
-	// 			User:        line[1],
-	// 			Name:        line[2],
-	// 			SubName:     line[3],
-	// 			NameService: line[4],
-	// 			Date:        line[5],
-	// 			Address:     line[6],
-	// 			Location:    line[7],
-	// 			Number:      line[8],
-	// 			Phone:       line[9],
-	// 			Note:        line[10],
-	// 		})
-	// 	}
+			peeps = append(peeps, Person{
+				// ID:          strconv.Atoi(line[0]),
+				User:        line[0],
+				Name:        line[1],
+				SubName:     line[2],
+				NameService: line[3],
+				Date:        line[4],
+				Address:     line[5],
+				Location:    line[6],
+				Number:      line[7],
+				Phone:       line[8],
+				Note:        line[9],
+			})
+		}
 
-	// 	for _, p := range peeps {
-	// 		fmt.Println(p)
-	// 		db.Save(p)
-	// 	}
+		for _, p := range peeps {
+			fmt.Println(p)
+			db.Save(p)
+		}
 
-	// 	peepsJson, _ := json.Marshal(peeps)
-	// 	fmt.Println(string(peepsJson))
-	// })
+		peepsJson, _ := json.Marshal(peeps)
+		fmt.Println(string(peepsJson))
+	})
 
 	//operator register users
 	g.GET("/kontroler", func(c *gin.Context) {
