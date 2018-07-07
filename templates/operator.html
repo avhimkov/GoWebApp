@@ -14,6 +14,17 @@
                 </p>
             {{end}}
             <div class="col-sm-12">
+                <form  class="form" action="/uploadValue" method="POST">
+                    <label class="custom-file" id="customFile">
+                        <input type="file" accept=".csv" id="file" class="custom-file-input" name="uploadfile" />
+                        <input type="hidden" name="token" value="{{.}}"/>
+                        <input type="submit" class="btn btn-primary btn-rounded btn-sm my-0"  value="upload" />
+                        <label class="custom-file-label">Выбрать файл</label>
+                        <!-- <span class="custom-file-control"></span> -->
+                    </label>
+                </form>
+                <!-- <input type="file" class="custom-file-input" id="exampleInputFile" aria-describedby="fileHelp"> -->
+                <p></p>
                 <form class="form" action="/operator" method="POST">
                         <div class="form-row">
                             <div class="col">
@@ -56,7 +67,6 @@
                                     <option value="value1">Оператор 7</option>
                                 </select>
                             </div>
-                            
                         </div>
                         <p></p>
                         <div class="form-row">
@@ -83,12 +93,11 @@
                             </div>
                         </div>
                     <p></p>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary float-right">Сохранить</button>
                 </form>
             </div>
         </div>
     </div>
-    
     <p></p>
     <div class="card">
         <h3 class="card-header panel-success white-text">Список услуги</h3>
