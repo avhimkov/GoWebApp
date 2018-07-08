@@ -79,20 +79,20 @@ func SetupRouter() *gin.Engine {
 	return g
 }
 
-func uploadValue(c *gin.Context) {
-	file, header, err := c.Request.FormFile("upload")
-	filename := header.Filename
-	fmt.Println(header.Filename)
-	out, err := os.Create("./tmp/" + filename + ".csv")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer out.Close()
-	_, err = io.Copy(out, file)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
+// func uploadValue(c *gin.Context) {
+// 	file, header, err := c.Request.FormFile("upload")
+// 	filename := header.Filename
+// 	fmt.Println(header.Filename)
+// 	out, err := os.Create("./tmp/" + filename + ".csv")
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	defer out.Close()
+// 	_, err = io.Copy(out, file)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// }
 
 func main() {
 
@@ -346,68 +346,75 @@ func main() {
 		}
 	})
 
-	g.POST("/uploadValue", uploadValue)
+	// g.POST("/uploadValue", uploadValue)
 
-	// g.POST("/uploadValue", func(c *gin.Context) {
-	// usercook, _ := userstate.UsernameCookie(c.Request)
-	// uid := c.Request.FormValue("uid")
-	// var url string
+	g.POST("/uploadValue", func(c *gin.Context) {
+		// usercook, _ := userstate.UsernameCookie(c.Request)
+		// uid, _ := userstate.GenerateUniqueConfirmationCode()
+		// fmt.Println(uid)
 
-	// file, header, err := c.Request.FormFile("uploadFile")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// filename := header.Filename
-	// fmt.Println(filename)
-	// err = os.Mkdir("./upload/"+uid, 777)
-	// out, err := os.Create("./upload/" + uid + "/" + filename)
-	// _, err = io.Copy(out, file)
-	// url = "./upload/" + uid + "/" + filename
+		var url string
 
-	// 	csvFile, _ := os.Open("value.csv")
-	// 	reader := csv.NewReader(bufio.NewReader(csvFile))
-	// 	defer csvFile.Close()
+		file, header, err := c.Request.FormFile("uploadfile")
+		filename := header.Filename
+		fmt.Println(header.Filename)
+		out, err := os.Create("./upload/" + filename)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer out.Close()
+		_, err = io.Copy(out, file)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	// 	var peeps []Person
+		url = "./upload/" + filename
+		fmt.Println(url)
 
-	// 	for {
-	// 		line, error := reader.Read()
-	// 		if error == io.EOF {
-	// 			break
-	// 		} else if error != nil {
-	// 			log.Fatal(error)
-	// 		}
+		// csvFile, _ := os.Open(url)
+		// reader := csv.NewReader(bufio.NewReader(csvFile))
+		// defer csvFile.Close()
 
-	// 		peeps = append(peeps, Person{
-	// 			// ID:          strconv.Atoi(line[0]),
-	// 			User:        usercook,
-	// 			Name:        line[0],
-	// 			SubName:     line[1],
-	// 			NameService: line[2],
-	// 			Date:        line[3],
-	// 			Address:     line[4],
-	// 			Location:    line[5],
-	// 			Number:      line[6],
-	// 			Phone:       line[7],
-	// 			Note:        line[8],
+		// var peeps []Person
 
-	// 			// Address: &Address{
-	// 			// 	City:  line[2],
-	// 			// 	State: line[3],
-	// 			// },
-	// 		})
-	// 	}
+		// for {
+		// 	line, error := reader.Read()
+		// 	if error == io.EOF {
+		// 		break
+		// 	} else if error != nil {
+		// 		log.Fatal(error)
+		// 	}
 
-	// 	for _, p := range peeps {
-	// 		fmt.Println(p)
-	// 		db.Save(p)
-	// 	}
+		// 	peeps = append(peeps, Person{
+		// 		// ID:          strconv.Atoi(line[0]),
+		// 		User:        usercook,
+		// 		Name:        line[0],
+		// 		SubName:     line[1],
+		// 		NameService: line[2],
+		// 		Date:        line[3],
+		// 		Address:     line[4],
+		// 		Location:    line[5],
+		// 		Number:      line[6],
+		// 		Phone:       line[7],
+		// 		Note:        line[8],
 
-	// 	peepsJson, _ := json.Marshal(peeps)
-	// 	fmt.Println(string(peepsJson))
+		// 		// Address: &Address{
+		// 		// 	City:  line[2],
+		// 		// 	State: line[3],
+		// 		// },
+		// 	})
+		// }
 
-	// 	http.Redirect(c.Writer, c.Request, "/operator", 302)
-	// })
+		// for _, p := range peeps {
+		// 	fmt.Println(p)
+		// 	db.Save(p)
+		// }
+
+		// peepsJson, _ := json.Marshal(peeps)
+		// fmt.Println(string(peepsJson))
+
+		http.Redirect(c.Writer, c.Request, "/operator", 302)
+	})
 
 	//operator register users
 	g.GET("/kontroler", func(c *gin.Context) {

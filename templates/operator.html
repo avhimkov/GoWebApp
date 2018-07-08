@@ -15,15 +15,32 @@
             {{end}}
             <div class="col-sm-12">
                 <form  class="form" action="/uploadValue" method="POST">
-                    <label class="custom-file" id="customFile">
-                        <input type="file" accept=".csv" id="file" class="custom-file-input" name="uploadfile" />
-                        <input type="hidden" name="token" value="{{.}}"/>
-                        <input type="submit" class="btn btn-primary btn-rounded btn-sm my-0"  value="upload" />
-                        <label class="custom-file-label">Выбрать файл</label>
-                        <!-- <span class="custom-file-control"></span> -->
-                    </label>
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <label class="custom-file" id="customFile">
+                            <input type="file" accept="text/csv" id="uploadfile" class="custom-file-input" name="uploadfile" />
+                            <input type="hidden" name="token" value="{{.}}"/>
+                            <label class="custom-file-label" for="inlineFormInput">Выбрать файл</label>
+                            <input type="submit" class="btn btn-primary btn-rounded btn-sm my-0"  value="загрузить" />
+                            <script>
+                                $(function() {
+                                  $(document).on('change', ':file', function() {var input = $(this), numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                                        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');input.trigger('fileselect', [numFiles, label]);
+                                  });
+                                  $(document).ready( function() {
+                                      $(':file').on('fileselect', function(event, numFiles, label) {var input = $(this).parents('.custom-file').find('.custom-file-label'),
+                                      log = numFiles > 1 ? numFiles + ' files selected' : label;if( input.length ) {input.text(log);} else {if( log ) alert(log);}});
+                                  });
+                                });
+                            </script>
+                        </label>
+                    </div>
+<!-- 
+                    <div class="input-group-append">
+                        <input type="submit" class="btn btn-primary btn-rounded btn-sm my-0"  value="загрузить" />
+                    </div> -->
+                </div>
                 </form>
-                <!-- <input type="file" class="custom-file-input" id="exampleInputFile" aria-describedby="fileHelp"> -->
                 <p></p>
                 <form class="form" action="/operator" method="POST">
                         <div class="form-row">
@@ -148,7 +165,7 @@
                             </td>
                             <td>
                                 <form action="/removeval/{{$e.ID}}" method="GET">
-                                    <input value="rem_val"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                                    <input value="rem_val"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
                                 </form>
                             </td>
                         </tr>
