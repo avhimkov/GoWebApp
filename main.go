@@ -349,9 +349,7 @@ func main() {
 	// g.POST("/uploadValue", uploadValue)
 
 	g.POST("/uploadValue", func(c *gin.Context) {
-		// usercook, _ := userstate.UsernameCookie(c.Request)
-		// uid, _ := userstate.GenerateUniqueConfirmationCode()
-		// fmt.Println(uid)
+		usercook, _ := userstate.UsernameCookie(c.Request)
 
 		var url string
 
@@ -371,47 +369,35 @@ func main() {
 		url = "./upload/" + filename
 		fmt.Println(url)
 
-		// csvFile, _ := os.Open(url)
-		// reader := csv.NewReader(bufio.NewReader(csvFile))
-		// defer csvFile.Close()
+		//Work
+		csvFile, _ := os.Open(url)
+		reader := csv.NewReader(bufio.NewReader(csvFile))
+		for {
+			line, error := reader.Read()
+			if error == io.EOF {
+				break
+			} else if error != nil {
+				log.Fatal(error)
+			}
 
-		// var peeps []Person
+			peeps := []*Person{
+				{User: usercook,
+					Name:        line[0],
+					SubName:     line[1],
+					NameService: line[2],
+					Date:        line[3],
+					Address:     line[4],
+					Location:    line[5],
+					Number:      line[6],
+					Phone:       line[7],
+					Note:        line[8]},
+			}
 
-		// for {
-		// 	line, error := reader.Read()
-		// 	if error == io.EOF {
-		// 		break
-		// 	} else if error != nil {
-		// 		log.Fatal(error)
-		// 	}
-
-		// 	peeps = append(peeps, Person{
-		// 		// ID:          strconv.Atoi(line[0]),
-		// 		User:        usercook,
-		// 		Name:        line[0],
-		// 		SubName:     line[1],
-		// 		NameService: line[2],
-		// 		Date:        line[3],
-		// 		Address:     line[4],
-		// 		Location:    line[5],
-		// 		Number:      line[6],
-		// 		Phone:       line[7],
-		// 		Note:        line[8],
-
-		// 		// Address: &Address{
-		// 		// 	City:  line[2],
-		// 		// 	State: line[3],
-		// 		// },
-		// 	})
-		// }
-
-		// for _, p := range peeps {
-		// 	fmt.Println(p)
-		// 	db.Save(p)
-		// }
-
-		// peepsJson, _ := json.Marshal(peeps)
-		// fmt.Println(string(peepsJson))
+			for _, p := range peeps {
+				db.Save(p)
+				fmt.Println(p)
+			}
+		}
 
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})

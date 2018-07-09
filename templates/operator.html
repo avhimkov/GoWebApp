@@ -16,12 +16,15 @@
             <div class="col-sm-12">
                 <form  class="form" action="/uploadValue" method="POST">
                 <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <!-- <span class="input-group-text">Upload</span> -->
+                            <input type="submit" class="btn btn-primary btn-rounded btn-sm my-0"  value="загрузить" />
+                        </div>
                     <div class="custom-file">
                         <label class="custom-file" id="customFile">
                             <input type="file" accept="text/csv" id="uploadfile" class="custom-file-input" name="uploadfile" />
                             <input type="hidden" name="token" value="{{.}}"/>
                             <label class="custom-file-label" for="inlineFormInput">Выбрать файл</label>
-                            <input type="submit" class="btn btn-primary btn-rounded btn-sm my-0"  value="загрузить" />
                             <script>
                                 $(function() {
                                   $(document).on('change', ':file', function() {var input = $(this), numFiles = input.get(0).files ? input.get(0).files.length : 1,
@@ -35,10 +38,6 @@
                             </script>
                         </label>
                     </div>
-<!-- 
-                    <div class="input-group-append">
-                        <input type="submit" class="btn btn-primary btn-rounded btn-sm my-0"  value="загрузить" />
-                    </div> -->
                 </div>
                 </form>
                 <p></p>
