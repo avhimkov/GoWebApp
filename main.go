@@ -79,20 +79,18 @@ func SetupRouter() *gin.Engine {
 	return g
 }
 
-// func uploadValue(c *gin.Context) {
-// 	file, header, err := c.Request.FormFile("upload")
-// 	filename := header.Filename
-// 	fmt.Println(header.Filename)
-// 	out, err := os.Create("./tmp/" + filename + ".csv")
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	defer out.Close()
-// 	_, err = io.Copy(out, file)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// }
+func uploadValue(c *gin.Context) {
+	uid := c.Request.FormValue("uid")
+	file, header, err := c.Request.FormFile("uploadFile")
+	if err != nil {
+		log.Fatal(err)
+	}
+	filename := header.Filename
+	fmt.Println(filename)
+	err = os.Mkdir("./upload/"+uid, 777)
+	out, err := os.Create("./upload/" + uid + "/" + filename)
+	_, err = io.Copy(out, file)
+}
 
 func main() {
 
@@ -349,24 +347,22 @@ func main() {
 	// g.POST("/uploadValue", uploadValue)
 
 	g.POST("/uploadValue", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
+		uid, _ := userstate.UsernameCookie(c.Request)
 
-		var url string
-
-		file, header, err := c.Request.FormFile("uploadfile")
+		file, header, err := c.Request.FormFile("uploadFile")
+		if err != nil {
+			log.Fatal(err)
+		}
 		filename := header.Filename
-		fmt.Println(header.Filename)
+		fmt.Println(filename)
+		err = os.Mkdir("./upload/", 777)
+		if err != nil {
+			log.Fatal(err)
+		}
 		out, err := os.Create("./upload/" + filename)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer out.Close()
 		_, err = io.Copy(out, file)
-		if err != nil {
-			log.Fatal(err)
-		}
 
-		url = "./upload/" + filename
+		url := "./upload/" + filename
 		fmt.Println(url)
 
 		//Work
@@ -381,7 +377,7 @@ func main() {
 			}
 
 			peeps := []*Person{
-				{User: usercook,
+				{User: uid,
 					Name:        line[0],
 					SubName:     line[1],
 					NameService: line[2],
