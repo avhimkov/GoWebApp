@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/asdine/storm"
 	"github.com/asdine/storm/q"
@@ -79,18 +80,18 @@ func SetupRouter() *gin.Engine {
 	return g
 }
 
-func uploadValue(c *gin.Context) {
-	uid := c.Request.FormValue("uid")
-	file, header, err := c.Request.FormFile("uploadFile")
-	if err != nil {
-		log.Fatal(err)
-	}
-	filename := header.Filename
-	fmt.Println(filename)
-	err = os.Mkdir("./upload/"+uid, 777)
-	out, err := os.Create("./upload/" + uid + "/" + filename)
-	_, err = io.Copy(out, file)
-}
+// func uploadValue(c *gin.Context) {
+// 	uid := c.Request.FormValue("uid")
+// 	file, header, err := c.Request.FormFile("uploadFile")
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	filename := header.Filename
+// 	fmt.Println(filename)
+// 	err = os.Mkdir("./upload/"+uid, 777)
+// 	out, err := os.Create("./upload/" + uid + "/" + filename)
+// 	_, err = io.Copy(out, file)
+// }
 
 func main() {
 
@@ -347,7 +348,10 @@ func main() {
 	// g.POST("/uploadValue", uploadValue)
 
 	g.POST("/uploadValue", func(c *gin.Context) {
-		uid, _ := userstate.UsernameCookie(c.Request)
+		// uid, _ := userstate.GenerateUniqueConfirmationCode()
+		usercook, _ := userstate.UsernameCookie(c.Request)
+
+		path := filepath.Clean("./upload/")
 
 		file, header, err := c.Request.FormFile("uploadFile")
 		if err != nil {
@@ -355,14 +359,14 @@ func main() {
 		}
 		filename := header.Filename
 		fmt.Println(filename)
-		err = os.Mkdir("./upload/", 777)
+		err = os.MkdirAll(path, 0777)
 		if err != nil {
 			log.Fatal(err)
 		}
-		out, err := os.Create("./upload/" + filename)
+		out, err := os.Create(path + "/" + filename)
 		_, err = io.Copy(out, file)
 
-		url := "./upload/" + filename
+		url := path + "/" + filename
 		fmt.Println(url)
 
 		//Work
@@ -377,7 +381,7 @@ func main() {
 			}
 
 			peeps := []*Person{
-				{User: uid,
+				{User: usercook,
 					Name:        line[0],
 					SubName:     line[1],
 					NameService: line[2],

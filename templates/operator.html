@@ -14,7 +14,7 @@
                 </p>
             {{end}}
             <div class="col-sm-12">
-                <form  class="form" action="/uploadValue" method="POST">
+                <form enctype="multipart/form-data" class="form" action="/uploadValue" method="POST">
                 <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <!-- <span class="input-group-text">Upload</span> -->
@@ -22,7 +22,7 @@
                         </div>
                     <div class="custom-file">
                         <label class="custom-file" id="customFile">
-                            <input type="file" accept="text/csv" id="uploadfile" class="custom-file-input" name="uploadfile" />
+                            <input type="file" accept="text/csv" id="uploadFile" class="custom-file-input" name="uploadFile" />
                             <input type="hidden" name="token" value="{{.}}"/>
                             <label class="custom-file-label" for="inlineFormInput">Выбрать файл</label>
                             <script>
