@@ -492,6 +492,20 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
 
+	//Delete value on id
+	g.GET("/removeval", func(c *gin.Context) {
+		// id := c.Param("id")
+		var person Person
+		c.Bind(&person)
+
+		query := db.Select(q.Eq("ID", person.ID))
+		query.Delete(new(Person))
+
+		fmt.Println(person.ID)
+		c.JSON(200, gin.H{"persons": person.ID})
+		http.Redirect(c.Writer, c.Request, "/operator", 302)
+	})
+
 	//NOT WORK
 	// g.GET("/edit/:id", func(c *gin.Context) {
 	// 	id := c.Param("id")
@@ -514,37 +528,39 @@ func main() {
 	// 	}
 	// })
 
-	// g.POST("/edit/:id", func(c *gin.Context) {
-	// 	isloggedin := isloggedin(c)
-	// 	id := c.Param("id")
-	// 	fmt.Println(id)
+	g.POST("/edit/:id", func(c *gin.Context) {
+		isloggedin := isloggedin(c)
+		// id := c.Param("id")
+		// fmt.Println(id)
+		var person Person
+		c.Bind(&person)
 
-	// 	if isloggedin {
-	// 		name := c.PostForm("name")
-	// 		subname := c.PostForm("subname")
-	// 		nameservice := c.PostForm("nameservice")
-	// 		date := c.PostForm("date")
-	// 		address := c.PostForm("address")
-	// 		loc := c.PostForm("loc")
-	// 		number := c.PostForm("number")
-	// 		phone := c.PostForm("phone")
-	// 		note := c.PostForm("note")
+		if isloggedin {
+			name := person.Name
+			subname := person.SubName
+			nameservice := person.NameService
+			date := person.Date
+			address := person.Address
+			loc := person.Location
+			number := person.Number
+			phone := person.Phone
+			note := person.Note
 
-	// 		person := []*Person{
-	// 			{Name: name, SubName: subname, NameService: nameservice,
-	// 				Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
-	// 		}
-	// 		err := db.Update(&person)
-	// 		if err != nil {
-	// 			log.Fatal(err)
-	// 		}
+			peeps := []*Person{
+				{Name: name, SubName: subname, NameService: nameservice,
+					Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
+			}
+			err := db.Update(&peeps)
+			if err != nil {
+				log.Fatal(err)
+			}
 
-	// 		http.Redirect(c.Writer, c.Request, "/operator", 302)
-	// 	} else {
-	// 		c.AbortWithStatus(http.StatusForbidden)
-	// 		fmt.Fprint(c.Writer, "Permission denied!")
-	// 	}
-	// })
+			http.Redirect(c.Writer, c.Request, "/operator", 302)
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+	})
 
 	// g.PUT("/people/:id", UpdatePerson)
 
