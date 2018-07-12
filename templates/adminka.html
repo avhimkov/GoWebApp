@@ -29,7 +29,7 @@
                     </td>
                     <td>
                         <form action="/delete/{{$e}}" method="GET">
-                            <input value="Delete"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                            <input value="Delete"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
                         </form>
                     </td>
                     <td>
@@ -42,11 +42,35 @@
             </tbody>
         </table>
         <p></p>
-        <form class="form" action="/uploadUsers" method="POST">
-            <button type="submit" class="btn btn-primary">Регистрация из файл</button>
-        </form>
+        <form enctype="multipart/form-data" class="form" action="/uploadValue" method="POST">
+            <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <!-- <span class="input-group-text">Upload</span> -->
+                        <input type="submit" class="btn btn-primary btn-rounded btn-sm my-0"  value="Добавить" />
+                    </div>
+                <div class="custom-file">
+                    <label class="custom-file" id="customFile">
+                        <input type="file" accept="text/csv" id="uploadFile" class="custom-file-input" name="uploadFile" />
+                        <input type="hidden" name="token" value="{{.}}"/>
+                        <label class="custom-file-label" for="inlineFormInput">Выбрать файл</label>     
+                        <script>
+                            $(function() {
+                              $(document).on('change', ':file', function() {var input = $(this), numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');input.trigger('fileselect', [numFiles, label]);
+                              });
+                              $(document).ready( function() {
+                                  $(':file').on('fileselect', function(event, numFiles, label) {var input = $(this).parents('.custom-file').find('.custom-file-label'),
+                                  log = numFiles > 1 ? numFiles + ' files selected' : label;if( input.length ) {input.text(log);} else {if( log ) alert(log);}});
+                              });
+                            });
+                        </script>
+                    </label>
+                </div>
+            </div>
+            </form>
     </div>
 </div>
+
 
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}

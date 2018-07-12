@@ -80,19 +80,6 @@ func SetupRouter() *gin.Engine {
 	return g
 }
 
-// func uploadValue(c *gin.Context) {
-// 	uid := c.Request.FormValue("uid")
-// 	file, header, err := c.Request.FormFile("uploadFile")
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	filename := header.Filename
-// 	fmt.Println(filename)
-// 	err = os.Mkdir("./upload/"+uid, 777)
-// 	out, err := os.Create("./upload/" + uid + "/" + filename)
-// 	_, err = io.Copy(out, file)
-// }
-
 func main() {
 
 	db := DB()
@@ -269,62 +256,7 @@ func main() {
 		}
 	})
 
-	//operator register users
-	g.GET("/operator", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
-
-		if isloggedin {
-
-			var person []Person
-			err := db.All(&person)
-			if err != nil {
-				log.Fatal(err)
-			}
-			fmt.Println(person)
-
-			c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin})
-
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
-
-	//Register visitors POST
-	g.POST("/operator", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
-
-		if isloggedin {
-
-			name := c.PostForm("name")
-			subname := c.PostForm("subname")
-			nameservice := c.PostForm("nameservice")
-			date := c.PostForm("date")
-			address := c.PostForm("address")
-			loc := c.PostForm("loc")
-			number := c.PostForm("number")
-			phone := c.PostForm("phone")
-			note := c.PostForm("note")
-
-			peeps := []*Person{
-				{User: usercook, Name: name, SubName: subname, NameService: nameservice,
-					Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
-			}
-
-			for _, p := range peeps {
-				fmt.Println(p)
-				db.Save(p)
-			}
-
-			http.Redirect(c.Writer, c.Request, "/operator", 302)
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
-
-	//API Maxima
+	//API Maxima - TEST function
 	g.GET("/maxima", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 
@@ -344,8 +276,6 @@ func main() {
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
 	})
-
-	// g.POST("/uploadValue", uploadValue)
 
 	g.POST("/uploadValue", func(c *gin.Context) {
 		// uid, _ := userstate.GenerateUniqueConfirmationCode()
@@ -400,6 +330,61 @@ func main() {
 		}
 
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
+	})
+
+	//operator register users
+	g.GET("/operator", func(c *gin.Context) {
+		isloggedin := isloggedin(c)
+
+		if isloggedin {
+
+			var person []Person
+			err := db.All(&person)
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Println(person)
+
+			c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin})
+
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+	})
+
+	//Register visitors POST
+	g.POST("/operator", func(c *gin.Context) {
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
+
+		if isloggedin {
+
+			name := c.PostForm("name")
+			subname := c.PostForm("subname")
+			nameservice := c.PostForm("nameservice")
+			date := c.PostForm("date")
+			address := c.PostForm("address")
+			loc := c.PostForm("loc")
+			number := c.PostForm("number")
+			phone := c.PostForm("phone")
+			note := c.PostForm("note")
+
+			peeps := []*Person{
+				{User: usercook, Name: name, SubName: subname, NameService: nameservice,
+					Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
+			}
+
+			for _, p := range peeps {
+				fmt.Println(p)
+				db.Save(p)
+			}
+
+			http.Redirect(c.Writer, c.Request, "/operator", 302)
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
 	})
 
 	//operator register users
@@ -507,57 +492,80 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
 
-	g.GET("/edit/:id", func(c *gin.Context) {
-		id := c.Param("id")
-		isloggedin := isloggedin(c)
+	//NOT WORK
+	// g.GET("/edit/:id", func(c *gin.Context) {
+	// 	id := c.Param("id")
+	// 	isloggedin := isloggedin(c)
 
-		if isloggedin {
-			var person Person
-			findVal := db.Select(q.Eq("ID", id))
-			err := findVal.First(&person)
-			if err != nil {
-				log.Fatal(err)
-			}
-			c.Bind(&person)
-			fmt.Println(person)
+	// 	if isloggedin {
+	// 		var person Person
+	// 		findVal := db.Select(q.Eq("ID", id))
+	// 		err := findVal.First(&person)
+	// 		if err != nil {
+	// 			log.Fatal(err)
+	// 		}
+	// 		c.Bind(&person)
+	// 		fmt.Println(person)
 
-			c.HTML(http.StatusOK, "edittable.html", gin.H{"person": person, "is_logged_in": isloggedin})
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
+	// 		c.HTML(http.StatusOK, "edittable.html", gin.H{"person": person, "is_logged_in": isloggedin})
+	// 	} else {
+	// 		c.AbortWithStatus(http.StatusForbidden)
+	// 		fmt.Fprint(c.Writer, "Permission denied!")
+	// 	}
+	// })
+
+	// g.POST("/edit/:id", func(c *gin.Context) {
+	// 	isloggedin := isloggedin(c)
+	// 	id := c.Param("id")
+	// 	fmt.Println(id)
+
+	// 	if isloggedin {
+	// 		name := c.PostForm("name")
+	// 		subname := c.PostForm("subname")
+	// 		nameservice := c.PostForm("nameservice")
+	// 		date := c.PostForm("date")
+	// 		address := c.PostForm("address")
+	// 		loc := c.PostForm("loc")
+	// 		number := c.PostForm("number")
+	// 		phone := c.PostForm("phone")
+	// 		note := c.PostForm("note")
+
+	// 		person := []*Person{
+	// 			{Name: name, SubName: subname, NameService: nameservice,
+	// 				Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
+	// 		}
+	// 		err := db.Update(&person)
+	// 		if err != nil {
+	// 			log.Fatal(err)
+	// 		}
+
+	// 		http.Redirect(c.Writer, c.Request, "/operator", 302)
+	// 	} else {
+	// 		c.AbortWithStatus(http.StatusForbidden)
+	// 		fmt.Fprint(c.Writer, "Permission denied!")
+	// 	}
+	// })
+
+	// g.PUT("/people/:id", UpdatePerson)
+
+	g.PUT("/edit/:id", func(c *gin.Context) {
+		var person Person
+		id := c.Params.ByName("id")
+
+		findVal := db.Select(q.Eq("ID", id))
+		err := findVal.First(&person)
+		if err != nil {
+			log.Fatal(err)
 		}
-	})
 
-	g.POST("/edit/:id", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
-		id := c.Param("id")
-		fmt.Println(id)
+		// if err := db.Where("id = ?", id).First(&person).Error; err != nil {
+		// 	c.AbortWithStatus(404)
+		// 	fmt.Println(err)
+		// }
+		c.BindJSON(&person)
 
-		if isloggedin {
-			name := c.PostForm("name")
-			subname := c.PostForm("subname")
-			nameservice := c.PostForm("nameservice")
-			date := c.PostForm("date")
-			address := c.PostForm("address")
-			loc := c.PostForm("loc")
-			number := c.PostForm("number")
-			phone := c.PostForm("phone")
-			note := c.PostForm("note")
-
-			person := []*Person{
-				{Name: name, SubName: subname, NameService: nameservice,
-					Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
-			}
-			err := db.Update(&person)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			http.Redirect(c.Writer, c.Request, "/operator", 302)
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
+		db.Save(&person)
+		c.JSON(200, person)
 	})
 
 	// Start serving the application
