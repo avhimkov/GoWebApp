@@ -97,7 +97,7 @@
                                 <input type="text" name="phone" id="phone" class="form-control" >
                                     <script>
                                         $(function(){
-                                        //Использование параметра completed
+                                        //Использование параметра completed jquery.maskedinput.min.js
                                             $("#phone").mask("8(999) 999-9999");
                                         });
                                     </script>
@@ -118,6 +118,7 @@
     <div class="card">
         <h3 class="card-header panel-success white-text">Список услуги</h3>
         <div class="card-body">
+            <!-- <button onClick ="$('#table').tableExport({type:'excel',escape:'false'});">Copy Text</button> -->
             <form action="/removeval" method="POST">
                 <input value="rem_val"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
             </form>

@@ -3,4 +3,6 @@
 vendor
 .vscode
 debug
+bolt.db
+bolt.db.lock
 projectFilesBackup
