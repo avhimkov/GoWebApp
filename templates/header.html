@@ -2,79 +2,71 @@
 
 <!doctype html>
 <html>
-  <head>
-    <!--Use the `title` variable to set the title of the page-->
-    <title>GoWebApp</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Local -->
-    <!-- bootstrap -->
-    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
-    
-    <link rel="stylesheet" href="/assets/css/bootstrap-editable.css">
-    <link rel="stylesheet" href="/assets/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.css">
-
-    <script src="/assets/jquery/jquery-3.3.1.min.js"></script>
-    <script src="/assets/popper.min.js"></script>
-    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- bootstrap-table -->
-    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap-editable/css/bootstrap-editable.css"> -->
-    <!-- <link rel="stylesheet" href="/assets/bootstrap-table-editable/bootstrap-table-filter-control.css"> -->
-    <!-- <link rel="stylesheet" href="/assets/table-export.css"> -->
-  
-    <link rel="stylesheet" href="/assets/bootstrap-table/dist/bootstrap-table.min.css">
-    <script src="/assets/bootstrap-table/dist/bootstrap-table.min.js"></script>
-    <script src="/assets/bootstrap-table/dist/locale/bootstrap-table-ru-RU.min.js"></script>
-    <script src="/assets/bootstrap-table/dist/extensions/editable/bootstrap-table-editable.js"></script>
-    <script src="/assets/bootstrap-table/dist/extensions/export/bootstrap-table-export.js"></script>
-    <!-- <script src="/assets/tableExport-jquery-plugin/html2canvas.js"></script>
-    <script src="/assets/tableExport-jquery-plugin/jquery.base64.js"></script>
-    <script src="/assets/tableExport-jquery-plugin/tableExport.js"></script>
-    <script src="/assets/tableExport-jquery-plugin/jspdf/jspdf.js"></script>
-    <script src="/assets/tableExport-jquery-plugin/jspdf/libs/sprintf.js"></script>
-    <script src="/assets/tableExport-jquery-plugin/jspdf/libs/base64.js"></script> -->
-    <script src="/assets/tableExport/js/tableexport.min.js"></script>
-    <script src="/assets/tableExport/css/tableexport.min.css"></script>
-    <script src="/assets/tableExport/js/FileSaver.min.js"></script>
-    <script src="/assets/tableExport/js/jszip.js"></script>
-    <script src="/assets/tableExport/js/xls.core.min.js"></script>
-    <script src="/assets/tableExport/js/xlsx.core.min.js"></script>
-    <script src="/assets/tableExport/js/Blob.min.js"></script>
-
-
-
-    <script src="/assets/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
-    
-    <!-- Validation input Phone -->
-    <script src="/assets/jquery/jquery.maskedinput.min.js"></script>
-
-    <!-- CDN -->
-    <!--Use bootstrap to make the application look nice-->
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script> -->
-    
-    <!-- Latest compiled and minified CSS -->
-    <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap-editable/css/bootstrap-editable.css">  
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-ru-RU.min.js"></script>
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/editable/bootstrap-table-editable.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/export/bootstrap-table-export.js"></script>
-
-    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script> -->
-    
-    <!-- <link rel="stylesheet" href="/assets/table-export.css"> -->
-    <!-- <script src="/assets/table-export.js"></script> -->
-    
-  </head>
-
   <body>
     <!-- <div class="container"> -->
 {{ template "menu.html" . }}
+
+    <head>
+        <!--Use the `title` variable to set the title of the page-->
+        <title>GoWebApp</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Local -->
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+        <!-- jquery -->
+        <script src="/assets/jquery/jquery-3.3.1.min.js"></script>
+
+        <script src="/assets/popper.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+
+        <!-- table -->
+        <link rel="stylesheet" href="/assets/css/bootstrap-editable.css">
+        <link rel="stylesheet" href="/assets/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+        <link rel="stylesheet" href="/assets/bootstrap-table/dist/bootstrap-table.min.css">
+        <script src="/assets/bootstrap-table/dist/bootstrap-table.min.js"></script>
+        <script src="/assets/bootstrap-table/dist/locale/bootstrap-table-ru-RU.min.js"></script>
+        <script src="/assets/bootstrap-table/dist/extensions/editable/bootstrap-table-editable.js"></script>
+
+        <!-- table export -->
+        <script src="/assets/bootstrap-table/dist/extensions/export/bootstrap-table-export.js"></script>
+        <script src="/assets/tableExport.js"></script>
+
+        <!-- <script src="/assets/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+        <script src="/assets/tableExport-jquery-plugin/html2canvas.js"></script>
+        <script src="/assets/tableExport-jquery-plugin/jquery.base64.js"></script>
+        <script src="/assets/tableExport-jquery-plugin/tableExport.js"></script>
+        <script src="/assets/tableExport-jquery-plugin/jspdf/jspdf.js"></script>
+        <script src="/assets/tableExport-jquery-plugin/jspdf/libs/sprintf.js"></script>
+        <script src="/assets/tableExport-jquery-plugin/jspdf/libs/base64.js"></script>
+        <script src="/assets/tableExport/js/tableexport.min.js"></script>
+        <script src="/assets/tableExport/css/tableexport.min.css"></script>
+        <script src="/assets/tableExport/js/FileSaver.min.js"></script>
+        <script src="/assets/tableExport/js/jszip.js"></script>
+        <script src="/assets/tableExport/js/xls.core.min.js"></script>
+        <script src="/assets/tableExport/js/xlsx.core.min.js"></script>
+        <script src="/assets/tableExport/js/Blob.min.js"></script> -->
+
+        <!-- Validation input Phone -->
+        <script src="/assets/jquery/jquery.maskedinput.min.js"></script>
+
+        <!-- CDN -->
+        <!--Use bootstrap to make the application look nice-->
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script> -->
+
+        <!-- Latest compiled and minified CSS -->
+        <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap-editable/css/bootstrap-editable.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-ru-RU.min.js"></script>
+
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/editable/bootstrap-table-editable.js"></script>
+
+        <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script> -->
+    </head>
