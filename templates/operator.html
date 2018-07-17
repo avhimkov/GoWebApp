@@ -118,16 +118,19 @@
     <div class="card">
         <h3 class="card-header panel-success white-text">Список услуги</h3>
         <div class="card-body">
+                <!-- <button onClick="$('table').tableExport({headings: true,footers: true, formats: ['xls', 'csv', 'txt'],fileName: 'id', bootstrap: true, position: 'bottom', ignoreRows: null, ignoreCols: null, 
+                ignoreCSS: '.tableexport-ignore', emptyCSS: '.tableexport-empty', trimWhitespace: false});">PDF</button> -->
             <!-- <button onClick ="$('#table').tableExport({type:'excel',escape:'false'});">Copy Text</button> -->
             <form action="/removeval" method="POST">
                 <input value="rem_val"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
             </form>
+            
+
             <table id="table" 
                     data-toggle="table"
+                    data-click-to-select="true"
                     data-search="true"
-                    data-filter-control="true" 
-                    data-show-export="true"
-                    data-click-to-select="true">
+                    data-filter-control="true" >
                 <thead>
                     <tr>
                         <th data-field="state" data-checkbox="true"></th>
@@ -175,6 +178,24 @@
                         {{end}}
                     </tbody>
             </table>
+            <!-- <script>
+               $(function() {
+                var $table = $('#table');
+                $('#toolbar').find('select').change(function() {
+                    $table.bootstrapTable('refreshOptions', {
+                    exportDataType: $(this).val()
+                    });
+                });
+
+                $('#getAllSelections').click(function(e) {
+                    e.preventDefault();
+                    var selectedData = $table.bootstrapTable('getAllSelections');
+                    console.log('selectedData',selectedData);
+                    $table.bootstrapTable('load',selectedData);
+                });
+                
+                });
+            </script> -->
         </div>
     </div>
 </div>
