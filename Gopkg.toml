@@ -30,3 +30,7 @@
 
 
 
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/thinkerou/favicon"

@@ -14,6 +14,7 @@ import (
 	"github.com/asdine/storm"
 	"github.com/asdine/storm/q"
 	"github.com/gin-gonic/gin"
+	"github.com/thinkerou/favicon"
 	"github.com/xyproto/permissionbolt"
 )
 
@@ -61,6 +62,7 @@ func SetupRouter() *gin.Engine {
 	//gin.SetMode(gin.ReleaseMode)
 
 	g := gin.Default()
+
 	g.Static("/assets", "./assets")
 	g.LoadHTMLGlob("templates/*.html")
 
@@ -70,7 +72,7 @@ func SetupRouter() *gin.Engine {
 	g.Use(gin.Logger())
 	// Recovery middleware
 	g.Use(gin.Recovery())
-
+	g.Use(favicon.New("./assets/brand/favicon.ico"))
 	// g.Use(static.Serve("/assets", static.LocalFile("/assets", false)))
 	// v1 := router.Group("api/v1")
 	// {
