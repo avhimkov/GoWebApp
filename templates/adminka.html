@@ -7,11 +7,47 @@
     <div class="card">
             <h3 class="card-header panel-success white-text">Настройки пользователей</h3>
             <div class="card-body">
+                    <form enctype="multipart/form-data" class="form" action="/uploadValue" method="POST">
+                        <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <!-- <span class="input-group-text">Upload</span> -->
+                                    <input type="submit" class="btn btn-primary btn-rounded btn-sm my-0"  value="Добавить" />
+                                </div>
+                            <div class="custom-file">
+                                <label class="custom-file" id="customFile">
+                                    <input type="file" accept="text/csv" id="uploadFile" class="custom-file-input" name="uploadFile" />
+                                    <input type="hidden" name="token" value="{{.}}"/>
+                                    <label class="custom-file-label" for="inlineFormInput">Выбрать файл</label>     
+                                    <script>
+                                        $(function() {
+                                          $(document).on('change', ':file', function() {var input = $(this), numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                                                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');input.trigger('fileselect', [numFiles, label]);
+                                          });
+                                          $(document).ready( function() {
+                                              $(':file').on('fileselect', function(event, numFiles, label) {var input = $(this).parents('.custom-file').find('.custom-file-label'),
+                                              log = numFiles > 1 ? numFiles + ' files selected' : label;if( input.length ) {input.text(log);} else {if( log ) alert(log);}});
+                                          });
+                                        });
+                                    </script>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
         <table class="table"
             data-toggle="table"
-            data-click-to-select="true">
+            data-search-align="left"
+            data-buttons-align="left"
+            data-page-size=20
+            data-page-list="20, 30, 50, 100"
+            data-show-export="true"
+            data-pagination="true"
+            data-click-to-select="true"
+            data-search="true"
+            data-filter-control="true" >
             <thead>
                 <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-sortable="true">№</th>
                     <th data-sortable="true" data-field="Users">Users</th>
                     <th>Admin Off</th>
                     <th>Delet User</th>
@@ -21,6 +57,8 @@
             <tbody>            
                 {{range $i, $e := .listusers}}
                 <tr>
+                    <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
+                    <td>{{$i}}</td>
                     <td>{{$e}}</td>
                     <td>
                         <form action="/adminoff/{{$e}}" method="GET">
@@ -41,33 +79,6 @@
                 {{end}}
             </tbody>
         </table>
-        <p></p>
-        <form enctype="multipart/form-data" class="form" action="/uploadValue" method="POST">
-            <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <!-- <span class="input-group-text">Upload</span> -->
-                        <input type="submit" class="btn btn-primary btn-rounded btn-sm my-0"  value="Добавить" />
-                    </div>
-                <div class="custom-file">
-                    <label class="custom-file" id="customFile">
-                        <input type="file" accept="text/csv" id="uploadFile" class="custom-file-input" name="uploadFile" />
-                        <input type="hidden" name="token" value="{{.}}"/>
-                        <label class="custom-file-label" for="inlineFormInput">Выбрать файл</label>     
-                        <script>
-                            $(function() {
-                              $(document).on('change', ':file', function() {var input = $(this), numFiles = input.get(0).files ? input.get(0).files.length : 1,
-                                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');input.trigger('fileselect', [numFiles, label]);
-                              });
-                              $(document).ready( function() {
-                                  $(':file').on('fileselect', function(event, numFiles, label) {var input = $(this).parents('.custom-file').find('.custom-file-label'),
-                                  log = numFiles > 1 ? numFiles + ' files selected' : label;if( input.length ) {input.text(log);} else {if( log ) alert(log);}});
-                              });
-                            });
-                        </script>
-                    </label>
-                </div>
-            </div>
-            </form>
     </div>
 </div>
 
