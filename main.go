@@ -530,31 +530,65 @@ func main() {
 	// 	}
 	// })
 
+	// g.POST("/edit/:id", func(c *gin.Context) {
+	// 	isloggedin := isloggedin(c)
+	// 	// id := c.Param("id")
+	// 	// fmt.Println(id)
+	// 	var person Person
+	// 	c.Bind(&person)
+
+	// 	if isloggedin {
+	// 		name := person.Name
+	// 		subname := person.SubName
+	// 		nameservice := person.NameService
+	// 		date := person.Date
+	// 		address := person.Address
+	// 		loc := person.Location
+	// 		number := person.Number
+	// 		phone := person.Phone
+	// 		note := person.Note
+
+	// 		peeps := []*Person{
+	// 			{Name: name, SubName: subname, NameService: nameservice,
+	// 				Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
+	// 		}
+	// 		err := db.Update(&peeps)
+	// 		if err != nil {
+	// 			log.Fatal(err)
+	// 		}
+
+	// 		http.Redirect(c.Writer, c.Request, "/operator", 302)
+	// 	} else {
+	// 		c.AbortWithStatus(http.StatusForbidden)
+	// 		fmt.Fprint(c.Writer, "Permission denied!")
+	// 	}
+	// })
+
 	g.POST("/edit/:id", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
 		// id := c.Param("id")
-		// fmt.Println(id)
-		var person Person
-		c.Bind(&person)
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := userstate.IsLoggedIn(usercook)
 
 		if isloggedin {
-			name := person.Name
-			subname := person.SubName
-			nameservice := person.NameService
-			date := person.Date
-			address := person.Address
-			loc := person.Location
-			number := person.Number
-			phone := person.Phone
-			note := person.Note
+
+			name := c.PostForm("name")
+			subname := c.PostForm("subname")
+			nameservice := c.PostForm("nameservice")
+			date := c.PostForm("date")
+			address := c.PostForm("address")
+			loc := c.PostForm("loc")
+			number := c.PostForm("number")
+			phone := c.PostForm("phone")
+			note := c.PostForm("note")
 
 			peeps := []*Person{
-				{Name: name, SubName: subname, NameService: nameservice,
+				{User: usercook, Name: name, SubName: subname, NameService: nameservice,
 					Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
 			}
-			err := db.Update(&peeps)
-			if err != nil {
-				log.Fatal(err)
+
+			for _, p := range peeps {
+				fmt.Println(p)
+				db.Save(p)
 			}
 
 			http.Redirect(c.Writer, c.Request, "/operator", 302)
@@ -566,25 +600,25 @@ func main() {
 
 	// g.PUT("/people/:id", UpdatePerson)
 
-	g.PUT("/edit/:id", func(c *gin.Context) {
-		var person Person
-		id := c.Params.ByName("id")
+	// g.PUT("/edit/:id", func(c *gin.Context) {
+	// 	var person Person
+	// 	id := c.Params.ByName("id")
 
-		findVal := db.Select(q.Eq("ID", id))
-		err := findVal.First(&person)
-		if err != nil {
-			log.Fatal(err)
-		}
+	// 	findVal := db.Select(q.Eq("ID", id))
+	// 	err := findVal.First(&person)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
 
-		// if err := db.Where("id = ?", id).First(&person).Error; err != nil {
-		// 	c.AbortWithStatus(404)
-		// 	fmt.Println(err)
-		// }
-		c.BindJSON(&person)
+	// 	// if err := db.Where("id = ?", id).First(&person).Error; err != nil {
+	// 	// 	c.AbortWithStatus(404)
+	// 	// 	fmt.Println(err)
+	// 	// }
+	// 	c.BindJSON(&person)
 
-		db.Save(&person)
-		c.JSON(200, person)
-	})
+	// 	db.Save(&person)
+	// 	c.JSON(200, person)
+	// })
 
 	// Start serving the application
 	g.Run(":3000")
