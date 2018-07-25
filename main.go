@@ -564,32 +564,53 @@ func main() {
 	// 	}
 	// })
 
+	g.GET("/edit/:id", func(c *gin.Context) {
+		id := c.Param("id")
+
+		var person Person
+
+		findVal := db.Select(q.Eq("ID", id))
+		err := findVal.First(&person)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println(&person)
+
+		c.HTML(http.StatusOK, "konsult.html", gin.H{"person": person, "is_logged_in": isloggedin})
+		// http.Redirect(c.Writer, c.Request, "/edit", 302)
+	})
+
 	g.POST("/edit/:id", func(c *gin.Context) {
-		// id := c.Param("id")
+		id := c.Param("id")
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 
+		var person Person
+
+		findVal := db.Select(q.Eq("ID", id))
+		err := findVal.First(&person)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(&person)
+
 		if isloggedin {
 
-			name := c.PostForm("name")
-			subname := c.PostForm("subname")
-			nameservice := c.PostForm("nameservice")
-			date := c.PostForm("date")
-			address := c.PostForm("address")
-			loc := c.PostForm("loc")
-			number := c.PostForm("number")
-			phone := c.PostForm("phone")
-			note := c.PostForm("note")
+			name := c.PostForm("nameUpdate")
+			subname := c.PostForm("subnameUpdate")
+			nameservice := c.PostForm("nameserviceUpdate")
+			date := c.PostForm("dateUpdate")
+			address := c.PostForm("addressUpdate")
+			loc := c.PostForm("locUpdate")
+			number := c.PostForm("numberUpdate")
+			phone := c.PostForm("phoneUpdate")
+			note := c.PostForm("noteUpdate")
 
-			peeps := []*Person{
-				{User: usercook, Name: name, SubName: subname, NameService: nameservice,
-					Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
-			}
+			fmt.Println(&person)
 
-			for _, p := range peeps {
-				fmt.Println(p)
-				db.Save(p)
-			}
+			db.Update(&Person{User: usercook, Name: name, SubName: subname, NameService: nameservice, Date: date, Address: address,
+				Location: loc, Number: number, Phone: phone, Note: note})
 
 			http.Redirect(c.Writer, c.Request, "/operator", 302)
 		} else {
