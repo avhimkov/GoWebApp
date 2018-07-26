@@ -564,22 +564,22 @@ func main() {
 	// 	}
 	// })
 
-	g.GET("/edit/:id", func(c *gin.Context) {
-		id := c.Param("id")
+	// g.GET("/edit/:id", func(c *gin.Context) {
+	// 	id := c.Param("id")
 
-		var person Person
+	// 	var value Person
 
-		findVal := db.Select(q.Eq("ID", id))
-		err := findVal.First(&person)
-		if err != nil {
-			log.Fatal(err)
-		}
+	// 	findVal := db.Select(q.Eq("ID", id))
+	// 	err := findVal.First(&value)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
 
-		fmt.Println(&person)
+	// 	fmt.Println(&value)
 
-		c.HTML(http.StatusOK, "konsult.html", gin.H{"person": person, "is_logged_in": isloggedin})
-		// http.Redirect(c.Writer, c.Request, "/edit", 302)
-	})
+	// 	c.HTML(http.StatusOK, "edit.html", gin.H{"value": value, "is_logged_in": isloggedin})
+	// 	// http.Redirect(c.Writer, c.Request, "/edit", 302)
+	// })
 
 	g.POST("/edit/:id", func(c *gin.Context) {
 		id := c.Param("id")
