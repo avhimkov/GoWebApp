@@ -17,7 +17,6 @@
                 <form enctype="multipart/form-data" class="form" action="/uploadValue" method="POST">
                 <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <!-- <span class="input-group-text">Upload</span> -->
                             <input type="submit" class="btn btn-primary btn-rounded btn-sm my-0"  value="Добавить" />
                         </div>
                     <div class="custom-file">
@@ -165,14 +164,9 @@
                             <td>{{$e.Number}}</td>
                             <td>{{$e.Phone}}</td>
                             <td>{{$e.Note}}</td>
-                            <!-- <td>
-                                <form action="/edit/{{$e.ID}}" method="GET">
-                                    <input value="edit"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
-                                </form>
-                            </td> -->
                             <td>
                                 <!-- button edit -->
-                                <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit{{$e.ID}}">edit</button>
+                                <button class="btn btn-primary btn-rounded btn-sm my-0" data-title="Edit" data-toggle="modal" data-target="#edit{{$e.ID}}" class="fa fa-pencil">edit</button>
                                 <!-- hide modal window -->
                                 <div class="modal fade" id="edit{{$e.ID}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -198,7 +192,6 @@
                                                     <input type="text" name="address" class="form-control" id="address" value={{$e.Address}}>
                                                 </div>
                                                 <div class="form-group">
-                                                    <!-- <input type="text" name="loc" class="form-control" id="loc" placeholder="Место оператора"> -->
                                                     <select name="loc" id="loc" placeholder={{$e.Location}} class="form-control mr-sm-2 mb-2 mb-sm-0"> 
                                                         <option value="value1">Оператор 1</option>
                                                         <option value="value1">Оператор 2</option>
@@ -227,7 +220,7 @@
                                             </div>
                                             <div class="modal-footer ">
                                                 <form enctype="multipart/form-data" class="form" action="/edit/{{$e.ID}}" method="POST">
-                                                    <button type="submit" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Update</button>
+                                                    <button type="submit" class="btn btn-warning btn-lg" style="width: 100%;"></button><i class="fa fa-pencil fa-fw"></i>
                                                 </form>
                                             </div>
                                         </div>

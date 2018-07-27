@@ -509,83 +509,12 @@ func main() {
 	})
 
 	//NOT WORK
-	// g.GET("/edit/:id", func(c *gin.Context) {
-	// 	id := c.Param("id")
-	// 	isloggedin := isloggedin(c)
-
-	// 	if isloggedin {
-	// 		var person Person
-	// 		findVal := db.Select(q.Eq("ID", id))
-	// 		err := findVal.First(&person)
-	// 		if err != nil {
-	// 			log.Fatal(err)
-	// 		}
-	// 		c.Bind(&person)
-	// 		fmt.Println(person)
-
-	// 		c.HTML(http.StatusOK, "edittable.html", gin.H{"person": person, "is_logged_in": isloggedin})
-	// 	} else {
-	// 		c.AbortWithStatus(http.StatusForbidden)
-	// 		fmt.Fprint(c.Writer, "Permission denied!")
-	// 	}
-	// })
-
-	// g.POST("/edit/:id", func(c *gin.Context) {
-	// 	isloggedin := isloggedin(c)
-	// 	// id := c.Param("id")
-	// 	// fmt.Println(id)
-	// 	var person Person
-	// 	c.Bind(&person)
-
-	// 	if isloggedin {
-	// 		name := person.Name
-	// 		subname := person.SubName
-	// 		nameservice := person.NameService
-	// 		date := person.Date
-	// 		address := person.Address
-	// 		loc := person.Location
-	// 		number := person.Number
-	// 		phone := person.Phone
-	// 		note := person.Note
-
-	// 		peeps := []*Person{
-	// 			{Name: name, SubName: subname, NameService: nameservice,
-	// 				Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
-	// 		}
-	// 		err := db.Update(&peeps)
-	// 		if err != nil {
-	// 			log.Fatal(err)
-	// 		}
-
-	// 		http.Redirect(c.Writer, c.Request, "/operator", 302)
-	// 	} else {
-	// 		c.AbortWithStatus(http.StatusForbidden)
-	// 		fmt.Fprint(c.Writer, "Permission denied!")
-	// 	}
-	// })
-
-	// g.GET("/edit/:id", func(c *gin.Context) {
-	// 	id := c.Param("id")
-
-	// 	var value Person
-
-	// 	findVal := db.Select(q.Eq("ID", id))
-	// 	err := findVal.First(&value)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-
-	// 	fmt.Println(&value)
-
-	// 	c.HTML(http.StatusOK, "edit.html", gin.H{"value": value, "is_logged_in": isloggedin})
-	// 	// http.Redirect(c.Writer, c.Request, "/edit", 302)
-	// })
-
 	g.POST("/edit/:id", func(c *gin.Context) {
 		id := c.Param("id")
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 
+		// 	c.Bind(&person)
 		var person Person
 
 		findVal := db.Select(q.Eq("ID", id))
@@ -618,8 +547,6 @@ func main() {
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
 	})
-
-	// g.PUT("/people/:id", UpdatePerson)
 
 	// g.PUT("/edit/:id", func(c *gin.Context) {
 	// 	var person Person
