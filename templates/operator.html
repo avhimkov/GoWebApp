@@ -171,6 +171,7 @@
                                 <div class="modal fade" id="edit{{$e.ID}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
+                                            <form enctype="multipart/form-data" class="form" action="/edit/{{$e.ID}}" method="POST">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                                                 <h4 class="modal-title custom_align" id="Heading">Редактировать данные</h4>
@@ -219,10 +220,9 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer ">
-                                                <form enctype="multipart/form-data" class="form" action="/edit/{{$e.ID}}" method="POST">
                                                     <button type="submit" class="btn btn-warning btn-lg" style="width: 100%;"></button><i class="fa fa-pencil fa-fw"></i>
-                                                </form>
                                             </div>
+                                        </form>
                                         </div>
                                         <!-- /.modal-content --> 
                                     </div>

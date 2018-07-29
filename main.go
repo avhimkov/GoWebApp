@@ -526,20 +526,22 @@ func main() {
 
 		if isloggedin {
 
-			name := c.PostForm("nameUpdate")
-			subname := c.PostForm("subnameUpdate")
-			nameservice := c.PostForm("nameserviceUpdate")
-			date := c.PostForm("dateUpdate")
-			address := c.PostForm("addressUpdate")
-			loc := c.PostForm("locUpdate")
-			number := c.PostForm("numberUpdate")
-			phone := c.PostForm("phoneUpdate")
-			note := c.PostForm("noteUpdate")
+			// id := c.PostForm("id")
+			name := c.PostForm("name")
+			subname := c.PostForm("subname")
+			nameservice := c.PostForm("nameservice")
+			date := c.PostForm("date")
+			address := c.PostForm("address")
+			loc := c.PostForm("loc")
+			number := c.PostForm("number")
+			phone := c.PostForm("phone")
+			note := c.PostForm("note")
 
-			fmt.Println(&person)
+			peeps := &Person{ID: person.ID, User: usercook, Name: name, SubName: subname, NameService: nameservice, Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note}
+			fmt.Println(peeps)
 
-			db.Update(&Person{User: usercook, Name: name, SubName: subname, NameService: nameservice, Date: date, Address: address,
-				Location: loc, Number: number, Phone: phone, Note: note})
+			db.Update(peeps)
+			fmt.Println(peeps)
 
 			http.Redirect(c.Writer, c.Request, "/operator", 302)
 		} else {
@@ -547,26 +549,6 @@ func main() {
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
 	})
-
-	// g.PUT("/edit/:id", func(c *gin.Context) {
-	// 	var person Person
-	// 	id := c.Params.ByName("id")
-
-	// 	findVal := db.Select(q.Eq("ID", id))
-	// 	err := findVal.First(&person)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-
-	// 	// if err := db.Where("id = ?", id).First(&person).Error; err != nil {
-	// 	// 	c.AbortWithStatus(404)
-	// 	// 	fmt.Println(err)
-	// 	// }
-	// 	c.BindJSON(&person)
-
-	// 	db.Save(&person)
-	// 	c.JSON(200, person)
-	// })
 
 	// Start serving the application
 	g.Run(":3000")
