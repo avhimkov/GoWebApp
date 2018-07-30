@@ -251,33 +251,32 @@ func main() {
 				fmt.Println(cheked)
 				fmt.Println(isadmin)
 			}
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"listusers": listusers, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"listusers": listusers, "is_logged_in": isloggedin, "isadmin": isadmin})
 		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
+			c.Redirect(301, "/")
 		}
 	})
 
 	//API Maxima - TEST function
-	g.GET("/maxima", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
+	// g.GET("/maxima", func(c *gin.Context) {
+	// 	isloggedin := isloggedin(c)
 
-		if isloggedin {
+	// 	if isloggedin {
 
-			var person []Person
-			err := db.All(&person)
-			if err != nil {
-				log.Fatal(err)
-			}
-			fmt.Println(person)
+	// 		var person []Person
+	// 		err := db.All(&person)
+	// 		if err != nil {
+	// 			log.Fatal(err)
+	// 		}
+	// 		fmt.Println(person)
 
-			c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin})
+	// 		c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin})
 
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
+	// 	} else {
+	// 		c.AbortWithStatus(http.StatusForbidden)
+	// 		fmt.Fprint(c.Writer, "Permission denied!")
+	// 	}
+	// })
 
 	g.POST("/uploadValue", func(c *gin.Context) {
 		// uid, _ := userstate.GenerateUniqueConfirmationCode()
@@ -301,7 +300,6 @@ func main() {
 		url := path + "/" + filename
 		fmt.Println(url)
 
-		//Work
 		csvFile, _ := os.Open(url)
 		reader := csv.NewReader(bufio.NewReader(csvFile))
 		for {
@@ -341,6 +339,7 @@ func main() {
 		if isloggedin {
 
 			var person []Person
+			// err = db.All(&users, storm.Limit(10), storm.Skip(10), storm.Reverse())
 			err := db.All(&person)
 			if err != nil {
 				log.Fatal(err)
@@ -537,7 +536,8 @@ func main() {
 			phone := c.PostForm("phone")
 			note := c.PostForm("note")
 
-			peeps := &Person{ID: person.ID, User: usercook, Name: name, SubName: subname, NameService: nameservice, Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note}
+			peeps := &Person{ID: person.ID, User: usercook, Name: name, SubName: subname, NameService: nameservice,
+				Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note}
 			fmt.Println(peeps)
 
 			db.Update(peeps)
