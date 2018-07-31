@@ -335,15 +335,29 @@ func main() {
 	//operator register users
 	g.GET("/operator", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		fmt.Println(usercook)
 
 		if isloggedin {
-
 			var person []Person
+
 			// err = db.All(&users, storm.Limit(10), storm.Skip(10), storm.Reverse())
-			err := db.All(&person)
-			if err != nil {
-				log.Fatal(err)
+			// err := db.All(&person, storm.Limit(50))
+
+			err := db.Find("User", usercook, &person)
+			if err == storm.ErrNotFound {
+
+				person := []Person{
+					{User: usercook, Name: "Нет данных", SubName: "Нет данных", NameService: "Нет данных",
+						Date: "Нет данных", Address: "Нет данных", Location: "Нет данных", Number: "Нет данных", Phone: "Нет данных", Note: "Нет данных"},
+				}
+
+				c.Set("Нет данных", person)
+				// doesn't exists
 			}
+			// if err != nil {
+			// 	log.Fatal(err)
+			// }
 			fmt.Println(person)
 
 			c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin})
@@ -395,7 +409,7 @@ func main() {
 		if isloggedin {
 
 			var person []Person
-			err := db.All(&person)
+			err := db.All(&person, storm.Limit(100))
 			if err != nil {
 				log.Fatal(err)
 			}
