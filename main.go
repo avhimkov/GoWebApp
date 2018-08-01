@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/asdine/storm"
 	"github.com/asdine/storm/q"
@@ -338,26 +339,30 @@ func main() {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		fmt.Println(usercook)
 
+		// (timeNow.Format(time.RFC3339))
+		timeNow := time.Now()
+		dateNow := timeNow.Format("2006-01-02T15:04")
+
+		timeAgo := timeNow.AddDate(0, -3, 0)
+		dateAgo := timeAgo.Format("2006-01-02T15:04")
+		// date, _ := time.Parse(time.RFC3339, "2018-08-01T19:32:00Z")
+		// dateF := date.Format("2006-01-02T15:04")
+
 		if isloggedin {
 			var person []Person
 
-			// err = db.All(&users, storm.Limit(10), storm.Skip(10), storm.Reverse())
+			// err = db.All(&person, storm.Limit(10), storm.Skip(10), storm.Reverse())
 			// err := db.All(&person, storm.Limit(50))
 
-			err := db.Find("User", usercook, &person)
+			// err := db.Find("Date", dateF, &person)
+			// err := db.Find("User", usercook, &person)
+
+			err := db.Range("Date", dateAgo, dateNow, &person)
+			// err := db.Select(q.Gte("Date", dateNow), q.Lte("Date", dateAgo)).Find(&person)
 			if err == storm.ErrNotFound {
-
-				person := []Person{
-					{User: usercook, Name: "Нет данных", SubName: "Нет данных", NameService: "Нет данных",
-						Date: "Нет данных", Address: "Нет данных", Location: "Нет данных", Number: "Нет данных", Phone: "Нет данных", Note: "Нет данных"},
-				}
-
 				c.Set("Нет данных", person)
-				// doesn't exists
 			}
-			// if err != nil {
-			// 	log.Fatal(err)
-			// }
+
 			fmt.Println(person)
 
 			c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin})
@@ -409,7 +414,7 @@ func main() {
 		if isloggedin {
 
 			var person []Person
-			err := db.All(&person, storm.Limit(100))
+			err := db.All(&person)
 			if err != nil {
 				log.Fatal(err)
 			}
