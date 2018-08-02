@@ -258,27 +258,6 @@ func main() {
 		}
 	})
 
-	//API Maxima - TEST function
-	// g.GET("/maxima", func(c *gin.Context) {
-	// 	isloggedin := isloggedin(c)
-
-	// 	if isloggedin {
-
-	// 		var person []Person
-	// 		err := db.All(&person)
-	// 		if err != nil {
-	// 			log.Fatal(err)
-	// 		}
-	// 		fmt.Println(person)
-
-	// 		c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin})
-
-	// 	} else {
-	// 		c.AbortWithStatus(http.StatusForbidden)
-	// 		fmt.Fprint(c.Writer, "Permission denied!")
-	// 	}
-	// })
-
 	g.POST("/uploadValue", func(c *gin.Context) {
 		// uid, _ := userstate.GenerateUniqueConfirmationCode()
 		usercook, _ := userstate.UsernameCookie(c.Request)
@@ -336,10 +315,8 @@ func main() {
 	//operator register users
 	g.GET("/operator", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		fmt.Println(usercook)
+		// usercook, _ := userstate.UsernameCookie(c.Request)
 
-		// (timeNow.Format(time.RFC3339))
 		timeNow := time.Now()
 		dateNow := timeNow.Format("2006-01-02T15:04")
 
@@ -362,8 +339,6 @@ func main() {
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", person)
 			}
-
-			fmt.Println(person)
 
 			c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin})
 
@@ -429,29 +404,37 @@ func main() {
 
 	//Register visitors POST
 	g.POST("/kontroler", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
 
+		type Date struct {
+			datain string `json:"datain" form:"datain" binding:"required"`
+			dataon string `json:"dataon" form:"dataon" binding:"required"`
+		}
+
+		var person []Person
+
+		var date Date
+		c.BindJSON(&date)
 		// id := c.PostForm("id")
-		name := c.PostForm("name")
-		subname := c.PostForm("subname")
-		nameservice := c.PostForm("nameservice")
-		date := c.PostForm("date")
-		address := c.PostForm("address")
-		loc := c.PostForm("loc")
-		number := c.PostForm("number")
-		phone := c.PostForm("phone")
-		note := c.PostForm("note")
+		datain := c.PostForm("datain")
+		dateinpars, _ := time.Parse(time.RFC3339, datain)
+		dateinF := dateinpars.Format("2006-01-02T15:04")
+		fmt.Println(dateinF)
 
-		peeps := []*Person{
-			{User: usercook, Name: name, SubName: subname, NameService: nameservice,
-				Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
+		dataon := c.PostForm("dataon")
+		dateonpars, _ := time.Parse(time.RFC3339, dataon)
+		dateonF := dateonpars.Format("2006-01-02T15:04")
+		fmt.Println(dateinF)
+
+		err := db.Range("Date", dateonF, dateinF, &person)
+		// err := db.Select(q.Gte("Date", dateNow), q.Lte("Date", dateAgo)).Find(&person)
+		if err == storm.ErrNotFound {
+			c.Set("Нет данных", person)
 		}
 
-		for _, p := range peeps {
-			db.Save(p)
-		}
+		c.JSON(200, gin.H{"datain": dateinF, "dataon": dateonF})
+		// c.HTML(http.StatusOK, "kontroler.html", gin.H{"person": person})
 
-		http.Redirect(c.Writer, c.Request, "/kontroler", 302)
+		// http.Redirect(c.Writer, c.Request, "/kontroler", 302)
 	})
 
 	//konsult register users

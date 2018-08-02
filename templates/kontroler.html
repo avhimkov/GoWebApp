@@ -3,7 +3,35 @@
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
 <div class="container-fluid">
-
+    <p></p>
+    <div class="card">
+    <h3 class="card-header">Выборать по дате</h3>
+        <div class="card-body">
+            <!--If there's an error, display the error-->
+            {{ if .ErrorTitle}}
+                <p class="bg-danger">
+                {{.ErrorTitle}}: {{.ErrorMessage}}
+                </p>
+            {{end}}
+            <div class="col-sm-12">
+                <p></p>
+                <form class="form" action="/kontroler" method="POST">
+                        <div class="form-row">
+                            <div class="col">
+                                <label class="sr-only" for="inlineFormInput">Дата с</label>
+                                <input type="datetime-local" name="dateis" class="form-control" id="dateis" value="2018-08-01T00:00">
+                            </div>
+                            <div class="col">
+                                <label class="sr-only" for="inlineFormInput">Дата по</label>
+                                <input type="datetime-local" name="dateon" class="form-control" id="dateon" value="2018-08-01T00:00">
+                            </div>
+                        </div>
+                    <p></p>
+                    <button type="submit" class="btn btn-primary float-right">Найти</button>
+                </form>
+            </div>
+        </div>
+    </div>
 <p></p>
 <div class="card">
     <h3 class="card-header panel-success white-text">Список услуги</h3>
