@@ -21,7 +21,7 @@ import (
 
 //Struc data visitors
 type Person struct {
-	ID          int `storm:"id,increment"` //`form:"ID" storm:"id,increment" json:"ID"`
+	ID          int `storm:"id,increment" form:"id" binding:"required"` //`form:"ID" storm:"id,increment" json:"ID"`
 	User        string
 	Name        string `storm:"index" json:"name" form:"name" binding:"required"`               //Заявитель
 	SubName     string `storm:"index" json:"subname" form:"subname" binding:"required"`         //Представитель заявитель
@@ -315,27 +315,12 @@ func main() {
 	//operator register users
 	g.GET("/operator", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
-		// usercook, _ := userstate.UsernameCookie(c.Request)
-
-		timeNow := time.Now()
-		dateNow := timeNow.Format("2006-01-02T15:04")
-
-		timeAgo := timeNow.AddDate(0, -3, 0)
-		dateAgo := timeAgo.Format("2006-01-02T15:04")
-		// date, _ := time.Parse(time.RFC3339, "2018-08-01T19:32:00Z")
-		// dateF := date.Format("2006-01-02T15:04")
+		usercook, _ := userstate.UsernameCookie(c.Request)
 
 		if isloggedin {
 			var person []Person
 
-			// err = db.All(&person, storm.Limit(10), storm.Skip(10), storm.Reverse())
-			// err := db.All(&person, storm.Limit(50))
-
-			// err := db.Find("Date", dateF, &person)
-			// err := db.Find("User", usercook, &person)
-
-			err := db.Range("Date", dateAgo, dateNow, &person)
-			// err := db.Select(q.Gte("Date", dateNow), q.Lte("Date", dateAgo)).Find(&person)
+			err := db.Find("User", usercook, &person)
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", person)
 			}
@@ -388,13 +373,24 @@ func main() {
 
 		if isloggedin {
 
+			timeNow := time.Now()
+			timeNowF := timeNow.Format("2006-01-02T15:04")
+
+			timeAgo := timeNow.AddDate(0, -3, 0)
+			timeAgoF := timeAgo.Format("2006-01-02T15:04")
+
 			var person []Person
-			err := db.All(&person)
-			if err != nil {
-				log.Fatal(err)
+			// err := db.All(&person)
+			err := db.Range("Date", timeAgoF, timeNowF, &person)
+			if err == storm.ErrNotFound {
+				c.Set("Нет данных", person)
 			}
 
-			c.HTML(http.StatusOK, "kontroler.html", gin.H{"person": person, "is_logged_in": isloggedin})
+			// if err != nil {
+			// 	log.Fatal(err)
+			// }
+
+			c.HTML(http.StatusOK, "kontroler.html", gin.H{"person": person, "is_logged_in": isloggedin, "timeNow": timeNowF, "timeAgo": timeAgoF})
 
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
@@ -412,9 +408,10 @@ func main() {
 
 		var person []Person
 
-		var date Date
-		c.BindJSON(&date)
+		// var date Date
+		// c.BindJSON(&date)
 		// id := c.PostForm("id")
+
 		datain := c.PostForm("datain")
 		dateinpars, _ := time.Parse(time.RFC3339, datain)
 		dateinF := dateinpars.Format("2006-01-02T15:04")
@@ -493,6 +490,26 @@ func main() {
 
 		fmt.Println(id)
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
+	})
+
+	//Delete value on id
+	g.POST("/remov/", func(c *gin.Context) {
+		id := c.Param("id")
+
+		var person Person
+
+		c.Bind(&person)
+
+		// query := db.Select(q.Eq("ID", id))
+		// query.Delete(new(Person))
+
+		fmt.Println(id)
+
+		c.JSON(200, gin.H{
+			"id": person.ID,
+		})
+
+		// http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
 
 	//Delete value on id

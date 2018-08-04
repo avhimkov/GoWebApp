@@ -19,11 +19,11 @@
                         <div class="form-row">
                             <div class="col">
                                 <label class="sr-only" for="inlineFormInput">Дата с</label>
-                                <input type="datetime-local" name="dateis" class="form-control" id="dateis" value="2018-08-01T00:00">
+                                <input type="datetime-local" name="dateis" class="form-control" id="dateis" value="{{.timeNow}}">
                             </div>
                             <div class="col">
                                 <label class="sr-only" for="inlineFormInput">Дата по</label>
-                                <input type="datetime-local" name="dateon" class="form-control" id="dateon" value="2018-08-01T00:00">
+                                <input type="datetime-local" name="dateon" class="form-control" id="dateon" value="{{.timeAgo}}">
                             </div>
                         </div>
                     <p></p>
@@ -38,6 +38,7 @@
     <div class="card-body">
         <table id="table" 
                 data-toggle="table"
+                data-filter-control="true"
                 data-search-align="left"
                 data-buttons-align="left"
                 data-page-size=20
@@ -45,8 +46,7 @@
                 data-show-export="true"
                 data-pagination="true"
                 data-click-to-select="true"
-                data-search="true"
-                data-filter-control="true" >
+                data-search="true">
             <thead>
             <tr>
                 <!-- checkbox -->

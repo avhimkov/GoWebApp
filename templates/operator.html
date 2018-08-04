@@ -134,27 +134,86 @@
                     <tr>
                         <th data-field="state" data-checkbox="true"></th>
                         <th data-sortable="true">№</th>
-                        <!-- <th data-sortable="true" data-field="User">Оператор</th> -->
                         <!-- <th data-editable="true" data-sortable="true" data-filter-control="input" data-field="Name">Имя заявитель</th> -->
-                        <th data-sortable="true" data-filter-control="input" data-field="Name">Имя заявитель</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="SubName">Представитель</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="NameService">Название услуги</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="Date">Дата</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="Address">Адрес</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="Location">Место оператора</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="Number">Номер</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="Phone">Телефон</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="Note">Нотация</th>
+                        <th data-field="Name" data-filter-control="input" data-sortable="true">Имя заявитель</th>
+                        <th data-field="SubName" data-filter-control="input" data-sortable="true">Представитель</th>
+                        <th data-field="NameService" data-filter-control="input" data-sortable="true" >Название услуги</th>
+                        <th data-field="Date" data-filter-control="input" data-sortable="true" >Дата</th>
+                        <th data-field="Address" data-filter-control="input" data-sortable="true" >Адрес</th>
+                        <th data-field="Location" data-filter-control="input" data-sortable="true" >Место оператора</th>
+                        <th data-field="Number" data-filter-control="input" data-sortable="true" >Номер</th>
+                        <th data-field="Phone" data-filter-control="input" data-sortable="true" >Телефон</th>
+                        <th data-field="Note" data-filter-control="input" data-sortable="true" >Нотация</th>
                         <th data-field="Edit">Редакт..</th>
                         <th data-field="Delete">Удаление</th>
                     </tr>
                 </thead>
                     <tbody>
-                        
                         {{range $i, $e := .person}}
-                        
+                        <!-- hide modal window -->
+                        <div class="modal fade" id="edit{{$e.ID}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form enctype="multipart/form-data" class="form" action="/edit/{{$e.ID}}" method="POST">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                        <h4 class="modal-title custom_align" id="Heading">Редактировать данные</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" value={{$e.Name}}>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" id="subname" value={{$e.SubName}}>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" id="nameservice" value={{$e.NameService}}>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="datetime-local" name="date" class="form-control" id="date" value={{$e.Date}}>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="address" class="form-control" id="address" value={{$e.Address}}>
+                                        </div>
+                                        <div class="form-group">
+                                            <select name="loc" id="loc" placeholder={{$e.Location}} class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                                <option value="value1">Оператор 1</option>
+                                                <option value="value1">Оператор 2</option>
+                                                <option value="value1">Оператор 3</option>
+                                                <option value="value1">Оператор 4</option>
+                                                <option value="value1">Оператор 5</option>
+                                                <option value="value1">Оператор 6</option>
+                                                <option value="value1">Оператор 7</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="number" class="form-control" id="number" value={{$e.Number}}>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="phone" id="phone"  value={{$e.Phone}}  class="form-control" >
+                                                <script>
+                                                    $(function(){
+                                                    //Использование параметра completed jquery.maskedinput.min.js
+                                                        $("#phone").mask("8(999) 999-9999");
+                                                    });
+                                                </script>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="note" class="form-control" id="note" value={{$e.Note}}>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer ">
+                                            <button type="submit" class="btn btn-warning btn-lg" style="width: 100%;"></button><i class="fa fa-pencil fa-fw"></i>
+                                    </div>
+                                </form>
+                                </div>
+                                <!-- /.modal-content --> 
+                            </div>
+                            <!-- /.modal-dialog --> 
+                        </div>
+
                         <tr>
-                            <td class="bs-checkbox"><input data-index="{{$i}}" value="{{$e.ID}}" name="persons" type="checkbox"></td>
+                            <td class="bs-checkbox"><input data-index="{{$i}}" value="{{$e.ID}}" name="id" type="checkbox"></td>
                             <td>{{$i}}</td>
                             <!-- <td>{{$e.User}}</td> -->
                             <td>{{$e.Name}}</td>
@@ -169,67 +228,6 @@
                             <td>
                                 <!-- button edit -->
                                 <button class="btn btn-primary btn-rounded btn-sm my-0" data-title="Edit" data-toggle="modal" data-target="#edit{{$e.ID}}" class="fa fa-pencil">edit</button>
-                                <!-- hide modal window -->
-                                <div class="modal fade" id="edit{{$e.ID}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <form enctype="multipart/form-data" class="form" action="/edit/{{$e.ID}}" method="POST">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                                                <h4 class="modal-title custom_align" id="Heading">Редактировать данные</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="form-group">
-                                                    <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" value={{$e.Name}}>
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" id="subname" value={{$e.SubName}}>
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" id="nameservice" value={{$e.NameService}}>
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="datetime-local" name="date" class="form-control" id="date" value={{$e.Date}}>
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="text" name="address" class="form-control" id="address" value={{$e.Address}}>
-                                                </div>
-                                                <div class="form-group">
-                                                    <select name="loc" id="loc" placeholder={{$e.Location}} class="form-control mr-sm-2 mb-2 mb-sm-0"> 
-                                                        <option value="value1">Оператор 1</option>
-                                                        <option value="value1">Оператор 2</option>
-                                                        <option value="value1">Оператор 3</option>
-                                                        <option value="value1">Оператор 4</option>
-                                                        <option value="value1">Оператор 5</option>
-                                                        <option value="value1">Оператор 6</option>
-                                                        <option value="value1">Оператор 7</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="text" name="number" class="form-control" id="number" value={{$e.Number}}>
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="text" name="phone" id="phone"  value={{$e.Phone}}  class="form-control" >
-                                                        <script>
-                                                            $(function(){
-                                                            //Использование параметра completed jquery.maskedinput.min.js
-                                                                $("#phone").mask("8(999) 999-9999");
-                                                            });
-                                                        </script>
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="text" name="note" class="form-control" id="note" value={{$e.Note}}>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer ">
-                                                    <button type="submit" class="btn btn-warning btn-lg" style="width: 100%;"></button><i class="fa fa-pencil fa-fw"></i>
-                                            </div>
-                                        </form>
-                                        </div>
-                                        <!-- /.modal-content --> 
-                                    </div>
-                                    <!-- /.modal-dialog --> 
-                                </div>
                             </td>
                             <td>
                                 <form action="/removeval/{{$e.ID}}" method="GET">

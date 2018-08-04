@@ -118,7 +118,7 @@
         <div class="card">
             <h3 class="card-header panel-success white-text">Список услуги</h3>
             <div class="card-body">
-                <form action="/removeval" method="POST">
+                <form action="/remov/" method="POST">
                     <input value="rem_val"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
                 </form>
                 <table id="table"
@@ -153,7 +153,7 @@
                     <tbody>
                         {{range $i, $e := .person}}
                         <tr>
-                            <td class="bs-checkbox"><input data-index="{{$i}}" value="{{$e.ID}}" name="persons" type="checkbox"></td>
+                            <td class="bs-checkbox"><input data-index="{{$i}}" value="{{$e.ID}}" name="id" id="{{$e.ID}}" type="checkbox"></td>
                             <td>{{$i}}</td>
                             <!-- <td>{{$e.User}}</td> -->
                             <td>{{$e.Name}}</td>
