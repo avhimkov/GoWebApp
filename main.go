@@ -258,8 +258,8 @@ func main() {
 		}
 	})
 
+	//add from file value
 	g.POST("/uploadValue", func(c *gin.Context) {
-		// uid, _ := userstate.GenerateUniqueConfirmationCode()
 		usercook, _ := userstate.UsernameCookie(c.Request)
 
 		path := filepath.Clean("./upload/")
@@ -386,10 +386,6 @@ func main() {
 				c.Set("Нет данных", person)
 			}
 
-			// if err != nil {
-			// 	log.Fatal(err)
-			// }
-
 			c.HTML(http.StatusOK, "kontroler.html", gin.H{"person": person, "is_logged_in": isloggedin, "timeNow": timeNowF, "timeAgo": timeAgoF})
 
 		} else {
@@ -401,16 +397,7 @@ func main() {
 	//Register visitors POST
 	g.POST("/kontroler", func(c *gin.Context) {
 
-		type Date struct {
-			datain string `json:"datain" form:"datain" binding:"required"`
-			dataon string `json:"dataon" form:"dataon" binding:"required"`
-		}
-
-		var person []Person
-
-		// var date Date
-		// c.BindJSON(&date)
-		// id := c.PostForm("id")
+		var person Person
 
 		datain := c.PostForm("datain")
 		dateinpars, _ := time.Parse(time.RFC3339, datain)
@@ -428,10 +415,9 @@ func main() {
 			c.Set("Нет данных", person)
 		}
 
-		c.JSON(200, gin.H{"datain": dateinF, "dataon": dateonF})
-		// c.HTML(http.StatusOK, "kontroler.html", gin.H{"person": person})
+		// c.JSON(200, gin.H{"datain": dateinF, "dataon": dateonF})
 
-		// http.Redirect(c.Writer, c.Request, "/kontroler", 302)
+		http.Redirect(c.Writer, c.Request, "/kontroler", 302)
 	})
 
 	//konsult register users
@@ -492,27 +478,7 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
 
-	//Delete value on id
-	g.POST("/remov/", func(c *gin.Context) {
-		id := c.Param("id")
-
-		var person Person
-
-		c.Bind(&person)
-
-		// query := db.Select(q.Eq("ID", id))
-		// query.Delete(new(Person))
-
-		fmt.Println(id)
-
-		c.JSON(200, gin.H{
-			"id": person.ID,
-		})
-
-		// http.Redirect(c.Writer, c.Request, "/operator", 302)
-	})
-
-	//Delete value on id
+	//delete value on id
 	g.GET("/removeval", func(c *gin.Context) {
 		// id := c.Param("id")
 		var person Person
@@ -526,13 +492,12 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
 
-	//NOT WORK
+	//edit value
 	g.POST("/edit/:id", func(c *gin.Context) {
 		id := c.Param("id")
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 
-		// 	c.Bind(&person)
 		var person Person
 
 		findVal := db.Select(q.Eq("ID", id))
