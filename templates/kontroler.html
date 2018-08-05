@@ -3,35 +3,38 @@
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
 <div class="container-fluid">
-    <p></p>
-    <div class="card">
-    <h3 class="card-header">Выборать по дате</h3>
-        <div class="card-body">
-            <!--If there's an error, display the error-->
-            {{ if .ErrorTitle}}
-                <p class="bg-danger">
-                {{.ErrorTitle}}: {{.ErrorMessage}}
-                </p>
-            {{end}}
-            <div class="col-sm-12">
-                <p></p>
-                <form class="form" action="/kontroler" method="POST">
-                        <div class="form-row">
-                            <div class="col">
-                                <label class="sr-only" for="inlineFormInput">Дата с</label>
-                                <input type="datetime-local" name="date" class="form-control" id="{{.timeNow}}" value="{{.timeNow}}">
-                            </div>
-                            <div class="col">
-                                <label class="sr-only" for="inlineFormInput">Дата по</label>
-                                <input type="datetime-local" name="dateon" class="form-control" id="dateon" value="{{.timeAgo}}">
-                            </div>
+<p></p>
+<div class="card">
+<h3 class="card-header">Выборать по дате</h3>
+    <div class="card-body">
+        <!--If there's an error, display the error-->
+        {{ if .ErrorTitle}}
+            <p class="bg-danger">
+            {{.ErrorTitle}}: {{.ErrorMessage}}
+            </p>
+        {{end}}
+        <div class="col-sm-12">
+            <p></p>
+            <form id="date" class="form" action="/kontroler" method="GET">
+                    <div class="form-row">
+                        <div class="col">
+                            <label class="sr-only" for="inlineFormInput">Дата с</label>
+                            <input type="datetime-local" name="date" class="form-control" id="date" value="{{.timeNow}}">
                         </div>
-                    <p></p>
-                    <button type="submit" class="btn btn-primary float-right">Найти</button>
-                </form>
-            </div>
+                        <div class="col">
+                            <select name="loc" id="loc" placeholder="Оператор 1" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                            {{range $key, $value := .listusers}}
+                                <option value="{{$value}}">{{$value}}</option>
+                            {{end}}
+                            </select>
+                        </div>
+                    </div>
+                <p></p>
+                <button type="submit" form="date" class="btn btn-primary float-right">Найти</button>
+            </form>
         </div>
     </div>
+</div>
 <p></p>
 <div class="card">
     <h3 class="card-header panel-success white-text">Список услуги</h3>

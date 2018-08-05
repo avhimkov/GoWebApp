@@ -372,6 +372,7 @@ func main() {
 		isloggedin := isloggedin(c)
 
 		if isloggedin {
+			listusers, _ := userstate.AllUsernames()
 
 			timeNow := time.Now()
 			timeNowF := timeNow.Format("2006-01-02T15:04")
@@ -386,7 +387,7 @@ func main() {
 				c.Set("Нет данных", person)
 			}
 
-			c.HTML(http.StatusOK, "kontroler.html", gin.H{"person": person, "is_logged_in": isloggedin, "timeNow": timeNowF, "timeAgo": timeAgoF})
+			c.HTML(http.StatusOK, "kontroler.html", gin.H{"person": person, "is_logged_in": isloggedin, "timeNow": timeNowF, "timeAgo": timeAgoF, "listusers": listusers})
 
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
@@ -421,50 +422,24 @@ func main() {
 	})
 
 	//konsult register users
-	g.GET("/konsult", func(c *gin.Context) {
+	g.GET("/history", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 
 		if isloggedin {
+			date := c.DefaultQuery("date", "2018-01-08T19:32")
 
 			var person []Person
-			err := db.All(&person)
-			if err != nil {
-				log.Fatal(err)
+			err := db.Find("Date", date, &person)
+			if err == storm.ErrNotFound {
+				c.Set("Нет данных", person)
 			}
 
-			c.HTML(http.StatusOK, "konsult.html", gin.H{"person": person, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "history.html", gin.H{"person": person, "is_logged_in": isloggedin})
 
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
-	})
-
-	//konsult visitors POST
-	g.POST("/konsult", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-
-		// id := c.PostForm("id")
-		name := c.PostForm("name")
-		subname := c.PostForm("subname")
-		nameservice := c.PostForm("nameservice")
-		date := c.PostForm("date")
-		address := c.PostForm("address")
-		loc := c.PostForm("loc")
-		number := c.PostForm("number")
-		phone := c.PostForm("phone")
-		note := c.PostForm("note")
-
-		peeps := []*Person{
-			{User: usercook, Name: name, SubName: subname, NameService: nameservice,
-				Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
-		}
-
-		for _, p := range peeps {
-			db.Save(p)
-		}
-
-		http.Redirect(c.Writer, c.Request, "/konsult", 302)
 	})
 
 	//Delete value on id

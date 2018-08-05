@@ -1,0 +1,101 @@
+<!--history.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+<div class="container-fluid">
+<p></p>
+    <div class="card">
+    <h3 class="card-header">Выборать по дате</h3>
+        <div class="card-body">
+            <!--If there's an error, display the error-->
+            {{ if .ErrorTitle}}
+                <p class="bg-danger">
+                {{.ErrorTitle}}: {{.ErrorMessage}}
+                </p>
+            {{end}}
+            <div class="col-sm-12">
+                <p></p>
+                <form id="date" class="form" action="/history" method="GET">
+                        <div class="form-row">
+                            <div class="col">
+                                <label class="sr-only" for="inlineFormInput">Дата</label>
+                                <input type="datetime-local" name="date" class="form-control" id="date">
+                            </div>
+                        </div>
+                    <p></p>
+                    <button type="submit" form="date" class="btn btn-primary float-right">Найти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+<p></p>
+<div class="card">
+    <h3 class="card-header panel-success white-text">Список услуги</h3>
+    <div class="card-body">
+        <!-- <form action="/remov/" method="POST">
+            <input value="rem_val"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
+        </form> -->
+        <table id="table"
+                data-toggle="table"
+                data-search-align="left"
+                data-buttons-align="left"
+                data-page-size=20
+                data-page-list="20, 30, 50, 100"
+                data-show-export="true"
+                data-pagination="true"
+                data-click-to-select="true"
+                data-search="true"
+                data-filter-control="true" >
+            <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-sortable="true">№</th>
+                    <!-- <th data-sortable="true" data-field="User">Оператор</th> -->
+                    <th data-sortable="true" data-filter-control="input" data-field="Name">Имя заявитель</th>
+                    <th data-sortable="true" data-filter-control="input" data-field="SubName">Представитель</th>
+                    <th data-sortable="true" data-filter-control="input" data-field="NameService">Название услуги</th>
+                    <th data-sortable="true" data-filter-control="input" data-field="Date">Дата</th>
+                    <th data-sortable="true" data-filter-control="input" data-field="Address">Адрес</th>
+                    <th data-sortable="true" data-filter-control="input" data-field="Location">Место оператора</th>
+                    <th data-sortable="true" data-filter-control="input" data-field="Number">Номер</th>
+                    <th data-sortable="true" data-filter-control="input" data-field="Phone">Телефон</th>
+                    <th data-sortable="true" data-filter-control="input" data-field="Note">Нотация</th>
+                    <th data-field="Edit">Редакт..</th>
+                    <th data-field="Delete">Удаление</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range $i, $e := .person}}
+                <tr>
+                    <td class="bs-checkbox"><input data-index="{{$i}}" value="{{$e.ID}}" name="id" id="{{$e.ID}}" type="checkbox"></td>
+                    <td>{{$i}}</td>
+                    <!-- <td>{{$e.User}}</td> -->
+                    <td>{{$e.Name}}</td>
+                    <td>{{$e.SubName}}</td>
+                    <td>{{$e.NameService}}</td>
+                    <td>{{$e.Date}}</td>
+                    <td>{{$e.Address}}</td>
+                    <td>{{$e.Location}}</td>
+                    <td>{{$e.Number}}</td>
+                    <td>{{$e.Phone}}</td>
+                    <td>{{$e.Note}}</td>
+                    <td>
+                        <form action="/edit/{{$e.ID}}" method="GET">
+                            <input value="edit"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/removeval/{{$e.ID}}" method="GET">
+                            <input value="rem_val"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}
