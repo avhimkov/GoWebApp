@@ -147,6 +147,7 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/", 302)
 	})
 
+	//upload user from file
 	g.POST("/uploadUsers", func(c *gin.Context) {
 
 		type Users struct {
@@ -321,12 +322,19 @@ func main() {
 		if isloggedin {
 			var person []Person
 
-			err := db.Find("User", usercook, &person)
+			timeNow := time.Now()
+			timeNowF := timeNow.Format("2006-01-02T15:04")
+
+			timeAgo := timeNow.AddDate(0, 0, -12)
+			timeAgoF := timeAgo.Format("2006-01-02T15:04")
+
+			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("Date", timeAgoF), q.Lte("Date", timeNowF))).Find(&person)
+			fmt.Println(&person)
+
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", person)
 			}
-
-			c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin, "timeNow": timeNowF})
 
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
@@ -382,26 +390,16 @@ func main() {
 			}
 
 			date := c.DefaultQuery("date", "2006-01-02T15:04")
-			fmt.Println(date)
-			loc := c.Query("loc")
+			users := c.Query("users")
 
-			db.Select(q.Eq("User", loc), q.And(q.Eq("Date", date))).Find(&person)
+			datepars, _ := time.Parse(time.RFC3339, date)
+			dateAdd := datepars.AddDate(0, 0, -12)
+			dateF := dateAdd.Format("2006-01-02T15:04")
 
-			// err := db.Find("Date", date, &person)
-			// fmt.Println(&person)
-
-			// err = db.Find("User", loc, &person)
-			// if err == storm.ErrNotFound {
-			// 	c.Set("Нет данных", person)
-			// }
-
-			// timeNow := time.Now()
-			// timeNowF := timeNow.Format("2006-01-02T15:04")
-
-			// timeAgo := timeNow.AddDate(0, -3, 0)
-			// timeAgoF := timeAgo.Format("2006-01-02T15:04")
-
-			fmt.Println(&person)
+			err := db.Select(q.Eq("User", users), q.And(q.Gte("Date", dateF), q.Lte("Date", date))).Find(&person)
+			if err == storm.ErrNotFound {
+				c.Set("Нет данных", person)
+			}
 
 			c.HTML(http.StatusOK, "kontroler.html", gin.H{"person": person, "is_logged_in": isloggedin, "listusers": listusers})
 
@@ -411,32 +409,6 @@ func main() {
 		}
 	})
 
-	//Register visitors POST
-	g.POST("/kontroler", func(c *gin.Context) {
-
-		var person Person
-
-		datain := c.PostForm("datain")
-		dateinpars, _ := time.Parse(time.RFC3339, datain)
-		dateinF := dateinpars.Format("2006-01-02T15:04")
-		fmt.Println(dateinF)
-
-		dataon := c.PostForm("dataon")
-		dateonpars, _ := time.Parse(time.RFC3339, dataon)
-		dateonF := dateonpars.Format("2006-01-02T15:04")
-		fmt.Println(dateinF)
-
-		err := db.Range("Date", dateonF, dateinF, &person)
-		// err := db.Select(q.Gte("Date", dateNow), q.Lte("Date", dateAgo)).Find(&person)
-		if err == storm.ErrNotFound {
-			c.Set("Нет данных", person)
-		}
-
-		// c.JSON(200, gin.H{"datain": dateinF, "dataon": dateonF})
-
-		http.Redirect(c.Writer, c.Request, "/kontroler", 302)
-	})
-
 	//konsult register users
 	g.GET("/history", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
@@ -444,14 +416,14 @@ func main() {
 
 		if isloggedin {
 			var person []Person
-			err := db.Find("User", usercook, &person)
-			if err == storm.ErrNotFound {
-				c.Set("Нет данных", person)
-			}
 
-			date := c.DefaultQuery("date", "2018-01-08T19:32")
+			date := c.DefaultQuery("date", "2006-01-02T15:04")
 
-			err = db.Find("Date", date, &person)
+			datepars, _ := time.Parse(time.RFC3339, date)
+			dateAdd := datepars.AddDate(0, 0, -12)
+			dateF := dateAdd.Format("2006-01-02T15:04")
+
+			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("Date", dateF), q.Lte("Date", date))).Find(&person)
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", person)
 			}
