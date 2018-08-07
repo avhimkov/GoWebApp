@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/DeanThompson/ginpprof"
 	"github.com/asdine/storm"
 	"github.com/asdine/storm/q"
 	"github.com/gin-gonic/gin"
@@ -372,22 +373,37 @@ func main() {
 		isloggedin := isloggedin(c)
 
 		if isloggedin {
-			listusers, _ := userstate.AllUsernames()
-
-			timeNow := time.Now()
-			timeNowF := timeNow.Format("2006-01-02T15:04")
-
-			timeAgo := timeNow.AddDate(0, -3, 0)
-			timeAgoF := timeAgo.Format("2006-01-02T15:04")
 
 			var person []Person
-			// err := db.All(&person)
-			err := db.Range("Date", timeAgoF, timeNowF, &person)
-			if err == storm.ErrNotFound {
-				c.Set("Нет данных", person)
+
+			listusers, err1 := userstate.AllUsernames()
+			if err1 != nil {
+				log.Fatal(err1)
 			}
 
-			c.HTML(http.StatusOK, "kontroler.html", gin.H{"person": person, "is_logged_in": isloggedin, "timeNow": timeNowF, "timeAgo": timeAgoF, "listusers": listusers})
+			date := c.DefaultQuery("date", "2006-01-02T15:04")
+			fmt.Println(date)
+			loc := c.Query("loc")
+
+			db.Select(q.Eq("User", loc), q.And(q.Eq("Date", date))).Find(&person)
+
+			// err := db.Find("Date", date, &person)
+			// fmt.Println(&person)
+
+			// err = db.Find("User", loc, &person)
+			// if err == storm.ErrNotFound {
+			// 	c.Set("Нет данных", person)
+			// }
+
+			// timeNow := time.Now()
+			// timeNowF := timeNow.Format("2006-01-02T15:04")
+
+			// timeAgo := timeNow.AddDate(0, -3, 0)
+			// timeAgoF := timeAgo.Format("2006-01-02T15:04")
+
+			fmt.Println(&person)
+
+			c.HTML(http.StatusOK, "kontroler.html", gin.H{"person": person, "is_logged_in": isloggedin, "listusers": listusers})
 
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
@@ -423,13 +439,19 @@ func main() {
 
 	//konsult register users
 	g.GET("/history", func(c *gin.Context) {
+		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := isloggedin(c)
 
 		if isloggedin {
+			var person []Person
+			err := db.Find("User", usercook, &person)
+			if err == storm.ErrNotFound {
+				c.Set("Нет данных", person)
+			}
+
 			date := c.DefaultQuery("date", "2018-01-08T19:32")
 
-			var person []Person
-			err := db.Find("Date", date, &person)
+			err = db.Find("Date", date, &person)
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", person)
 			}
@@ -508,7 +530,7 @@ func main() {
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
 	})
-
+	ginpprof.Wrap(g)
 	// Start serving the application
 	g.Run(":3000")
 }

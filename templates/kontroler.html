@@ -22,7 +22,8 @@
                             <input type="datetime-local" name="date" class="form-control" id="date" value="{{.timeNow}}">
                         </div>
                         <div class="col">
-                            <select name="loc" id="loc" placeholder="Оператор 1" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                            <select name="loc" id="loc" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                            <option>Выберите оператора</option>
                             {{range $key, $value := .listusers}}
                                 <option value="{{$value}}">{{$value}}</option>
                             {{end}}
