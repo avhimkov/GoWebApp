@@ -27,7 +27,9 @@ type Person struct {
 	Name        string `storm:"index" json:"name" form:"name" binding:"required"`               //Заявитель
 	SubName     string `storm:"index" json:"subname" form:"subname" binding:"required"`         //Представитель заявитель
 	NameService string `storm:"index" json:"nameservice" form:"nameservice" binding:"required"` //Услуга
-	Date        string `storm:"index" json:"date" form:"date" binding:"required"`               //Дата
+	DateIn      string `storm:"index" json:"datein" form:"datein" binding:"required"`           //Дата регистрации
+	DateSend    string `storm:"index" json:"datesend" form:"datesend" binding:"required"`       //Дата отправки
+	DateOut     string `storm:"index" json:"dateout" form:"dateout" binding:"required"`         //Дата получения
 	// Address   *Address `json:"address,omitempty"`
 	Address  string `storm:"index" json:"address" form:"address" binding:"required"`   //Адрес
 	Location string `storm:"index" json:"location" form:"location" binding:"required"` //Место оператора
@@ -297,12 +299,14 @@ func main() {
 					Name:        line[0],
 					SubName:     line[1],
 					NameService: line[2],
-					Date:        line[3],
-					Address:     line[4],
-					Location:    line[5],
-					Number:      line[6],
-					Phone:       line[7],
-					Note:        line[8]},
+					DateIn:      line[3],
+					DateSend:    line[4],
+					DateOut:     line[5],
+					Address:     line[6],
+					Location:    line[7],
+					Number:      line[8],
+					Phone:       line[9],
+					Note:        line[10]},
 			}
 
 			for _, p := range peeps {
@@ -325,15 +329,23 @@ func main() {
 			timeNow := time.Now()
 			timeNowF := timeNow.Format("2006-01-02T15:04")
 
-			timeAgo := timeNow.AddDate(0, 0, -12)
+			fmt.Println(timeNowF)
+
+			// timeAgo := timeNow.AddDate(0, 0, -1)
+			timeAgo := timeNow.Add(-12 * time.Hour)
 			timeAgoF := timeAgo.Format("2006-01-02T15:04")
 
-			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("Date", timeAgoF), q.Lte("Date", timeNowF))).Find(&person)
+			fmt.Println(timeAgoF)
+
+			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", timeAgoF), q.Lte("DateIn", timeNowF))).Find(&person)
 			fmt.Println(&person)
 
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", person)
 			}
+
+			// db.All(&person)
+
 			c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin, "timeNow": timeNowF})
 
 		} else {
@@ -352,7 +364,9 @@ func main() {
 			name := c.PostForm("name")
 			subname := c.PostForm("subname")
 			nameservice := c.PostForm("nameservice")
-			date := c.PostForm("date")
+			datein := c.PostForm("datein")
+			datesend := c.PostForm("datesend")
+			dateout := c.PostForm("dateout")
 			address := c.PostForm("address")
 			loc := c.PostForm("loc")
 			number := c.PostForm("number")
@@ -361,10 +375,10 @@ func main() {
 
 			peeps := []*Person{
 				{User: usercook, Name: name, SubName: subname, NameService: nameservice,
-					Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
+					DateIn: datein, DateSend: datesend, DateOut: dateout, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
 			}
 
-			datepars, _ := time.Parse(time.RFC3339, date)
+			datepars, _ := time.Parse(time.RFC3339, datein)
 			datef := datepars.Format("2006-01-02T15:04")
 
 			fmt.Println(datef)
@@ -398,10 +412,11 @@ func main() {
 			users := c.Query("users")
 
 			datepars, _ := time.Parse(time.RFC3339, date)
-			dateAdd := datepars.AddDate(0, 0, -12)
+			// dateAdd := datepars.AddDate(0, 0, -12)
+			dateAdd := datepars.Add(-12 * time.Hour)
 			dateF := dateAdd.Format("2006-01-02T15:04")
 
-			err := db.Select(q.Eq("User", users), q.And(q.Gte("Date", dateF), q.Lte("Date", date))).Find(&person)
+			err := db.Select(q.Eq("User", users), q.And(q.Gte("DateIn", dateF), q.Lte("DateIn", date))).Find(&person)
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", person)
 			}
@@ -425,10 +440,11 @@ func main() {
 			date := c.DefaultQuery("date", "2006-01-02T15:04")
 
 			datepars, _ := time.Parse(time.RFC3339, date)
-			dateAdd := datepars.AddDate(0, 0, -12)
+			// dateAdd := datepars.AddDate(0, 0, -12)
+			dateAdd := datepars.Add(-12 * time.Hour)
 			dateF := dateAdd.Format("2006-01-02T15:04")
 
-			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("Date", date), q.Lte("Date", dateF))).Find(&person)
+			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", dateF), q.Lte("DateIn", date))).Find(&person)
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", person)
 			}
@@ -487,7 +503,9 @@ func main() {
 			name := c.PostForm("name")
 			subname := c.PostForm("subname")
 			nameservice := c.PostForm("nameservice")
-			date := c.PostForm("date")
+			datein := c.PostForm("datein")
+			datesend := c.PostForm("datesend")
+			dateout := c.PostForm("dateout")
 			address := c.PostForm("address")
 			loc := c.PostForm("loc")
 			number := c.PostForm("number")
@@ -495,7 +513,7 @@ func main() {
 			note := c.PostForm("note")
 
 			peeps := &Person{ID: person.ID, User: usercook, Name: name, SubName: subname, NameService: nameservice,
-				Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note}
+				DateIn: datein, DateSend: datesend, DateOut: dateout, Address: address, Location: loc, Number: number, Phone: phone, Note: note}
 			fmt.Println(peeps)
 
 			db.Update(peeps)

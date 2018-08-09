@@ -14,7 +14,7 @@
                 </p>
             {{end}}
             <div class="col-sm-12">
-                <h3>Загрузить файл</h3>
+                <h6>Загрузить файл</h6>
                 <form enctype="multipart/form-data" class="form" action="/uploadValue" method="POST">
                 <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -44,19 +44,19 @@
                 <form class="form" action="/operator" method="POST">
                         <div class="form-row">
                             <div class="col">
-                                <h3>Имя заявителя</h3>
+                                <h6>Имя заявителя</h6>
                                 <label class="sr-only" for="inlineFormInput">Имя заявителя</label>
                                 <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" placeholder="Имя заявителя">
                             </div>
                             <p></p>
                             <div class="col">
-                                <h3>Представитель заявителя</h3>
+                                <h6>Представитель заявителя</h6>
                                 <label class="sr-only" for="inlineFormInput">Представитель заявителя</label>
                                 <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" id="subname" placeholder="Представитель заявителя">
                             </div>
                             <p></p>
                             <div class="col">
-                                <h3>Название услуги</h3>
+                                <h6>Название услуги</h6>
                                 <label class="sr-only" for="inlineFormInput">Название услуги</label>
                                 <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" id="nameservice" placeholder="Название услуги">
                             </div>
@@ -64,18 +64,30 @@
                         <p></p>
                         <div class="form-row">
                             <div class="col">
-                                <h3>Дата</h3>
-                                <label class="sr-only" for="inlineFormInput">Дата</label>
-                                <input type="datetime-local" name="date" class="form-control" id="date" placeholder="Дата" value="{{.timeNow}}">
+                                <h6>Дата регистрации</h6>
+                                <label class="sr-only" for="inlineFormInput">Дата регистрации</label>
+                                <input type="datetime-local" name="datein" class="form-control" id="datein" value="{{.timeNow}}">
                             </div>
-                            <p></p>
                             <div class="col">
-                                <h3>Адрес</h3>
+                                <h6>Дата отправки</h6>
+                                <label class="sr-only" for="inlineFormInput">Дата отправки</label>
+                                <input type="datetime-local" name="datesend" class="form-control" id="datesend" value="{{.timeNow}}">
+                            </div>
+                            <div class="col">
+                                <h6>Дата получения</h6>
+                                <label class="sr-only" for="inlineFormInput">Дата получения</label>
+                                <input type="datetime-local" name="dateout" class="form-control" id="dateout" value="{{.timeNow}}">
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="form-row">
+                            <div class="col">
+                                <h6>Адрес</h6>
                                 <label class="sr-only" for="inlineFormInput">Адрес</label>
                                 <input type="text" name="address" class="form-control" id="address" placeholder="Адрес">
                             </div>
                             <div class="col">
-                                <h3>Место оператора</h3>
+                                <h6>Место оператора</h6>
                                 <label class="sr-only" for="inlineFormInput">Место оператора</label>
                                 <!-- <input type="text" name="loc" class="form-control" id="loc" placeholder="Место оператора"> -->
                                 <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
@@ -93,13 +105,13 @@
                         <div class="form-row">
                             <p></p>
                             <div class="col">
-                                <h3>Номер</h3>
+                                <h6>Номер</h6>
                                 <label class="sr-only" for="inlineFormInput">Номер</label>
                                 <input type="text" name="number" class="form-control" id="number" placeholder="Номер">
                             </div>
                             <p></p>
                             <div class="col">
-                                <h3>Телефон</h3>
+                                <h6>Телефон</h6>
                                 <label class="sr-only" for="inlineFormInput">Телефон</label>
                                 <input type="text" name="phone" id="phone" class="form-control" >
                                     <script>
@@ -111,7 +123,7 @@
                             </div>
                             <p></p>
                             <div class="col">
-                                <h3>Описание</h3>
+                                <h6>Описание</h6>
                                 <label class="sr-only" for="inlineFormInput">Описание</label>
                                 <input type="text" name="note" class="form-control" id="note" placeholder="Описание">
                             </div>
@@ -148,7 +160,9 @@
                         <th data-field="Name" data-filter-control="input" data-sortable="true">Имя заявитель</th>
                         <th data-field="SubName" data-filter-control="input" data-sortable="true">Представитель</th>
                         <th data-field="NameService" data-filter-control="input" data-sortable="true" >Название услуги</th>
-                        <th data-field="Date" data-filter-control="input" data-sortable="true" >Дата</th>
+                        <th data-field="DateIn" data-filter-control="input" data-sortable="true" >Дата регистрации</th>
+                        <th data-field="DateSend" data-filter-control="input" data-sortable="true" >Дата отправки</th>
+                        <th data-field="DateOut" data-filter-control="input" data-sortable="true" >Дата получения</th>
                         <th data-field="Address" data-filter-control="input" data-sortable="true" >Адрес</th>
                         <th data-field="Location" data-filter-control="input" data-sortable="true" >Место оператора</th>
                         <th data-field="Number" data-filter-control="input" data-sortable="true" >Номер</th>
@@ -180,7 +194,13 @@
                                             <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" id="nameservice" value={{$e.NameService}}>
                                         </div>
                                         <div class="form-group">
-                                            <input type="datetime-local" name="date" class="form-control" id="date" value={{$e.Date}}>
+                                            <input type="datetime-local" name="datein" class="form-control" id="datein" value={{$e.DateIn}}>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="datetime-local" name="datesend" class="form-control" id="datesend" value={{$e.DateSend}}>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="datetime-local" name="dateout" class="form-control" id="dateout" value={{$e.DateOut}}>
                                         </div>
                                         <div class="form-group">
                                             <input type="text" name="address" class="form-control" id="address" value={{$e.Address}}>
@@ -229,7 +249,9 @@
                             <td>{{$e.Name}}</td>
                             <td>{{$e.SubName}}</td>
                             <td>{{$e.NameService}}</td>
-                            <td>{{$e.Date}}</td>
+                            <td>{{$e.DateIn}}</td>
+                            <td>{{$e.DateSend}}</td>
+                            <td>{{$e.DateOut}}</td>
                             <td>{{$e.Address}}</td>
                             <td>{{$e.Location}}</td>
                             <td>{{$e.Number}}</td>
