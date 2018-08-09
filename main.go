@@ -364,6 +364,11 @@ func main() {
 					Date: date, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
 			}
 
+			datepars, _ := time.Parse(time.RFC3339, date)
+			datef := datepars.Format("2006-01-02T15:04")
+
+			fmt.Println(datef)
+
 			for _, p := range peeps {
 				fmt.Println(p)
 				db.Save(p)
@@ -423,7 +428,7 @@ func main() {
 			dateAdd := datepars.AddDate(0, 0, -12)
 			dateF := dateAdd.Format("2006-01-02T15:04")
 
-			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("Date", dateF), q.Lte("Date", date))).Find(&person)
+			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("Date", date), q.Lte("Date", dateF))).Find(&person)
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", person)
 			}

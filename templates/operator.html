@@ -14,6 +14,7 @@
                 </p>
             {{end}}
             <div class="col-sm-12">
+                <h3>Загрузить файл</h3>
                 <form enctype="multipart/form-data" class="form" action="/uploadValue" method="POST">
                 <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -43,16 +44,19 @@
                 <form class="form" action="/operator" method="POST">
                         <div class="form-row">
                             <div class="col">
+                                <h3>Имя заявителя</h3>
                                 <label class="sr-only" for="inlineFormInput">Имя заявителя</label>
                                 <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" placeholder="Имя заявителя">
                             </div>
                             <p></p>
                             <div class="col">
+                                <h3>Представитель заявителя</h3>
                                 <label class="sr-only" for="inlineFormInput">Представитель заявителя</label>
                                 <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" id="subname" placeholder="Представитель заявителя">
                             </div>
                             <p></p>
                             <div class="col">
+                                <h3>Название услуги</h3>
                                 <label class="sr-only" for="inlineFormInput">Название услуги</label>
                                 <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" id="nameservice" placeholder="Название услуги">
                             </div>
@@ -60,25 +64,28 @@
                         <p></p>
                         <div class="form-row">
                             <div class="col">
+                                <h3>Дата</h3>
                                 <label class="sr-only" for="inlineFormInput">Дата</label>
                                 <input type="datetime-local" name="date" class="form-control" id="date" placeholder="Дата" value="{{.timeNow}}">
                             </div>
                             <p></p>
                             <div class="col">
+                                <h3>Адрес</h3>
                                 <label class="sr-only" for="inlineFormInput">Адрес</label>
                                 <input type="text" name="address" class="form-control" id="address" placeholder="Адрес">
                             </div>
                             <div class="col">
+                                <h3>Место оператора</h3>
                                 <label class="sr-only" for="inlineFormInput">Место оператора</label>
                                 <!-- <input type="text" name="loc" class="form-control" id="loc" placeholder="Место оператора"> -->
                                 <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
-                                    <option value="value1">Оператор 1</option>
-                                    <option value="value1">Оператор 2</option>
-                                    <option value="value1">Оператор 3</option>
-                                    <option value="value1">Оператор 4</option>
-                                    <option value="value1">Оператор 5</option>
-                                    <option value="value1">Оператор 6</option>
-                                    <option value="value1">Оператор 7</option>
+                                    <option value="Оператор 1">Оператор 1</option>
+                                    <option value="Оператор 2">Оператор 2</option>
+                                    <option value="Оператор 3">Оператор 3</option>
+                                    <option value="Оператор 4">Оператор 4</option>
+                                    <option value="Оператор 5">Оператор 5</option>
+                                    <option value="Оператор 6">Оператор 6</option>
+                                    <option value="Оператор 7">Оператор 7</option>
                                 </select>
                             </div>
                         </div>
@@ -86,11 +93,13 @@
                         <div class="form-row">
                             <p></p>
                             <div class="col">
+                                <h3>Номер</h3>
                                 <label class="sr-only" for="inlineFormInput">Номер</label>
                                 <input type="text" name="number" class="form-control" id="number" placeholder="Номер">
                             </div>
                             <p></p>
                             <div class="col">
+                                <h3>Телефон</h3>
                                 <label class="sr-only" for="inlineFormInput">Телефон</label>
                                 <input type="text" name="phone" id="phone" class="form-control" >
                                     <script>
@@ -102,6 +111,7 @@
                             </div>
                             <p></p>
                             <div class="col">
+                                <h3>Описание</h3>
                                 <label class="sr-only" for="inlineFormInput">Описание</label>
                                 <input type="text" name="note" class="form-control" id="note" placeholder="Описание">
                             </div>
