@@ -66,8 +66,13 @@
                             <div class="col">
                                 <h6>Дата регистрации</h6>
                                 <label class="sr-only" for="inlineFormInput">Дата регистрации</label>
-                                <input type="datetime-local" name="datein" class="form-control" id="datein" value="{{.timeNow}}">
+                                <input type="text" name="datein" class="form-control" id="datein" value="{{.timeNow}}">
                             </div>
+                           <script>
+                               $('#datein').datetimepicker({
+                                    format: 'dd.mm.yyyy hh:ii'
+                                });
+                           </script>
                             <div class="col">
                                 <h6>Дата отправки</h6>
                                 <label class="sr-only" for="inlineFormInput">Дата отправки</label>
@@ -174,6 +179,7 @@
                 </thead>
                     <tbody>
                         {{range $i, $e := .person}}
+                        
                         <!-- hide modal window -->
                         <div class="modal fade" id="edit{{$e.ID}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
                             <div class="modal-dialog">

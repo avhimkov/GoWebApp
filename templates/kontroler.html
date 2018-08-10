@@ -17,10 +17,12 @@
             <p></p>
             <form id="date" class="form" action="/kontroler" method="GET">
                     <div class="form-row">
+                        <h6>Выбрать дату</h6>
                         <div class="col">
                             <label class="sr-only" for="inlineFormInput">Дата с</label>
                             <input type="datetime-local" name="date" class="form-control" id="date" value="{{.timeNow}}">
                         </div>
+                        <h6>Выбрать пользователя</h6>
                         <div class="col">
                             <select name="users" id="users" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
                             <option>Выберите оператора</option>
