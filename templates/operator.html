@@ -91,6 +91,11 @@
                                 <label class="sr-only" for="inlineFormInput">Адрес</label>
                                 <input type="text" name="address" class="form-control" id="address" placeholder="Адрес">
                             </div>
+                            <script>
+                                function onLoad (ymaps) {
+                                    var suggestView = new ymaps.SuggestView('address');
+                                }
+                            </script>
                             <div class="col">
                                 <h6>Место оператора</h6>
                                 <label class="sr-only" for="inlineFormInput">Место оператора</label>

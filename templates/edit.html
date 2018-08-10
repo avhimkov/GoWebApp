@@ -3,6 +3,7 @@
 <!--Embed the header.html template at this location-->
 
  <!-- hide modal window -->
+ {{range $i, $e := .person}}
  <div class="modal fade" id="edit{{$e.ID}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -69,5 +70,6 @@
     </div>
     <!-- /.modal-dialog --> 
 </div>
+{{end}}
 <!--Embed the footer.html template at this location-->
 
