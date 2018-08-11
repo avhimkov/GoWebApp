@@ -18,8 +18,8 @@
                 <p></p>
                 <form id="date" class="form" action="/history" method="GET">
                         <div class="form-row">
-                            <h6>Выбрать дату</h6>
                             <div class="col">
+                                <h6>Выбрать дату</h6>
                                 <label class="sr-only" for="inlineFormInput">Дата</label>
                                 <input type="datetime-local" name="date" class="form-control" id="date">
                             </div>
@@ -32,7 +32,7 @@
     </div>
 <p></p>
 <div class="card">
-    <h3 class="card-header panel-success white-text">Список услуги</h3>
+    <h3 class="card-header panel-success white-text">Список заявлений</h3>
     <div class="card-body">
         <!-- <form action="/remov/" method="POST">
             <input value="rem_val"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
@@ -59,7 +59,7 @@
                     <th data-sortable="true" data-filter-control="input" data-field="DateIn">Дата регистрации</th>
                     <th data-sortable="true" data-filter-control="input" data-field="DateSend">Дата отправки</th>
                     <th data-sortable="true" data-filter-control="input" data-field="DateOut">Дата получения</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Address">Адрес</th>
+                    <th data-sortable="true" data-filter-control="input" data-field="Address" data-formatter="Formatter">Адрес</th>
                     <th data-sortable="true" data-filter-control="input" data-field="Location">Место оператора</th>
                     <th data-sortable="true" data-filter-control="input" data-field="Number">Номер</th>
                     <th data-sortable="true" data-filter-control="input" data-field="Phone">Телефон</th>
@@ -67,6 +67,11 @@
                     <th data-field="Edit">Редакт..</th>
                     <th data-field="Delete">Удаление</th>
                 </tr>
+                <script>
+                        function Formatter(value) {
+                            return value.substring(0,20) + "...";
+                        }
+                </script>
             </thead>
             <tbody>
                 {{range $i, $e := .person}}
@@ -101,6 +106,6 @@
         </table>
     </div>
 </div>
-
+<p></p>
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}

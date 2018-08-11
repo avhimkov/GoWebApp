@@ -30,18 +30,12 @@ type Person struct {
 	DateIn      string `storm:"index" json:"datein" form:"datein" binding:"required"`           //Дата регистрации
 	DateSend    string `storm:"index" json:"datesend" form:"datesend" binding:"required"`       //Дата отправки
 	DateOut     string `storm:"index" json:"dateout" form:"dateout" binding:"required"`         //Дата получения
-	// Address   *Address `json:"address,omitempty"`
-	Address  string `storm:"index" json:"address" form:"address" binding:"required"`   //Адрес
-	Location string `storm:"index" json:"location" form:"location" binding:"required"` //Место оператора
-	Number   string `storm:"index" json:"number" form:"number" binding:"required"`     //
-	Phone    string `storm:"index" json:"phone" form:"phone" binding:"required"`       //Телефон
-	Note     string `storm:"index" json:"note" form:"note" binding:"required"`         //Примечание
+	Address     string `storm:"index" json:"address" form:"address" binding:"required"`         //Адрес
+	Location    string `storm:"index" json:"location" form:"location" binding:"required"`       //Место оператора
+	Number      string `storm:"index" json:"number" form:"number" binding:"required"`           //
+	Phone       string `storm:"index" json:"phone" form:"phone" binding:"required"`             //Телефон
+	Note        string `storm:"index" json:"note" form:"note" binding:"required"`               //Примечание
 }
-
-// type Address struct {
-//     City  string `json:"city"`
-//     State string `json:"state"`
-// }
 
 var perm, _ = permissionbolt.New()
 
@@ -408,12 +402,12 @@ func main() {
 				log.Fatal(err1)
 			}
 
-			date := c.DefaultQuery("date", "2006-01-02T15:04")
 			users := c.Query("users")
 
+			date := c.DefaultQuery("date", "2006-01-02T15:04")
 			datepars, _ := time.Parse(time.RFC3339, date)
-			// dateAdd := datepars.AddDate(0, 0, -12)
-			dateAdd := datepars.Add(-12 * time.Hour)
+			dateAdd := datepars.AddDate(0, 0, -1)
+			// dateAdd := datepars.Add(-12 * time.Hour)
 			dateF := dateAdd.Format("2006-01-02T15:04")
 
 			err := db.Select(q.Eq("User", users), q.And(q.Gte("DateIn", dateF), q.Lte("DateIn", date))).Find(&person)

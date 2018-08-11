@@ -66,14 +66,15 @@
                             <div class="col">
                                 <h6>Дата регистрации</h6>
                                 <label class="sr-only" for="inlineFormInput">Дата регистрации</label>
-                                <input type="text" name="datein" class="form-control" id="datein" value="{{.timeNow}}">
+                                <!-- <input type="text" name="datein" class="form-control" id="datein" value="{{.timeNow}}"> -->
+                                <input type="datetime-local" name="datein" class="form-control" id="datein" value="{{.timeNow}}">
                             </div>
-                           <script>
+                           <!-- <script>
                                $('#datein').datetimepicker({
                                     format: 'dd.mm.yyyy hh:ii'
                                 });
-                           </script>
-                            <div class="col">
+                           </script> -->
+                            <!-- <div class="col">
                                 <h6>Дата отправки</h6>
                                 <label class="sr-only" for="inlineFormInput">Дата отправки</label>
                                 <input type="datetime-local" name="datesend" class="form-control" id="datesend" value="{{.timeNow}}">
@@ -82,7 +83,21 @@
                                 <h6>Дата получения</h6>
                                 <label class="sr-only" for="inlineFormInput">Дата получения</label>
                                 <input type="datetime-local" name="dateout" class="form-control" id="dateout" value="{{.timeNow}}">
-                            </div>
+                            </div> -->
+                            <div class="col">
+                                    <h6>Место оператора</h6>
+                                    <label class="sr-only" for="inlineFormInput">Место оператора</label>
+                                    <!-- <input type="text" name="loc" class="form-control" id="loc" placeholder="Место оператора"> -->
+                                    <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                        <option value="Оператор 1">Оператор 1</option>
+                                        <option value="Оператор 2">Оператор 2</option>
+                                        <option value="Оператор 3">Оператор 3</option>
+                                        <option value="Оператор 4">Оператор 4</option>
+                                        <option value="Оператор 5">Оператор 5</option>
+                                        <option value="Оператор 6">Оператор 6</option>
+                                        <option value="Оператор 7">Оператор 7</option>
+                                    </select>
+                                </div>
                         </div>
                         <p></p>
                         <div class="form-row">
@@ -96,20 +111,6 @@
                                     var suggestView = new ymaps.SuggestView('address');
                                 }
                             </script>
-                            <div class="col">
-                                <h6>Место оператора</h6>
-                                <label class="sr-only" for="inlineFormInput">Место оператора</label>
-                                <!-- <input type="text" name="loc" class="form-control" id="loc" placeholder="Место оператора"> -->
-                                <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
-                                    <option value="Оператор 1">Оператор 1</option>
-                                    <option value="Оператор 2">Оператор 2</option>
-                                    <option value="Оператор 3">Оператор 3</option>
-                                    <option value="Оператор 4">Оператор 4</option>
-                                    <option value="Оператор 5">Оператор 5</option>
-                                    <option value="Оператор 6">Оператор 6</option>
-                                    <option value="Оператор 7">Оператор 7</option>
-                                </select>
-                            </div>
                         </div>
                         <p></p>
                         <div class="form-row">
@@ -146,7 +147,7 @@
     </div>
     <p></p>
     <div class="card">
-        <h3 class="card-header panel-success white-text">Список услуги</h3>
+        <h3 class="card-header panel-success white-text">Список заявлений</h3>
         <div class="card-body">
             <table id="table"
                     data-toggle="table"
@@ -171,9 +172,7 @@
                         <th data-field="SubName" data-filter-control="input" data-sortable="true">Представитель</th>
                         <th data-field="NameService" data-filter-control="input" data-sortable="true" >Название услуги</th>
                         <th data-field="DateIn" data-filter-control="input" data-sortable="true" >Дата регистрации</th>
-                        <th data-field="DateSend" data-filter-control="input" data-sortable="true" >Дата отправки</th>
-                        <th data-field="DateOut" data-filter-control="input" data-sortable="true" >Дата получения</th>
-                        <th data-field="Address" data-filter-control="input" data-sortable="true" >Адрес</th>
+                        <th data-field="Address" data-filter-control="input" data-sortable="true" data-formatter="Formatter">Адрес</th>
                         <th data-field="Location" data-filter-control="input" data-sortable="true" >Место оператора</th>
                         <th data-field="Number" data-filter-control="input" data-sortable="true" >Номер</th>
                         <th data-field="Phone" data-filter-control="input" data-sortable="true" >Телефон</th>
@@ -181,6 +180,11 @@
                         <th data-field="Edit">Редакт..</th>
                         <th data-field="Delete">Удаление</th>
                     </tr>
+                    <script>
+                        function Formatter(value) {
+                            return value.substring(0,20) + "...";
+                        }
+                    </script>
                 </thead>
                     <tbody>
                         {{range $i, $e := .person}}
@@ -196,27 +200,35 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
+                                            <h6>Имя заявитель</h6>
                                             <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" value={{$e.Name}}>
                                         </div>
                                         <div class="form-group">
+                                            <h6>Представитель</h6>
                                             <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" id="subname" value={{$e.SubName}}>
                                         </div>
                                         <div class="form-group">
+                                            <h6>Название услуги</h6>
                                             <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" id="nameservice" value={{$e.NameService}}>
                                         </div>
                                         <div class="form-group">
+                                            <h6>Дата регистрации</h6>
                                             <input type="datetime-local" name="datein" class="form-control" id="datein" value={{$e.DateIn}}>
                                         </div>
                                         <div class="form-group">
+                                            <h6>Дата отправки</h6>
                                             <input type="datetime-local" name="datesend" class="form-control" id="datesend" value={{$e.DateSend}}>
                                         </div>
                                         <div class="form-group">
+                                            <h6>Дата получения</h6>
                                             <input type="datetime-local" name="dateout" class="form-control" id="dateout" value={{$e.DateOut}}>
                                         </div>
                                         <div class="form-group">
+                                            <h6>Адрес</h6>
                                             <input type="text" name="address" class="form-control" id="address" value={{$e.Address}}>
                                         </div>
                                         <div class="form-group">
+                                            <h6>Место оператора</h6>
                                             <select name="loc" id="loc" placeholder={{$e.Location}} class="form-control mr-sm-2 mb-2 mb-sm-0"> 
                                                 <option value="value1">Оператор 1</option>
                                                 <option value="value1">Оператор 2</option>
@@ -228,9 +240,11 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
+                                            <h6>Номер</h6>
                                             <input type="text" name="number" class="form-control" id="number" value={{$e.Number}}>
                                         </div>
                                         <div class="form-group">
+                                            <h6>Телефон</h6>
                                             <input type="text" name="phone" id="phone"  value={{$e.Phone}}  class="form-control" >
                                                 <script>
                                                     $(function(){
@@ -240,11 +254,12 @@
                                                 </script>
                                         </div>
                                         <div class="form-group">
+                                            <h6>Нотация</h6>
                                             <input type="text" name="note" class="form-control" id="note" value={{$e.Note}}>
                                         </div>
                                     </div>
                                     <div class="modal-footer ">
-                                            <button type="submit" class="btn btn-warning btn-lg" style="width: 100%;"></button><i class="fa fa-pencil fa-fw"></i>
+                                            <button type="submit" class="btn btn-warning btn-lg" style="width: 100%;">Update</button><i class="fa fa-pencil fa-fw"></i>
                                     </div>
                                 </form>
                                 </div>
@@ -252,6 +267,7 @@
                             </div>
                             <!-- /.modal-dialog --> 
                         </div>
+                        <!-- emd hide modal window -->
 
                         <tr>
                             <td class="bs-checkbox"><input data-index="{{$i}}" value="{{$e.ID}}" name="id" type="checkbox"></td>
@@ -261,8 +277,6 @@
                             <td>{{$e.SubName}}</td>
                             <td>{{$e.NameService}}</td>
                             <td>{{$e.DateIn}}</td>
-                            <td>{{$e.DateSend}}</td>
-                            <td>{{$e.DateOut}}</td>
                             <td>{{$e.Address}}</td>
                             <td>{{$e.Location}}</td>
                             <td>{{$e.Number}}</td>
@@ -284,6 +298,7 @@
         </div>
     </div>
 </div>
+<p></p>
 
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}
