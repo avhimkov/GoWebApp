@@ -149,7 +149,13 @@
     <div class="card">
         <h3 class="card-header panel-success white-text">Список заявлений</h3>
         <div class="card-body">
+            <div id="toolbar">
+                <form action="/test" method="POST">
+                    <input value="test" class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
+                </form>
+            </div>
             <table id="table"
+                    data-toolbar="#toolbar"
                     data-toggle="table"
                     data-show-columns="true"
                     data-search-align="left"
@@ -162,10 +168,12 @@
                     data-search="true"
                     data-filter-control="true"
                     data-id-field="id"
-                    data-editable-emptytext="This field is empty" >
+                    data-editable-emptytext="This field is empty" 
+                    data-select-item-name="">
                 <thead>
                     <tr>
                         <th data-field="state" data-checkbox="true"></th>
+                        <th><input type="checkbox" id="id" /></th>
                         <th data-sortable="true">№</th>
                         <!-- <th data-editable="true" data-sortable="true" data-filter-control="input" data-field="Name">Имя заявитель</th> -->
                         <th data-field="Name" data-filter-control="input" data-sortable="true">Имя заявитель</th>
@@ -270,7 +278,8 @@
                         <!-- emd hide modal window -->
 
                         <tr>
-                            <td class="bs-checkbox"><input data-index="{{$i}}" value="{{$e.ID}}" name="id" type="checkbox"></td>
+                            <td class="bs-checkbox"><input data-index="{{$i}}" value="exportid" name="exportid" type="checkbox"></td>
+                            <td><input type="checkbox" id="{{$e.ID}}" name="id" value="{{$e.ID}}"/></td>
                             <td>{{$i}}</td>
                             <!-- <td>{{$e.User}}</td> -->
                             <td>{{$e.Name}}</td>
@@ -287,6 +296,7 @@
                                 <button class="btn btn-primary btn-rounded btn-sm my-0" data-title="Edit" data-toggle="modal" data-target="#edit{{$e.ID}}" class="fa fa-pencil">edit</button>
                             </td>
                             <td>
+                                <!-- button delete -->
                                 <form action="/removeval/{{$e.ID}}" method="GET">
                                     <input value="rem_val"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
                                 </form>

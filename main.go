@@ -31,18 +31,18 @@ type Person struct {
 	DateSend    string `storm:"index" json:"datesend" form:"datesend" binding:"required"`       //Дата отправки
 	DateOut     string `storm:"index" json:"dateout" form:"dateout" binding:"required"`         //Дата получения
 	Address     string `storm:"index" json:"address" form:"address" binding:"required"`         //Адрес
-	Location    string `storm:"index" json:"location" form:"location" binding:"required"`       //Место оператора
-	Number      string `storm:"index" json:"number" form:"number" binding:"required"`           //
-	Phone       string `storm:"index" json:"phone" form:"phone" binding:"required"`             //Телефон
-	Note        string `storm:"index" json:"note" form:"note" binding:"required"`               //Примечание
+	Location    Office //Место оператора
+	Number      string `storm:"index" json:"number" form:"number" binding:"required"` //
+	Phone       string `storm:"index" json:"phone" form:"phone" binding:"required"`   //Телефон
+	Note        string `storm:"index" json:"note" form:"note" binding:"required"`     //Примечание
 }
 
-var perm, _ = permissionbolt.New()
+type Office struct {
+	LocOffice string `storm:"index" json:"locoffic" form:"locoffic" binding:"required"`
+	Operator  string `storm:"index" json:"operator" form:"operator" binding:"required"`
+}
 
-// perm, err := permissionbolt.New()
-// if err != nil {
-// 	log.Fatalln(err)
-// }
+// var perm, _ = permissionbolt.New()
 
 //open database
 func DB() *storm.DB {
@@ -89,6 +89,13 @@ func main() {
 
 	//	Blank slate, no default permissions
 	//	perm.Clear()
+
+	filename := "db/bolt.db"
+	perm, err := permissionbolt.NewWithConf(filename)
+	if err != nil {
+		fmt.Println("Could not open database: " + filename)
+		return
+	}
 
 	// Set up a middleware handler for Gin, with a custom "permission denied" message.
 	permissionHandler := func(c *gin.Context) {
@@ -463,25 +470,24 @@ func main() {
 	})
 
 	//delete value on id
-	g.GET("/removeval", func(c *gin.Context) {
-		// id := c.Param("id")
-		var person Person
-		c.Bind(&person)
+	// g.POST("/test", func(c *gin.Context) {
+	// 	var person Person
 
-		query := db.Select(q.Eq("ID", person.ID))
-		query.Delete(new(Person))
+	// 	id := c.PostForm("id")
+	// 	fmt.Println(id)
 
-		fmt.Println(person.ID)
-		c.JSON(200, gin.H{"persons": person.ID})
-		http.Redirect(c.Writer, c.Request, "/operator", 302)
-	})
+	// 	c.Bind(&person)
+	// 	fmt.Println(&person)
+
+	// 	c.JSON(200, gin.H{"id": person.ID})
+	// 	http.Redirect(c.Writer, c.Request, "/operator", 302)
+	// })
 
 	//edit value
 	g.POST("/edit/:id", func(c *gin.Context) {
 		id := c.Param("id")
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
-
 		var person Person
 
 		findVal := db.Select(q.Eq("ID", id))
