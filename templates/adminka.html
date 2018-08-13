@@ -83,6 +83,30 @@
     </div>
 </div>
 <p></p>
-
+<div class="card">
+    <h3 class="card-header">Добавить подразделение</h3>
+        <div class="card-body">
+            <div class="col-sm-12">
+                <p></p>
+                <form id="date" class="form" action="/addoffice" method="GET">
+                        <div class="form-row">
+                            <div class="col">
+                                <h6>Добавить офис</h6>
+                                <label class="sr-only" for="inlineFormInput">Добавить офис</label>
+                                <input type="text" name="office" class="form-control" id="office" placeholder="Офис">
+                            </div>
+                            <div class="col">
+                                <h6>Добавить оператора</h6>
+                                <label class="sr-only" for="inlineFormInput">Добавить оператора</label>
+                                <input type="text" name="operator" class="form-control" id="operator" placeholder="Оператора">
+                            </div>
+                        </div>
+                    <p></p>
+                    <button type="submit" form="date" class="btn btn-primary float-right">Добавить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <p></p>
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}

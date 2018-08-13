@@ -31,14 +31,15 @@ type Person struct {
 	DateSend    string `storm:"index" json:"datesend" form:"datesend" binding:"required"`       //Дата отправки
 	DateOut     string `storm:"index" json:"dateout" form:"dateout" binding:"required"`         //Дата получения
 	Address     string `storm:"index" json:"address" form:"address" binding:"required"`         //Адрес
-	Location    Office //Место оператора
-	Number      string `storm:"index" json:"number" form:"number" binding:"required"` //
-	Phone       string `storm:"index" json:"phone" form:"phone" binding:"required"`   //Телефон
-	Note        string `storm:"index" json:"note" form:"note" binding:"required"`     //Примечание
+	// Location    string `storm:"index" json:"address" form:"address" binding:"required"`         //Место оператора
+	Location Office //Место оператора
+	Number   string `storm:"index" json:"number" form:"number" binding:"required"` //
+	Phone    string `storm:"index" json:"phone" form:"phone" binding:"required"`   //Телефон
+	Note     string `storm:"index" json:"note" form:"note" binding:"required"`     //Примечание
 }
 
 type Office struct {
-	LocOffice string `storm:"index" json:"locoffic" form:"locoffic" binding:"required"`
+	LocOffice string `storm:"index" json:"locoffice" form:"locoffic" binding:"required"`
 	Operator  string `storm:"index" json:"operator" form:"operator" binding:"required"`
 }
 
@@ -245,6 +246,12 @@ func main() {
 		isloggedin := userstate.IsLoggedIn(usercook)
 		isadmin := userstate.IsAdmin(usercook)
 
+		var office Office
+
+		db.All(&office)
+
+		fmt.Println(&office)
+
 		var cheked []bool
 		if isloggedin {
 			listusers, _ := userstate.AllUsernames()
@@ -261,6 +268,38 @@ func main() {
 		} else {
 			c.Redirect(301, "/")
 		}
+	})
+
+	g.GET("/addoffice", func(c *gin.Context) {
+
+		office := c.PostForm("office")
+		operator := c.PostForm("operator")
+
+		locoffice := []*Office{
+			{LocOffice: office, Operator: operator},
+		}
+
+		fmt.Println(&locoffice)
+
+		// office = Office{
+		// 	LocOffice: "Лянтор",
+		// 	Operator:  "Оператор 1",
+		// }
+
+		for _, lo := range locoffice {
+			fmt.Println(lo)
+			db.Save(lo)
+		}
+
+		// db.Save(&locoffice)
+		// err := db.All(&office)
+		fmt.Println(&locoffice)
+
+		// if err == storm.ErrNotFound {
+		// 	c.Set("Нет данных", office)
+		// }
+
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	})
 
 	//add from file value
@@ -304,10 +343,10 @@ func main() {
 					DateSend:    line[4],
 					DateOut:     line[5],
 					Address:     line[6],
-					Location:    line[7],
-					Number:      line[8],
-					Phone:       line[9],
-					Note:        line[10]},
+					Location:    Office{Operator: line[7], LocOffice: line[8]},
+					Number:      line[11],
+					Phone:       line[12],
+					Note:        line[13]},
 			}
 
 			for _, p := range peeps {
@@ -369,14 +408,15 @@ func main() {
 			datesend := c.PostForm("datesend")
 			dateout := c.PostForm("dateout")
 			address := c.PostForm("address")
-			loc := c.PostForm("loc")
+			operator := c.PostForm("operator")
+			locoffice := c.PostForm("locoffice")
 			number := c.PostForm("number")
 			phone := c.PostForm("phone")
 			note := c.PostForm("note")
 
 			peeps := []*Person{
 				{User: usercook, Name: name, SubName: subname, NameService: nameservice,
-					DateIn: datein, DateSend: datesend, DateOut: dateout, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
+					DateIn: datein, DateSend: datesend, DateOut: dateout, Address: address, Location: Office{Operator: operator, LocOffice: locoffice}, Number: number, Phone: phone, Note: note},
 			}
 
 			datepars, _ := time.Parse(time.RFC3339, datein)
@@ -507,13 +547,14 @@ func main() {
 			datesend := c.PostForm("datesend")
 			dateout := c.PostForm("dateout")
 			address := c.PostForm("address")
-			loc := c.PostForm("loc")
+			locoffice := c.PostForm("locoffice")
+			operator := c.PostForm("operator")
 			number := c.PostForm("number")
 			phone := c.PostForm("phone")
 			note := c.PostForm("note")
 
 			peeps := &Person{ID: person.ID, User: usercook, Name: name, SubName: subname, NameService: nameservice,
-				DateIn: datein, DateSend: datesend, DateOut: dateout, Address: address, Location: loc, Number: number, Phone: phone, Note: note}
+				DateIn: datein, DateSend: datesend, DateOut: dateout, Address: address, Location: Office{Operator: operator, LocOffice: locoffice}, Number: number, Phone: phone, Note: note}
 			fmt.Println(peeps)
 
 			db.Update(peeps)
