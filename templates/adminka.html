@@ -88,12 +88,12 @@
         <div class="card-body">
             <div class="col-sm-12">
                 <p></p>
-                <form id="date" class="form" action="/addoffice" method="GET">
+                <form class="form" action="/addoffice" method="POST">
                         <div class="form-row">
                             <div class="col">
                                 <h6>Добавить офис</h6>
                                 <label class="sr-only" for="inlineFormInput">Добавить офис</label>
-                                <input type="text" name="office" class="form-control" id="office" placeholder="Офис">
+                                <input type="text" name="locoffic" class="form-control" id="locoffic" placeholder="Офис">
                             </div>
                             <div class="col">
                                 <h6>Добавить оператора</h6>
@@ -102,7 +102,7 @@
                             </div>
                         </div>
                     <p></p>
-                    <button type="submit" form="date" class="btn btn-primary float-right">Добавить</button>
+                    <button type="submit" class="btn btn-primary float-right">Сохранить</button>
                 </form>
             </div>
         </div>
