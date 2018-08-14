@@ -20,6 +20,12 @@ import (
 	"github.com/xyproto/permissionbolt"
 )
 
+type Location struct {
+	ID       int    `storm:"id,increment" form:"id" binding:"required"` //`form:"ID" storm:"id,increment" json:"ID"`
+	Office   string `storm:"index" json:"locoffice" form:"locoffic" binding:"required"`
+	Operator string `storm:"index" json:"operator" form:"operator" binding:"required"`
+}
+
 //Struc data visitors
 type Person struct {
 	ID          int `storm:"id,increment" form:"id" binding:"required"` //`form:"ID" storm:"id,increment" json:"ID"`
@@ -32,15 +38,9 @@ type Person struct {
 	DateOut     string `storm:"index" json:"dateout" form:"dateout" binding:"required"`         //Дата получения
 	Address     string `storm:"index" json:"address" form:"address" binding:"required"`         //Адрес
 	Location    string `storm:"index" json:"address" form:"address" binding:"required"`         //Место оператора
-	// Location Office //Место оператора
-	Number string `storm:"index" json:"number" form:"number" binding:"required"` //
-	Phone  string `storm:"index" json:"phone" form:"phone" binding:"required"`   //Телефон
-	Note   string `storm:"index" json:"note" form:"note" binding:"required"`     //Примечание
-}
-
-type Office struct {
-	LocOffice string `storm:"index" json:"locoffice" form:"locoffic" binding:"required"`
-	Operator  string `storm:"index" json:"operator" form:"operator" binding:"required"`
+	Number      string `storm:"index" json:"number" form:"number" binding:"required"`           //
+	Phone       string `storm:"index" json:"phone" form:"phone" binding:"required"`             //Телефон
+	Note        string `storm:"index" json:"note" form:"note" binding:"required"`               //Примечание
 }
 
 // var perm, _ = permissionbolt.New()
@@ -121,6 +121,12 @@ func main() {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 		return isloggedin
+	}
+
+	err = db.Init(&Person{})
+	// err = db.Init(&Location{})
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	g.GET("/", func(c *gin.Context) {
@@ -246,12 +252,18 @@ func main() {
 		isloggedin := userstate.IsLoggedIn(usercook)
 		isadmin := userstate.IsAdmin(usercook)
 
-		var off Office
-		db.All(off)
-		fmt.Println(off)
-
 		var cheked []bool
 		if isloggedin {
+
+			// var p Person
+			var loc []Location
+			err = db.All(&loc)
+			fmt.Println(loc)
+
+			if err == storm.ErrNotFound {
+				c.Set("Нет данных", loc)
+			}
+
 			listusers, _ := userstate.AllUsernames()
 			// fmt.Println(isadmin)
 			if isadmin {
@@ -259,10 +271,10 @@ func main() {
 					// fmt.Println(i)
 					cheked = append(cheked, userstate.IsAdmin(i))
 				}
-				fmt.Println("Admin true or false")
-				fmt.Println(cheked)
-				fmt.Println("Login is Admin")
-				fmt.Println(isadmin)
+				// fmt.Println("Admin true or false")
+				// fmt.Println(cheked)
+				// fmt.Println("Login is Admin")
+				// fmt.Println(isadmin)
 			}
 			c.HTML(http.StatusOK, "adminka.html", gin.H{"listusers": listusers, "is_logged_in": isloggedin, "isadmin": isadmin})
 		} else {
@@ -270,22 +282,39 @@ func main() {
 		}
 	})
 
-	g.POST("/addoffice", func(c *gin.Context) {
+	g.POST("/adminka", func(c *gin.Context) {
+
 		isloggedin := isloggedin(c)
 
 		if isloggedin {
 
-			office := c.PostForm("locoffic")
+			office := c.PostForm("locoffice")
+			fmt.Println(office)
 			operator := c.PostForm("operator")
+			fmt.Println(operator)
 
-			off := []*Office{
-				{LocOffice: office, Operator: operator},
+			// off := Office{LocOffice: office, Operator: operator}
+			// fmt.Println(off)
+			// db.Save(off)
+			// fmt.Println(off)
+
+			loc := Location{
+				// ID:        1,
+				Office:   office,
+				Operator: operator,
 			}
 
-			for _, p := range off {
-				fmt.Println(p)
-				db.Save(p)
+			err := db.Save(&loc)
+			if err != nil {
+				log.Fatal(err)
 			}
+
+			// db.All(&loc)
+			// fmt.Println(&loc)
+			// for _, p := range off {
+			// 	fmt.Println(p)
+			// 	db.Save(p)
+			// }
 
 			http.Redirect(c.Writer, c.Request, "/adminka", 302)
 		} else {
