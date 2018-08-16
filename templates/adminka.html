@@ -93,7 +93,7 @@
                             <div class="col">
                                 <h6>Добавить офис</h6>
                                 <label class="sr-only" for="inlineFormInput">Добавить офис</label>
-                                <input type="text" name="locoffice" class="form-control" id="locoffice" placeholder="Офис">
+                                <input type="text" name="office" class="form-control" id="office" placeholder="Офис">
                             </div>
                             <div class="col">
                                 <h6>Добавить оператора</h6>
@@ -105,6 +105,50 @@
                     <button type="submit" class="btn btn-primary float-right">Сохранить</button>
                 </form>
             </div>
+            <p></p>
+            <table class="table"
+            data-toggle="table"
+            data-search-align="left"
+            data-buttons-align="left"
+            data-page-size=20
+            data-page-list="20, 30, 50, 100"
+            data-show-export="true"
+            data-pagination="true"
+            data-click-to-select="true"
+            data-search="true"
+            data-filter-control="true" >
+            <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-sortable="true">№</th>
+                    <th data-sortable="true" data-field="office">Офис</th>
+                    <th data-sortable="true" data-field="operator">Оператор</th>
+                    <th>Delete</th>
+                    <th>Edit</th>
+                    
+                </tr>
+            </thead>
+            <tbody>            
+                {{range $index, $val := .location}}
+                <tr>
+                    <td class="bs-checkbox "><input data-index="{{$index}}" name="btSelectItem" type="checkbox"></td>
+                    <td>{{$val.ID}}</td>
+                    <td name="office">{{$val.Office}}</td>
+                    <td name="operator">{{$val.Operator}}</td>
+                    <td>
+                        <form action="/" method="GET">
+                            <input value="AdminOff"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/" method="GET">
+                            <input value="Delete"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
         </div>
     </div>
     <p></p>

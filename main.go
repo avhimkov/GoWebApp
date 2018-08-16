@@ -22,7 +22,7 @@ import (
 
 type Location struct {
 	ID       int    `storm:"id,increment" form:"id" binding:"required"` //`form:"ID" storm:"id,increment" json:"ID"`
-	Office   string `storm:"index" json:"locoffice" form:"locoffic" binding:"required"`
+	Office   string `storm:"index" json:"office" form:"office" binding:"required"`
 	Operator string `storm:"index" json:"operator" form:"operator" binding:"required"`
 }
 
@@ -124,7 +124,7 @@ func main() {
 	}
 
 	err = db.Init(&Person{})
-	// err = db.Init(&Location{})
+	err = db.Init(&Location{})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -255,10 +255,11 @@ func main() {
 		var cheked []bool
 		if isloggedin {
 
-			// var p Person
 			var loc []Location
 			err = db.All(&loc)
 			fmt.Println(loc)
+
+			// db.DeleteStruct(&loc)
 
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", loc)
@@ -276,7 +277,7 @@ func main() {
 				// fmt.Println("Login is Admin")
 				// fmt.Println(isadmin)
 			}
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"listusers": listusers, "is_logged_in": isloggedin, "isadmin": isadmin})
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"location": loc, "listusers": listusers, "is_logged_in": isloggedin, "isadmin": isadmin})
 		} else {
 			c.Redirect(301, "/")
 		}
@@ -288,15 +289,10 @@ func main() {
 
 		if isloggedin {
 
-			office := c.PostForm("locoffice")
+			office := c.PostForm("office")
 			fmt.Println(office)
 			operator := c.PostForm("operator")
 			fmt.Println(operator)
-
-			// off := Office{LocOffice: office, Operator: operator}
-			// fmt.Println(off)
-			// db.Save(off)
-			// fmt.Println(off)
 
 			loc := Location{
 				// ID:        1,
@@ -308,13 +304,6 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-
-			// db.All(&loc)
-			// fmt.Println(&loc)
-			// for _, p := range off {
-			// 	fmt.Println(p)
-			// 	db.Save(p)
-			// }
 
 			http.Redirect(c.Writer, c.Request, "/adminka", 302)
 		} else {
@@ -388,6 +377,10 @@ func main() {
 		if isloggedin {
 			var person []Person
 
+			var loc []Location
+			err = db.All(&loc)
+			fmt.Println(loc)
+
 			timeNow := time.Now()
 			timeNowF := timeNow.Format("2006-01-02T15:04")
 
@@ -408,7 +401,7 @@ func main() {
 
 			// db.All(&person)
 
-			c.HTML(http.StatusOK, "operator.html", gin.H{"person": person, "is_logged_in": isloggedin, "timeNow": timeNowF})
+			c.HTML(http.StatusOK, "operator.html", gin.H{"location": loc, "person": person, "is_logged_in": isloggedin, "timeNow": timeNowF})
 
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)

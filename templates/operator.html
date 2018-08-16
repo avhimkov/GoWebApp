@@ -89,13 +89,10 @@
                                     <label class="sr-only" for="inlineFormInput">Место оператора</label>
                                     <!-- <input type="text" name="loc" class="form-control" id="loc" placeholder="Место оператора"> -->
                                     <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
-                                        <option value="Оператор 1">Оператор 1</option>
-                                        <option value="Оператор 2">Оператор 2</option>
-                                        <option value="Оператор 3">Оператор 3</option>
-                                        <option value="Оператор 4">Оператор 4</option>
-                                        <option value="Оператор 5">Оператор 5</option>
-                                        <option value="Оператор 6">Оператор 6</option>
-                                        <option value="Оператор 7">Оператор 7</option>
+                                        {{range $index, $val := .location}}
+                                        <option value="{{$val.Operator}}">{{$val.Operator}}</option>
+                                        {{end}}
+                                       
                                     </select>
                                 </div>
                         </div>
