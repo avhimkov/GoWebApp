@@ -85,16 +85,25 @@
                                 <input type="datetime-local" name="dateout" class="form-control" id="dateout" value="{{.timeNow}}">
                             </div> -->
                             <div class="col">
-                                    <h6>Место оператора</h6>
-                                    <label class="sr-only" for="inlineFormInput">Место оператора</label>
-                                    <!-- <input type="text" name="loc" class="form-control" id="loc" placeholder="Место оператора"> -->
-                                    <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
-                                        {{range $index, $val := .location}}
-                                        <option value="{{$val.Operator}}">{{$val.Operator}}</option>
-                                        {{end}}
-                                       
-                                    </select>
-                                </div>
+                                <h6>Офис</h6>
+                                <label class="sr-only" for="inlineFormInput">Офис</label>
+                                <!-- <input type="text" name="loc" class="form-control" id="loc" placeholder="Место оператора"> -->
+                                <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                    {{range $index, $val := .location}}
+                                    <option value="{{$val.Operator}}">{{$val.Office}}</option>
+                                    {{end}}
+                                </select>
+                            </div>
+                            <div class="col">
+                                <h6>Место оператора</h6>
+                                <label class="sr-only" for="inlineFormInput">Место оператора</label>
+                                <!-- <input type="text" name="loc" class="form-control" id="loc" placeholder="Место оператора"> -->
+                                <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                    {{range $index, $val := .location}}
+                                    <option value="{{$val.Operator}}">{{$val.Operator}}</option>
+                                    {{end}}
+                                </select>
+                            </div>
                         </div>
                         <p></p>
                         <div class="form-row">
