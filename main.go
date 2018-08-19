@@ -55,6 +55,8 @@ func DB() *storm.DB {
 	return db
 }
 
+var db = DB()
+
 func SetupRouter() *gin.Engine {
 
 	// Set Gin to production mode
@@ -83,8 +85,13 @@ func SetupRouter() *gin.Engine {
 
 func main() {
 
-	db := DB()
 	defer db.Close()
+
+	errdb := db.Init(&Person{})
+	errdb = db.Init(&Location{})
+	if errdb != nil {
+		log.Fatal(errdb)
+	}
 
 	g := SetupRouter()
 
@@ -121,12 +128,6 @@ func main() {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
 		return isloggedin
-	}
-
-	err = db.Init(&Person{})
-	err = db.Init(&Location{})
-	if err != nil {
-		log.Fatal(err)
 	}
 
 	g.GET("/", func(c *gin.Context) {
@@ -259,23 +260,15 @@ func main() {
 			err = db.All(&loc)
 			fmt.Println(loc)
 
-			// db.DeleteStruct(&loc)
-
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", loc)
 			}
 
 			listusers, _ := userstate.AllUsernames()
-			// fmt.Println(isadmin)
 			if isadmin {
 				for _, i := range listusers {
-					// fmt.Println(i)
 					cheked = append(cheked, userstate.IsAdmin(i))
 				}
-				// fmt.Println("Admin true or false")
-				// fmt.Println(cheked)
-				// fmt.Println("Login is Admin")
-				// fmt.Println(isadmin)
 			}
 			c.HTML(http.StatusOK, "adminka.html", gin.H{"location": loc, "listusers": listusers, "is_logged_in": isloggedin, "isadmin": isadmin})
 		} else {
@@ -283,6 +276,7 @@ func main() {
 		}
 	})
 
+	// Location operators
 	g.POST("/adminka", func(c *gin.Context) {
 
 		isloggedin := isloggedin(c)
@@ -313,7 +307,7 @@ func main() {
 
 	})
 
-	//add from file value
+	//add value from file
 	g.POST("/uploadValue", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 
@@ -369,7 +363,7 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
 
-	//operator register users
+	//register users
 	g.GET("/operator", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		usercook, _ := userstate.UsernameCookie(c.Request)
@@ -450,7 +444,7 @@ func main() {
 		}
 	})
 
-	//operator register users
+	// find value on date
 	g.GET("/kontroler", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 
@@ -484,7 +478,7 @@ func main() {
 		}
 	})
 
-	//konsult register users
+	//find user value on date
 	g.GET("/history", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := isloggedin(c)
@@ -513,29 +507,7 @@ func main() {
 	})
 
 	//Delete value on id
-	g.GET("/removeval/:id", func(c *gin.Context) {
-		id := c.Param("id")
-
-		query := db.Select(q.Eq("ID", id))
-		query.Delete(new(Person))
-
-		fmt.Println(id)
-		http.Redirect(c.Writer, c.Request, "/operator", 302)
-	})
-
-	//delete value on id
-	// g.POST("/test", func(c *gin.Context) {
-	// 	var person Person
-
-	// 	id := c.PostForm("id")
-	// 	fmt.Println(id)
-
-	// 	c.Bind(&person)
-	// 	fmt.Println(&person)
-
-	// 	c.JSON(200, gin.H{"id": person.ID})
-	// 	http.Redirect(c.Writer, c.Request, "/operator", 302)
-	// })
+	g.GET("/removeval/:id", RemVal)
 
 	//edit value
 	g.POST("/edit/:id", func(c *gin.Context) {
@@ -582,4 +554,16 @@ func main() {
 	ginpprof.Wrap(g)
 	// Start serving the application
 	g.Run(":3000")
+}
+
+//Delete value on id function
+func RemVal(c *gin.Context) {
+
+	id := c.Param("id")
+
+	query := db.Select(q.Eq("ID", id))
+	query.Delete(new(Person))
+
+	fmt.Println(id)
+	http.Redirect(c.Writer, c.Request, "/operator", 302)
 }
