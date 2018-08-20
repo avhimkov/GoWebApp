@@ -393,8 +393,6 @@ func main() {
 				c.Set("Нет данных", person)
 			}
 
-			// db.All(&person)
-
 			c.HTML(http.StatusOK, "operator.html", gin.H{"location": loc, "person": person, "is_logged_in": isloggedin, "timeNow": timeNowF})
 
 		} else {
@@ -462,7 +460,6 @@ func main() {
 			date := c.DefaultQuery("date", "2006-01-02T15:04")
 			datepars, _ := time.Parse(time.RFC3339, date)
 			dateAdd := datepars.AddDate(0, 0, -1)
-			// dateAdd := datepars.Add(-12 * time.Hour)
 			dateF := dateAdd.Format("2006-01-02T15:04")
 
 			err := db.Select(q.Eq("User", users), q.And(q.Gte("DateIn", dateF), q.Lte("DateIn", date))).Find(&person)

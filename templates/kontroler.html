@@ -86,14 +86,6 @@
                     <tbody>
                         {{range $i, $e := .person}}
                         <tr>
-                            <!-- <td>{{.ID}}</td> -->
-                            <!-- <td class="bs-checkbox "><input data-index="0" name="btSelectItem" type="checkbox"></td> -->
-
-                            <!-- checkbox -->
-                            <!-- <td scope="row" class="pr-md-3 pr-5">
-                                    <input type="checkbox" class="filled-in" id="checkbox124">
-                                    <label for="checkbox124" class="label-table"></label>
-                            </td> -->
                             <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
                             <td>{{$i}}</td>
                             <td>{{$e.Name}}</td>

@@ -97,7 +97,6 @@
                             <div class="col">
                                 <h6>Место оператора</h6>
                                 <label class="sr-only" for="inlineFormInput">Место оператора</label>
-                                <!-- <input type="text" name="loc" class="form-control" id="loc" placeholder="Место оператора"> -->
                                 <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
                                     {{range $index, $val := .location}}
                                     <option value="{{$val.Operator}}">{{$val.Operator}}</option>
@@ -181,7 +180,6 @@
                         <th data-field="state" data-checkbox="true"></th>
                         <th><input type="checkbox" id="id" /></th>
                         <th data-sortable="true">№</th>
-                        <!-- <th data-editable="true" data-sortable="true" data-filter-control="input" data-field="Name">Имя заявитель</th> -->
                         <th data-field="Name" data-filter-control="input" data-sortable="true">Имя заявитель</th>
                         <th data-field="SubName" data-filter-control="input" data-sortable="true">Представитель</th>
                         <th data-field="NameService" data-filter-control="input" data-sortable="true" >Название услуги</th>
