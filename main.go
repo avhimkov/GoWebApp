@@ -564,3 +564,16 @@ func RemVal(c *gin.Context) {
 	fmt.Println(id)
 	http.Redirect(c.Writer, c.Request, "/operator", 302)
 }
+
+//Delete value on id function
+func SumWork(c *gin.Context) {
+	var person []Person
+
+	err := db.All(&person)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(person)
+
+	// http.Redirect(c.Writer, c.Request, "/operator", 302)
+}
