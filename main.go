@@ -505,6 +505,7 @@ func main() {
 
 	//Delete value on id
 	g.GET("/removeval/:id", RemVal)
+	g.GET("/count/:id", SumWork)
 
 	//edit value
 	g.POST("/edit/:id", func(c *gin.Context) {
@@ -567,13 +568,15 @@ func RemVal(c *gin.Context) {
 
 //Delete value on id function
 func SumWork(c *gin.Context) {
-	var person []Person
+	id := c.Param("id")
 
-	err := db.All(&person)
+	var person *Person
+
+	count, err := db.Select(q.Eq("ID", id)).Count(&person)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(person)
+	fmt.Println(count)
 
-	// http.Redirect(c.Writer, c.Request, "/operator", 302)
+	http.Redirect(c.Writer, c.Request, "/operator", 302)
 }
