@@ -155,7 +155,7 @@
         <h3 class="card-header panel-success white-text">Список заявлений</h3>
         <div class="card-body">
             <div id="toolbar">
-                <form action="/count" method="POST">
+                <form action="/count" method="GET">
                     <input value="count" class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
                 </form>
             </div>
@@ -304,10 +304,6 @@
                                 <form action="/removeval/{{$e.ID}}" method="GET">
                                     <input value="rem_val"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
                                 </form>
-                                <form action="/count/{{$e.ID}}" method="GET">
-                                    <input value="rem_val"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
-                                </form>
-
                             </td>
                         </tr>
                         {{end}}

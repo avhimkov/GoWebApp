@@ -481,6 +481,7 @@ func main() {
 		isloggedin := isloggedin(c)
 
 		if isloggedin {
+
 			var person []Person
 
 			date := c.DefaultQuery("date", "2006-01-02T15:04")
@@ -505,7 +506,7 @@ func main() {
 
 	//Delete value on id
 	g.GET("/removeval/:id", RemVal)
-	g.GET("/count/:id", SumWork)
+	g.GET("/count", SumWork)
 
 	//edit value
 	g.POST("/edit/:id", func(c *gin.Context) {
@@ -560,23 +561,27 @@ func RemVal(c *gin.Context) {
 	id := c.Param("id")
 
 	query := db.Select(q.Eq("ID", id))
+	count, err := query.Count(new(Person))
+	if err != nil {
+		log.Fatal(err)
+	}
 	query.Delete(new(Person))
 
+	fmt.Println(count)
 	fmt.Println(id)
 	http.Redirect(c.Writer, c.Request, "/operator", 302)
 }
 
-//Delete value on id function
+//Counte all values
 func SumWork(c *gin.Context) {
-	id := c.Param("id")
+	// var location *[]Location
 
-	var person *Person
-
-	count, err := db.Select(q.Eq("ID", id)).Count(&person)
+	query := db.Select()
+	count, err := query.Count(new(Person))
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(count)
+	fmt.Printf("Count Value = %d\n ", count)
 
 	http.Redirect(c.Writer, c.Request, "/operator", 302)
 }
