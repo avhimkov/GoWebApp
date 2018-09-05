@@ -5,7 +5,7 @@
 <div class="container">
     <p></p>
     <div class="card">
-    <h3 class="card-header">Выборать по дате</h3>
+    <h3 class="card-header">Выбор отчета</h3>
         <div class="card-body">
             <!--If there's an error, display the error-->
             {{ if .ErrorTitle}}
@@ -15,25 +15,20 @@
             {{end}}
             <div class="col-sm-12">
                 <p></p>
-                <form id="date" class="form" action="/kontroler" method="GET">
+                <form id="date" class="form" action="/report" method="GET">
                         <div class="form-row">
                             <div class="col">
-                                <h6>Выбрать дату</h6>
-                                <label class="sr-only" for="inlineFormInput">Выбрать дату</label>
-                                <input type="datetime-local" name="date" class="form-control" id="date" value="{{.timeNow}}">
-                            </div>
-                            <div class="col">
-                                <h6>Выбрать пользователя</h6>
-                                <select name="users" id="users" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
-                                <option>Выберите оператора</option>
-                                {{range $key, $value := .listusers}}
-                                    <option value="{{$value}}">{{$value}}</option>
-                                {{end}}
+                                <h6>Выберете отчет</h6>
+                                <select name="report" id="otchet" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                <option>Выберите отчета</option>
+                                    <option value="report1">Отчет 1</option>
+                                    <option value="report2">Отчет 2</option>
+                                    <option value="report3">Отчет 3</option>
                                 </select>
                             </div>
                         </div>
                     <p></p>
-                    <button type="submit" form="date" class="btn btn-primary float-right">Найти</button>
+                    <button type="submit" form="date" class="btn btn-primary float-right">Выполнить</button>
                 </form>
             </div>
         </div>
@@ -42,7 +37,7 @@
 <p></p>
 <div class="container-fluid">
     <div class="card">
-        <h3 class="card-header panel-success white-text">Список заявлений</h3>
+        <h3 class="card-header panel-success white-text">Отчеты</h3>
         <div class="card-body">
             <table id="table" 
                     data-toggle="table"
@@ -57,16 +52,10 @@
                     data-search="true">
                 <thead>
                 <tr>
-                    <!-- checkbox -->
-                    <!-- <th class="pr-md-3 pr-5">
-                            <input type="checkbox" class="filled-in" id="checkbox123">
-                            <label for="checkbox123" class="label-table"></label>
-                    </th> -->
-
                     <th data-field="state" data-checkbox="true"></th>
                     <th data-sortable="true">№</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Name">Имя заявитель</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="SubName">Название услуги</th>
+                    <th data-sortable="true" data-filter-control="input" data-field="Name">Кол. посетителей</th>
+                    <th data-sortable="true" data-filter-control="input" data-field="SubName"></th>
                     <th data-sortable="true" data-filter-control="input" data-field="NameService">Под услуга</th>
                     <th data-sortable="true" data-filter-control="input" data-field="DateIn">Дата регистрации</th>
                     <th data-sortable="true" data-filter-control="input" data-field="DateSend">Дата отправки</th>
@@ -107,110 +96,5 @@
     </div>
 </div>
 
-
-<div class="container">
-    <p></p>
-    <div class="card">
-    <h3 class="card-header">Выборать по дате</h3>
-        <div class="card-body">
-            <!--If there's an error, display the error-->
-            {{ if .ErrorTitle}}
-                <p class="bg-danger">
-                {{.ErrorTitle}}: {{.ErrorMessage}}
-                </p>
-            {{end}}
-            <div class="col-sm-12">
-                <p></p>
-                <form id="date" class="form" action="/kontroler" method="GET">
-                        <div class="form-row">
-                            <div class="col">
-                                <h6>Выбрать дату</h6>
-                                <label class="sr-only" for="inlineFormInput">Выбрать дату</label>
-                                <input type="datetime-local" name="date" class="form-control" id="date" value="{{.timeNow}}">
-                            </div>
-                            <div class="col">
-                                <h6>Выбрать пользователя</h6>
-                                <select name="users" id="users" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
-                                <option>Выберите оператора</option>
-                                {{range $key, $value := .listusers}}
-                                    <option value="{{$value}}">{{$value}}</option>
-                                {{end}}
-                                </select>
-                            </div>
-                        </div>
-                    <p></p>
-                    <button type="submit" form="date" class="btn btn-primary float-right">Найти</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<p></p>
-<div class="container-fluid">
-    <div class="card">
-        <h3 class="card-header panel-success white-text">Список заявлений</h3>
-        <div class="card-body">
-            <table id="table" 
-                    data-toggle="table"
-                    data-filter-control="true"
-                    data-search-align="left"
-                    data-buttons-align="left"
-                    data-page-size=20
-                    data-page-list="20, 30, 50, 100"
-                    data-show-export="true"
-                    data-pagination="true"
-                    data-click-to-select="true"
-                    data-search="true">
-                <thead>
-                <tr>
-                    <!-- checkbox -->
-                    <!-- <th class="pr-md-3 pr-5">
-                            <input type="checkbox" class="filled-in" id="checkbox123">
-                            <label for="checkbox123" class="label-table"></label>
-                    </th> -->
-
-                    <th data-field="state" data-checkbox="true"></th>
-                    <th data-sortable="true">№</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Name">Имя заявитель</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="SubName">Название услуги</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="NameService">Под услуга</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="DateIn">Дата регистрации</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="DateSend">Дата отправки</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="DateOut">Дата получения</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Address" data-formatter="Formatter">Адрес</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Location">Место оператора</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Number">Номер</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Phone">Телефон</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Note">Нотация</th>
-                </tr>
-                <script>
-                        function Formatter(value) {
-                            return value.substring(0,20) + "...";
-                        }
-                </script>
-                </thead>
-                    <tbody>
-                        {{range $i, $e := .person}}
-                        <tr>
-                            <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
-                            <td>{{$i}}</td>
-                            <td>{{$e.Name}}</td>
-                            <td>{{$e.SubName}}</td>
-                            <td>{{$e.NameService}}</td>
-                            <td>{{$e.DateIn}}</td>
-                            <td>{{$e.DateSend}}</td>
-                            <td>{{$e.DateOut}}</td>
-                            <td>{{$e.Address}}</td>
-                            <td>{{$e.Location}}</td>
-                            <td>{{$e.Number}}</td>
-                            <td>{{$e.Phone}}</td>
-                            <td>{{$e.Note}}</td>
-                        </tr>
-                        {{end}}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}

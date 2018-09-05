@@ -529,7 +529,7 @@ func main() {
 				c.Set("Нет данных", person)
 			}
 
-			c.HTML(http.StatusOK, "kontroler.html", gin.H{"person": person, "is_logged_in": isloggedin, "listusers": listusers})
+			c.HTML(http.StatusOK, "report.html", gin.H{"person": person, "is_logged_in": isloggedin, "listusers": listusers})
 
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
