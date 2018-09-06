@@ -539,7 +539,7 @@ func main() {
 
 	//Delete value on id
 	g.GET("/removeval/:id", RemVal)
-	g.GET("/count", SumWork)
+	g.GET("/count", ReportGet)
 
 	//edit value
 	g.POST("/edit/:id", func(c *gin.Context) {
@@ -606,8 +606,7 @@ func RemVal(c *gin.Context) {
 }
 
 //Counte all values
-func SumWork(c *gin.Context) {
-	// var location *[]Location
+func ReportGet(c *gin.Context) {
 
 	query := db.Select()
 	count, err := query.Count(new(Person))
@@ -618,4 +617,44 @@ func SumWork(c *gin.Context) {
 
 	// http.Redirect(c.Writer, c.Request, "/operator", 302)
 	fmt.Fprint(c.Writer, "Counte ", count)
+	c.HTML(http.StatusOK, "report.html", gin.H{"count": count})
+}
+
+//Counte all values
+func ReportPost(c *gin.Context) {
+
+	// var person Person
+
+	report := c.Param("report")
+	var count int
+
+	switch report {
+	case "report1":
+		// query := db.Select()
+		// count, err := query.Count(new(Person))
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+		// return
+	case "report2":
+		// query := db.Select()
+		// count, err := query.Count(new(Person))
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+		// return
+	case "report3":
+		// query := db.Select()
+		// count, err := query.Count(new(Person))
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+		// return
+	}
+
+	// fmt.Printf("Count Value = %d\n ", count)
+
+	// http.Redirect(c.Writer, c.Request, "/operator", 302)
+	fmt.Fprint(c.Writer, "Counte ", count)
+	c.HTML(http.StatusOK, "report.html", gin.H{"count": count})
 }
