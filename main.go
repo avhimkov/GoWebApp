@@ -504,42 +504,72 @@ func main() {
 		}
 	})
 
-	// find value on date
+	//Delete value on id
+	g.GET("/removeval/:id", RemVal)
+	// g.GET("/report", ReportGet)
+
+	//Counte all values
 	g.GET("/report", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
-
 		if isloggedin {
-
-			var person []Person
-
-			listusers, err1 := userstate.AllUsernames()
-			if err1 != nil {
-				log.Fatal(err1)
+			query := db.Select()
+			count, err := query.Count(new(Person))
+			if err != nil {
+				log.Fatal(err)
 			}
+			// fmt.Printf("Count Value = %d\n ", count)
 
-			users := c.Query("users")
-
-			date := c.DefaultQuery("date", "2006-01-02T15:04")
-			datepars, _ := time.Parse(time.RFC3339, date)
-			dateAdd := datepars.AddDate(0, 0, -1)
-			dateF := dateAdd.Format("2006-01-02T15:04")
-
-			err := db.Select(q.Eq("User", users), q.And(q.Gte("DateIn", dateF), q.Lte("DateIn", date))).Find(&person)
-			if err == storm.ErrNotFound {
-				c.Set("Нет данных", person)
-			}
-
-			c.HTML(http.StatusOK, "report.html", gin.H{"person": person, "is_logged_in": isloggedin, "listusers": listusers})
-
+			// http.Redirect(c.Writer, c.Request, "/operator", 302)
+			// fmt.Fprint(c.Writer, "Counte ", count)
+			c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
 	})
 
-	//Delete value on id
-	g.GET("/removeval/:id", RemVal)
-	g.GET("/count", ReportGet)
+	g.POST("/report", func(c *gin.Context) {
+		// var person Person
+
+		// report := c.Param("report")
+		var count int
+
+		query := db.Select()
+		count, err := query.Count(new(Person))
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// switch report {
+		// case "report1":
+		// 	// query := db.Select()
+		// 	// count, err := query.Count(new(Person))
+		// 	// if err != nil {
+		// 	// 	log.Fatal(err)
+		// 	// }
+		// 	// return
+		// case "report2":
+		// 	// query := db.Select()
+		// 	// count, err := query.Count(new(Person))
+		// 	// if err != nil {
+		// 	// 	log.Fatal(err)
+		// 	// }
+		// 	// return
+		// case "report3":
+		// 	// query := db.Select()
+		// 	// count, err := query.Count(new(Person))
+		// 	// if err != nil {
+		// 	// 	log.Fatal(err)
+		// 	// }
+		// 	// return
+		// }
+
+		// fmt.Printf("Count Value = %d\n ", count)
+
+		// http.Redirect(c.Writer, c.Request, "/operator", 302)
+		// fmt.Fprint(c.Writer, "Counte ", count)
+		c.HTML(http.StatusOK, "report.html", gin.H{"count": count})
+	})
 
 	//edit value
 	g.POST("/edit/:id", func(c *gin.Context) {
@@ -603,58 +633,4 @@ func RemVal(c *gin.Context) {
 	fmt.Println(count)
 	fmt.Println(id)
 	http.Redirect(c.Writer, c.Request, "/operator", 302)
-}
-
-//Counte all values
-func ReportGet(c *gin.Context) {
-
-	query := db.Select()
-	count, err := query.Count(new(Person))
-	if err != nil {
-		log.Fatal(err)
-	}
-	// fmt.Printf("Count Value = %d\n ", count)
-
-	// http.Redirect(c.Writer, c.Request, "/operator", 302)
-	fmt.Fprint(c.Writer, "Counte ", count)
-	c.HTML(http.StatusOK, "report.html", gin.H{"count": count})
-}
-
-//Counte all values
-func ReportPost(c *gin.Context) {
-
-	// var person Person
-
-	report := c.Param("report")
-	var count int
-
-	switch report {
-	case "report1":
-		// query := db.Select()
-		// count, err := query.Count(new(Person))
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-		// return
-	case "report2":
-		// query := db.Select()
-		// count, err := query.Count(new(Person))
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-		// return
-	case "report3":
-		// query := db.Select()
-		// count, err := query.Count(new(Person))
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-		// return
-	}
-
-	// fmt.Printf("Count Value = %d\n ", count)
-
-	// http.Redirect(c.Writer, c.Request, "/operator", 302)
-	fmt.Fprint(c.Writer, "Counte ", count)
-	c.HTML(http.StatusOK, "report.html", gin.H{"count": count})
 }

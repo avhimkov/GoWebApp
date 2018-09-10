@@ -55,16 +55,8 @@
                     <th data-field="state" data-checkbox="true"></th>
                     <th data-sortable="true">№</th>
                     <th data-sortable="true" data-filter-control="input" data-field="Name">Кол. посетителей</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="SubName">Кол. операторов</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="NameService">Кол. лператоров</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="DateIn">Дата регистрации</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="DateSend">Дата отправки</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="DateOut">Дата получения</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Address" data-formatter="Formatter">Адрес</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Location">Место оператора</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Number">Номер</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Phone">Телефон</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Note">Нотация</th>
+                    <th data-sortable="true" data-filter-control="input" data-field="Name">Кол. посетителей</th>
+                    <th data-sortable="true" data-filter-control="input" data-field="Name">Кол. посетителей</th>
                 </tr>
                 <script>
                         function Formatter(value) {
@@ -73,23 +65,13 @@
                 </script>
                 </thead>
                     <tbody>
-                        {{range $i, $e := .person}}
                         <tr>
-                            <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
-                            <td>{{$i}}</td>
-                            <td>{{$e.Name}}</td>
-                            <td>{{$e.SubName}}</td>
-                            <td>{{$e.NameService}}</td>
-                            <td>{{$e.DateIn}}</td>
-                            <td>{{$e.DateSend}}</td>
-                            <td>{{$e.DateOut}}</td>
-                            <td>{{$e.Address}}</td>
-                            <td>{{$e.Location}}</td>
-                            <td>{{$e.Number}}</td>
-                            <td>{{$e.Phone}}</td>
-                            <td>{{$e.Note}}</td>
+                            <td class="bs-checkbox "><input data-index="1" name="btSelectItem" type="checkbox"></td>
+                            <td>1</td>
+                            <td>{{.count}}</td>
+                            <td>{{.count}}</td>
+                            <td>{{.count}}</td>
                         </tr>
-                        {{end}}
                 </tbody>
             </table>
         </div>
