@@ -510,6 +510,8 @@ func main() {
 
 	//Counte all values
 	g.GET("/report", func(c *gin.Context) {
+		// usercook, _ := userstate.UsernameCookie(c.Request)
+
 		isloggedin := isloggedin(c)
 		if isloggedin {
 			query := db.Select()
@@ -517,11 +519,15 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			// fmt.Printf("Count Value = %d\n ", count)
 
-			// http.Redirect(c.Writer, c.Request, "/operator", 302)
+			query1 := db.Select(q.Eq("User", "ren"))
+			count1, err1 := query1.Count(new(Person))
+			if err1 != nil {
+				log.Fatal(err1)
+			}
+
 			// fmt.Fprint(c.Writer, "Counte ", count)
-			c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "count1": count1, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
@@ -529,9 +535,6 @@ func main() {
 	})
 
 	g.POST("/report", func(c *gin.Context) {
-		// var person Person
-
-		// report := c.Param("report")
 		var count int
 
 		query := db.Select()
@@ -564,10 +567,6 @@ func main() {
 		// 	// return
 		// }
 
-		// fmt.Printf("Count Value = %d\n ", count)
-
-		// http.Redirect(c.Writer, c.Request, "/operator", 302)
-		// fmt.Fprint(c.Writer, "Counte ", count)
 		c.HTML(http.StatusOK, "report.html", gin.H{"count": count})
 	})
 
