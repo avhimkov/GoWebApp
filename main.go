@@ -510,7 +510,18 @@ func main() {
 
 	//Counte all values
 	g.GET("/report", func(c *gin.Context) {
-		// usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := isloggedin(c)
+		if isloggedin {
+			c.HTML(http.StatusOK, "report.html", gin.H{})
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+	})
+
+	g.POST("/report", func(c *gin.Context) {
+
+		user := c.PostForm("report")
 
 		isloggedin := isloggedin(c)
 		if isloggedin {
@@ -520,7 +531,7 @@ func main() {
 				log.Fatal(err)
 			}
 
-			query1 := db.Select(q.Eq("User", "ren"))
+			query1 := db.Select(q.Eq("User", user))
 			count1, err1 := query1.Count(new(Person))
 			if err1 != nil {
 				log.Fatal(err1)
@@ -531,16 +542,6 @@ func main() {
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
-
-	g.POST("/report", func(c *gin.Context) {
-		var count int
-
-		query := db.Select()
-		count, err := query.Count(new(Person))
-		if err != nil {
-			log.Fatal(err)
 		}
 
 		// switch report {
@@ -567,7 +568,6 @@ func main() {
 		// 	// return
 		// }
 
-		c.HTML(http.StatusOK, "report.html", gin.H{"count": count})
 	})
 
 	//edit value

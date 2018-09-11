@@ -15,20 +15,20 @@
             {{end}}
             <div class="col-sm-12">
                 <p></p>
-                <form id="date" class="form" action="/report" method="GET">
+                <form id="report" class="form" action="/report" method="POST">
                         <div class="form-row">
                             <div class="col">
                                 <h6>Выберете отчет</h6>
-                                <select name="report" id="otchet" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                <select name="report" id="report" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
                                 <option>Выберите отчета</option>
-                                    <option value="report1">Отчет 1</option>
-                                    <option value="report2">Отчет 2</option>
+                                    <option value="ren">Отчет 1</option>
+                                    <option value="bil">Отчет 2</option>
                                     <option value="report3">Отчет 3</option>
                                 </select>
                             </div>
                         </div>
                     <p></p>
-                    <button type="submit" form="date" class="btn btn-primary float-right">Выполнить</button>
+                    <button type="submit" form="report" class="btn btn-primary float-right">Выполнить</button>
                 </form>
             </div>
         </div>
