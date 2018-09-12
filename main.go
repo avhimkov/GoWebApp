@@ -16,6 +16,7 @@ import (
 	"github.com/asdine/storm"
 	"github.com/asdine/storm/q"
 	"github.com/gin-gonic/gin"
+	"github.com/jung-kurt/gofpdf"
 	"github.com/thinkerou/favicon"
 	"github.com/xyproto/permissionbolt"
 )
@@ -512,6 +513,26 @@ func main() {
 	g.GET("/report", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		if isloggedin {
+			c.HTML(http.StatusOK, "report.html", gin.H{})
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+	})
+
+	g.POST("/pdfexp", func(c *gin.Context) {
+		isloggedin := isloggedin(c)
+		if isloggedin {
+
+			pdf := gofpdf.New("P", "mm", "A4", "")
+			pdf.AddPage()
+			pdf.SetFont("Arial", "B", 16)
+			pdf.Cell(40, 10, "Hello, world")
+			err := pdf.OutputFileAndClose("hello.pdf")
+			if err != nil {
+				log.Fatal(err)
+			}
+
 			c.HTML(http.StatusOK, "report.html", gin.H{})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
