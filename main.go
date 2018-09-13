@@ -528,7 +528,7 @@ func main() {
 			pdf.AddPage()
 			pdf.SetFont("Arial", "B", 16)
 			pdf.Cell(40, 10, "Hello, world")
-			err := pdf.OutputFileAndClose("hello.pdf")
+			err := pdf.OutputFileAndClose("upload/hello.pdf")
 			if err != nil {
 				log.Fatal(err)
 			}

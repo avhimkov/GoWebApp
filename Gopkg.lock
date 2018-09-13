@@ -3,14 +3,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ef63d3d851319b9c8b9e9b68544094478320aa0333deb0d36f11de91e4c59be2"
   name = "github.com/DeanThompson/ginpprof"
   packages = ["."]
-  pruneopts = ""
   revision = "8c0e31bfeaa87bd40412ee8a8ba383f5f700ff72"
 
 [[projects]]
-  digest = "1:d94e06cc453e02f13d157c022d51e63dd661fad75807fcdb81eda562d43327c5"
   name = "github.com/asdine/storm"
   packages = [
     ".",
@@ -18,166 +15,142 @@
     "codec/json",
     "index",
     "internal",
-    "q",
+    "q"
   ]
-  pruneopts = ""
   revision = "bda68dab90fc908ee5dbccb36400edf4f54972d6"
   version = "v2.1.1"
 
 [[projects]]
-  digest = "1:ed112122ed4a920d944cc99b9d00b0441c11685939c28462c719488d36fe29aa"
   name = "github.com/boltdb/bolt"
   packages = ["."]
-  pruneopts = ""
   revision = "2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8"
   version = "v1.3.1"
 
 [[projects]]
-  digest = "1:6150d0a72956eb2e50226e13ce59ef2a9636c0e8e1ac900d72f9b2097121cdf9"
   name = "github.com/coreos/bbolt"
   packages = ["."]
-  pruneopts = ""
   revision = "583e8937c61f1af6513608ccc75c97b6abdf4ff9"
   version = "v1.3.0"
 
 [[projects]]
-  digest = "1:f070fb2fa29799b3dbd7317fd079b028e02dbea1c473ce9d0be06b17e8be819b"
-  name = "github.com/gin-contrib/pprof"
-  packages = ["."]
-  pruneopts = ""
-  revision = "cea200e02ddddca4b843d75d32aa13c413549de9"
-  version = "v1.1"
-
-[[projects]]
   branch = "master"
-  digest = "1:1120f960f5c334f0f94bad29eefaf73d52d226893369693686148f66c1993f15"
   name = "github.com/gin-contrib/sse"
   packages = ["."]
-  pruneopts = ""
   revision = "22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae"
 
 [[projects]]
-  digest = "1:348ceb76f2ac958e541e4ba3190484b68df28c38ac9720ed4ef8d36af69ce52e"
   name = "github.com/gin-gonic/gin"
   packages = [
     ".",
     "binding",
-    "render",
+    "json",
+    "render"
   ]
-  pruneopts = ""
-  revision = "d459835d2b077e44f7c9b453505ee29881d5d12d"
-  version = "v1.2"
+  revision = "b869fe1415e4b9eb52f247441830d502aece2d4d"
+  version = "v1.3.0"
 
 [[projects]]
-  digest = "1:f958a1c137db276e52f0b50efee41a1a389dcdded59a69711f3e872757dab34b"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
-  pruneopts = ""
   revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:78229b46ddb7434f881390029bd1af7661294af31f6802e0e1bedaad4ab0af3c"
+  name = "github.com/json-iterator/go"
+  packages = ["."]
+  revision = "1624edc4454b8682399def8740d46db5e4362ba4"
+  version = "v1.1.5"
+
+[[projects]]
+  name = "github.com/jung-kurt/gofpdf"
+  packages = ["."]
+  revision = "14c1db30737a138f8d9797cffea58783892b2fae"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/mattn/go-isatty"
   packages = ["."]
-  pruneopts = ""
   revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
   version = "v0.0.3"
 
 [[projects]]
+  name = "github.com/modern-go/concurrent"
+  packages = ["."]
+  revision = "bacd9c7ef1dd9b15be4a9909b8ac7a4e313eec94"
+  version = "1.0.3"
+
+[[projects]]
+  name = "github.com/modern-go/reflect2"
+  packages = ["."]
+  revision = "4b7aa43c6742a2c18fdef89dd197aaae7dac7ccd"
+  version = "1.0.1"
+
+[[projects]]
   branch = "master"
-  digest = "1:90f91b3ecbf37365e8c730bb4270df8e12769fe157dbd8472f7b2da9c69a2bd6"
   name = "github.com/thinkerou/favicon"
   packages = ["."]
-  pruneopts = ""
   revision = "94a442a49da6e2d44bdd5e0d2e2e185c43a19d93"
 
 [[projects]]
-  digest = "1:2e7f653483e51243b6cd6de60ce39bde0d6927d10a3c24295ab0f82cb1efeae2"
   name = "github.com/ugorji/go"
   packages = ["codec"]
-  pruneopts = ""
   revision = "b4c50a2b199d93b13dc15e78929cfb23bfdf21ab"
   version = "v1.1.1"
 
 [[projects]]
-  digest = "1:4a58ce6a190c0fa8f9cc5fdac94fd976757afb272c3629305644b17d347a0e19"
   name = "github.com/xyproto/cookie"
   packages = ["."]
-  pruneopts = ""
   revision = "8ce3defb0907741a2a8c9b56cce0f716c933ce34"
   version = "2.0"
 
 [[projects]]
-  digest = "1:51e2e193827c52f3e50f65ced65d65c25b8053d6771a0076ec6fd303c9d87c11"
   name = "github.com/xyproto/permissionbolt"
   packages = ["."]
-  pruneopts = ""
   revision = "657ad1a411098f614a30382e53d4267067b0fa43"
   version = "2.3"
 
 [[projects]]
-  digest = "1:a369fc4f0700efd95d561b2e9fef3dea1282ec72ebd09bcf020fae78a83b1108"
   name = "github.com/xyproto/pinterface"
   packages = ["."]
-  pruneopts = ""
   revision = "05fa0e3080664c781c213d0a890a9d22718f7afb"
   version = "4.1"
 
 [[projects]]
-  digest = "1:65e223a387773763cc743a0100e414e21c7867f80dff82585b2a14efcb3e3c79"
   name = "github.com/xyproto/simplebolt"
   packages = ["."]
-  pruneopts = ""
   revision = "3ad76f169f0ede30c60f6b098efd305ad995e417"
   version = "3.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:6ef14be530be39b6b9d75d54ce1d546ae9231e652d9e3eef198cbb19ce8ed3e7"
   name = "golang.org/x/crypto"
   packages = [
     "bcrypt",
-    "blowfish",
+    "blowfish"
   ]
-  pruneopts = ""
   revision = "a49355c7e3f8fe157a85be2f77e6e269a0f89602"
 
 [[projects]]
   branch = "master"
-  digest = "1:19f072f12708aaafef9064b49432953e3f813a98fcb356b30831cf2b0f5272b3"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  pruneopts = ""
   revision = "1b2967e3c290b7c545b3db0deeda16e9be4f98a2"
 
 [[projects]]
-  digest = "1:dd549e360e5a8f982a28c2bcbe667307ceffe538ed9afc7c965524f1ac285b3f"
   name = "gopkg.in/go-playground/validator.v8"
   packages = ["."]
-  pruneopts = ""
   revision = "5f1438d3fca68893a817e4a66806cea46a9e4ebf"
   version = "v8.18.2"
 
 [[projects]]
-  digest = "1:f0620375dd1f6251d9973b5f2596228cc8042e887cd7f827e4220bc1ce8c30e2"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  pruneopts = ""
   revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
   version = "v2.2.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = [
-    "github.com/DeanThompson/ginpprof",
-    "github.com/asdine/storm",
-    "github.com/asdine/storm/q",
-    "github.com/gin-contrib/pprof",
-    "github.com/gin-gonic/gin",
-    "github.com/thinkerou/favicon",
-    "github.com/xyproto/permissionbolt",
-  ]
+  inputs-digest = "1c003fcf34f636fb3a5841c88d59f0ebe07de421458b64ad7ff5e87a3bde3dd6"
   solver-name = "gps-cdcl"
   solver-version = 1
