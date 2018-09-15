@@ -513,27 +513,7 @@ func main() {
 	g.GET("/report", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		if isloggedin {
-			c.HTML(http.StatusOK, "report.html", gin.H{})
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
-
-	g.POST("/pdfexp", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
-		if isloggedin {
-
-			pdf := gofpdf.New("P", "mm", "A4", "")
-			pdf.AddPage()
-			pdf.SetFont("Arial", "B", 16)
-			pdf.Cell(40, 10, "Hello, world")
-			err := pdf.OutputFileAndClose("upload/hello.pdf")
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			c.HTML(http.StatusOK, "report.html", gin.H{})
+			c.HTML(http.StatusOK, "report.html", gin.H{"is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
@@ -541,10 +521,8 @@ func main() {
 	})
 
 	g.POST("/report", func(c *gin.Context) {
-
-		user := c.PostForm("report")
-
 		isloggedin := isloggedin(c)
+		user := c.PostForm("report")
 		if isloggedin {
 			query := db.Select()
 			count, err := query.Count(new(Person))
@@ -589,6 +567,46 @@ func main() {
 		// 	// return
 		// }
 
+	})
+
+	g.POST("/pdfexp", func(c *gin.Context) {
+		isloggedin := isloggedin(c)
+		if isloggedin {
+
+			pdf := gofpdf.New("P", "mm", "A4", "")
+			pdf.SetTopMargin(30)
+			pdf.SetHeaderFuncMode(func() {
+				url := "assets/brand/blue-mark_cnzgry.png"
+				pdf.Image(url, 10, 6, 30, 0, false, "", 0, "")
+				pdf.SetY(5)
+				pdf.SetFont("Arial", "B", 15)
+				pdf.Cell(80, 0, "")
+				pdf.CellFormat(30, 10, "Title", "1", 0, "C", false, 0, "")
+				pdf.Ln(20)
+			}, true)
+			pdf.SetFooterFunc(func() {
+				pdf.SetY(-15)
+				pdf.SetFont("Arial", "I", 8)
+				pdf.CellFormat(0, 10, fmt.Sprintf("Page %d/{nb}", pdf.PageNo()),
+					"", 0, "C", false, 0, "")
+			})
+			pdf.AliasNbPages("")
+			pdf.AddPage()
+			pdf.SetFont("Times", "", 12)
+			for j := 1; j <= 40; j++ {
+				pdf.CellFormat(0, 10, fmt.Sprintf("Printing line number %d", j),
+					"", 1, "", false, 0, "")
+			}
+			err := pdf.OutputFileAndClose("upload/hello.pdf")
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			c.HTML(http.StatusOK, "report.html", gin.H{"is_logged_in": isloggedin})
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
 	})
 
 	//edit value
