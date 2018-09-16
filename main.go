@@ -451,19 +451,27 @@ func main() {
 
 			var person []Person
 
+			timeNow := time.Now()
+			timeNowF := timeNow.Format("2006-01-02T15:04")
+
 			listusers, err1 := userstate.AllUsernames()
 			if err1 != nil {
 				log.Fatal(err1)
 			}
 
 			users := c.Query("users")
+			date := c.Query("date")
 
-			date := c.DefaultQuery("date", "2006-01-02T15:04")
-			datepars, _ := time.Parse(time.RFC3339, date)
-			dateAdd := datepars.AddDate(0, 0, -1)
-			dateF := dateAdd.Format("2006-01-02T15:04")
+			// date := c.DefaultQuery("date", "2006-01-02T15:04")
+			// datepars, _ := time.Parse(time.RFC3339, date)
+			// dateAdd := datepars.Add(-12 * time.Hour)
+			// dateF := dateAdd.Format("2006-01-02T15:04")
+			// dateAdd := datepars.AddDate(0, 0, -1)
 
-			err := db.Select(q.Eq("User", users), q.And(q.Gte("DateIn", dateF), q.Lte("DateIn", date))).Find(&person)
+			// fmt.Println(dateplus)
+			fmt.Println(date)
+
+			err := db.Select(q.Eq("User", users), q.And(q.Gte("DateIn", date), q.Lte("DateIn", timeNowF))).Find(&person)
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", person)
 			}
@@ -485,14 +493,20 @@ func main() {
 
 			var person []Person
 
-			date := c.DefaultQuery("date", "2006-01-02T15:04")
+			// users := c.Query("users")
+			date := c.Query("date")
 
-			datepars, _ := time.Parse(time.RFC3339, date)
+			timeNow := time.Now()
+			timeNowF := timeNow.Format("2006-01-02T15:04")
+
+			// date := c.DefaultQuery("date", "2006-01-02T15:04")
+
+			// datepars, _ := time.Parse(time.RFC3339, date)
 			// dateAdd := datepars.AddDate(0, 0, -12)
-			dateAdd := datepars.Add(-12 * time.Hour)
-			dateF := dateAdd.Format("2006-01-02T15:04")
+			// dateAdd := datepars.Add(-12 * time.Hour)
+			// dateF := dateAdd.Format("2006-01-02T15:04")
 
-			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", dateF), q.Lte("DateIn", date))).Find(&person)
+			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", date), q.Lte("DateIn", timeNowF))).Find(&person)
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", person)
 			}
