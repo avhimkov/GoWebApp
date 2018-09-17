@@ -444,7 +444,7 @@ func main() {
 	})
 
 	// find value on date
-	g.GET("/kontroler", func(c *gin.Context) {
+	g.GET("/controller", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 
 		if isloggedin {
@@ -462,13 +462,6 @@ func main() {
 			users := c.Query("users")
 			date := c.Query("date")
 
-			// date := c.DefaultQuery("date", "2006-01-02T15:04")
-			// datepars, _ := time.Parse(time.RFC3339, date)
-			// dateAdd := datepars.Add(-12 * time.Hour)
-			// dateF := dateAdd.Format("2006-01-02T15:04")
-			// dateAdd := datepars.AddDate(0, 0, -1)
-
-			// fmt.Println(dateplus)
 			fmt.Println(date)
 
 			err := db.Select(q.Eq("User", users), q.And(q.Gte("DateIn", date), q.Lte("DateIn", timeNowF))).Find(&person)
@@ -476,7 +469,7 @@ func main() {
 				c.Set("Нет данных", person)
 			}
 
-			c.HTML(http.StatusOK, "kontroler.html", gin.H{"person": person, "is_logged_in": isloggedin, "listusers": listusers})
+			c.HTML(http.StatusOK, "controller.html", gin.H{"person": person, "is_logged_in": isloggedin, "listusers": listusers})
 
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
@@ -500,7 +493,6 @@ func main() {
 			timeNowF := timeNow.Format("2006-01-02T15:04")
 
 			// date := c.DefaultQuery("date", "2006-01-02T15:04")
-
 			// datepars, _ := time.Parse(time.RFC3339, date)
 			// dateAdd := datepars.AddDate(0, 0, -12)
 			// dateAdd := datepars.Add(-12 * time.Hour)
