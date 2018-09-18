@@ -451,8 +451,8 @@ func main() {
 
 			var person []Person
 
-			timeNow := time.Now()
-			timeNowF := timeNow.Format("2006-01-02T15:04")
+			// timeNow := time.Now()
+			// timeNowF := timeNow.Format("2006-01-02T15:04")
 
 			listusers, err1 := userstate.AllUsernames()
 			if err1 != nil {
@@ -462,9 +462,15 @@ func main() {
 			users := c.Query("users")
 			date := c.Query("date")
 
-			fmt.Println(date)
+			datep, _ := time.Parse("2006-01-02T15:04", date)
+			datePF := datep.Format("2006-01-02T15:04")
 
-			err := db.Select(q.Eq("User", users), q.And(q.Gte("DateIn", date), q.Lte("DateIn", timeNowF))).Find(&person)
+			dateAdd := datep.Add(-12 * time.Hour)
+			dateAF := dateAdd.Format("2006-01-02T15:04")
+			fmt.Println(dateAF)
+			fmt.Println(datePF)
+
+			err := db.Select(q.Eq("User", users), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", person)
 			}
@@ -489,16 +495,21 @@ func main() {
 			// users := c.Query("users")
 			date := c.Query("date")
 
-			timeNow := time.Now()
-			timeNowF := timeNow.Format("2006-01-02T15:04")
+			// timeNow := time.Now()
+			// timeNowF := timeNow.Format("2006-01-02T15:04")
 
 			// date := c.DefaultQuery("date", "2006-01-02T15:04")
-			// datepars, _ := time.Parse(time.RFC3339, date)
 			// dateAdd := datepars.AddDate(0, 0, -12)
-			// dateAdd := datepars.Add(-12 * time.Hour)
-			// dateF := dateAdd.Format("2006-01-02T15:04")
 
-			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", date), q.Lte("DateIn", timeNowF))).Find(&person)
+			datep, _ := time.Parse("2006-01-02T15:04", date)
+			datePF := datep.Format("2006-01-02T15:04")
+
+			dateAdd := datep.Add(-12 * time.Hour)
+			dateAF := dateAdd.Format("2006-01-02T15:04")
+			fmt.Println(dateAF)
+			fmt.Println(datePF)
+
+			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
 			if err == storm.ErrNotFound {
 				c.Set("Нет данных", person)
 			}
