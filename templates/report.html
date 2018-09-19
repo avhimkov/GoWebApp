@@ -13,27 +13,57 @@
                 {{.ErrorTitle}}: {{.ErrorMessage}}
                 </p>
             {{end}}
-            <div class="col-sm-12">
-                <p></p>
-                <form id="report" class="form" action="/pdfexp" method="POST">
+            <div class="form-row">
+                <div class="col-sm-12">
+                    <p></p>
+                    <form id="report" class="form" action="/report" method="POST">
                         <div class="form-row">
                             <div class="col">
                                 <h6>Выберете отчет</h6>
                                 <select name="report" id="report" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
                                 <option>Выберите отчета</option>
-                                    <option value="ren">Отчет 1</option>
-                                    <option value="bil">Отчет 2</option>
+                                    <option value="report1">Отчет 1</option>
+                                    <option value="report2">Отчет 2</option>
                                     <option value="report3">Отчет 3</option>
                                 </select>
                             </div>
                         </div>
                     <p></p>
                     <button type="submit" form="report" class="btn btn-primary float-right">Выполнить</button>
-                </form>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p></p>
+    <div class="card">
+    <h3 class="card-header">Отчет в формате PDF</h3>
+        <div class="card-body">
+            <div class="form-row">
+                <div class="col-sm-12">
+                    <p></p>
+                    <form id="pdfexp" class="form" action="/pdfexp" method="POST">
+                            <div class="form-row">
+                                <div class="col">
+                                    <h6>Отчет в формате PDF</h6>
+                                    <select name="pdfexp" id="pdfexp" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                    <option>Выберите отчета</option>
+                                        <option value="report1">Отчет 1</option>
+                                        <option value="report2">Отчет 2</option>
+                                        <option value="report3">Отчет 3</option>
+                                    </select>
+                                </div>
+                            </div>
+                        <p></p>
+                        <button type="submit" form="pdfexp" class="btn btn-primary float-right">Сохранить</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+
 <p></p>
 <div class="container-fluid">
     <div class="card">
@@ -67,10 +97,10 @@
                     <tbody>
                         <tr>
                             <td class="bs-checkbox "><input data-index="1" name="btSelectItem" type="checkbox"></td>
-                            <td>1</td>
                             <td>{{.count}}</td>
-                            <td>{{.count1}}</td>
-                            <td>2</td>
+                            <td>{{.count}}</td>
+                            <td>{{.count}}</td>
+                            <td>{{.count}}</td>
                         </tr>
                 </tbody>
             </table>

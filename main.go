@@ -539,50 +539,45 @@ func main() {
 
 	g.POST("/report", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
-		user := c.PostForm("report")
+		report := c.PostForm("report")
+		fmt.Println(report)
 		if isloggedin {
-			query := db.Select()
-			count, err := query.Count(new(Person))
-			if err != nil {
-				log.Fatal(err)
+
+			switch report {
+			case "report1":
+				query := db.Select()
+				count, err := query.Count(new(Person))
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				fmt.Println(count)
+				c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
+
+			case "report2":
+				query := db.Select(q.Eq("User", "ren"))
+				count, err := query.Count(new(Person))
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				fmt.Println(count)
+				c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
+
+			case "report3":
+				query := db.Select(q.Eq("User", "bil"))
+				count, err := query.Count(new(Person))
+				if err != nil {
+					log.Fatal(err)
+				}
+				fmt.Println(count)
+				c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
 			}
 
-			query1 := db.Select(q.Eq("User", user))
-			count1, err1 := query1.Count(new(Person))
-			if err1 != nil {
-				log.Fatal(err1)
-			}
-
-			// fmt.Fprint(c.Writer, "Counte ", count)
-			c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "count1": count1, "is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
-
-		// switch report {
-		// case "report1":
-		// 	// query := db.Select()
-		// 	// count, err := query.Count(new(Person))
-		// 	// if err != nil {
-		// 	// 	log.Fatal(err)
-		// 	// }
-		// 	// return
-		// case "report2":
-		// 	// query := db.Select()
-		// 	// count, err := query.Count(new(Person))
-		// 	// if err != nil {
-		// 	// 	log.Fatal(err)
-		// 	// }
-		// 	// return
-		// case "report3":
-		// 	// query := db.Select()
-		// 	// count, err := query.Count(new(Person))
-		// 	// if err != nil {
-		// 	// 	log.Fatal(err)
-		// 	// }
-		// 	// return
-		// }
 
 	})
 
@@ -614,7 +609,7 @@ func main() {
 				pdf.CellFormat(0, 10, fmt.Sprintf("Printing line number %d", j),
 					"", 1, "", false, 0, "")
 			}
-			err := pdf.OutputFileAndClose("upload/hello.pdf")
+			err := pdf.OutputFileAndClose("upload/hello1.pdf")
 			if err != nil {
 				log.Fatal(err)
 			}
