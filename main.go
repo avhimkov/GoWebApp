@@ -27,6 +27,12 @@ type Location struct {
 	Operator string `storm:"index" json:"operator" form:"operator" binding:"required"`
 }
 
+type Service struct {
+	ID          int    `storm:"id,increment" form:"id" binding:"required"`
+	Type        string `storm:"index" json:"type" form:"type" binding:"required"`
+	NameService string `storm:"index" json:"nameserv" form:"nameserv" binding:"required"`
+}
+
 //Struc data visitors
 type Person struct {
 	ID          int `storm:"id,increment" form:"id" binding:"required"` //`form:"ID" storm:"id,increment" json:"ID"`
@@ -508,6 +514,35 @@ func main() {
 			dateAF := dateAdd.Format("2006-01-02T15:04")
 			fmt.Println(dateAF)
 			fmt.Println(datePF)
+
+			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
+			if err == storm.ErrNotFound {
+				c.Set("Нет данных", person)
+			}
+
+			c.HTML(http.StatusOK, "history.html", gin.H{"person": person, "is_logged_in": isloggedin})
+
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+	})
+
+	g.GET("/serviceSort", func(c *gin.Context) {
+		usercook, _ := userstate.UsernameCookie(c.Request)
+		isloggedin := isloggedin(c)
+
+		if isloggedin {
+
+			var person []Person
+
+			date := c.Query("date")
+
+			datep, _ := time.Parse("2006-01-02T15:04", date)
+			datePF := datep.Format("2006-01-02T15:04")
+
+			dateAdd := datep.Add(-12 * time.Hour)
+			dateAF := dateAdd.Format("2006-01-02T15:04")
 
 			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
 			if err == storm.ErrNotFound {
