@@ -21,19 +21,21 @@ import (
 	"github.com/xyproto/permissionbolt"
 )
 
+// Struc opertator in City and location office
 type Location struct {
 	ID       int    `storm:"id,increment" form:"id" binding:"required"` //`form:"ID" storm:"id,increment" json:"ID"`
 	Office   string `storm:"index" json:"office" form:"office" binding:"required"`
 	Operator string `storm:"index" json:"operator" form:"operator" binding:"required"`
 }
 
+// Struct service
 type Service struct {
 	ID          int    `storm:"id,increment" form:"id" binding:"required"`
 	Type        string `storm:"index" json:"type" form:"type" binding:"required"`
 	NameService string `storm:"index" json:"nameserv" form:"nameserv" binding:"required"`
 }
 
-//Struc data visitors
+// Struc data visitors
 type Person struct {
 	ID          int `storm:"id,increment" form:"id" binding:"required"` //`form:"ID" storm:"id,increment" json:"ID"`
 	User        string
@@ -52,7 +54,7 @@ type Person struct {
 
 // var perm, _ = permissionbolt.New()
 
-//open database
+// open database
 func DB() *storm.DB {
 	db, err := storm.Open("db/data.db")
 	if err != nil {
@@ -95,7 +97,9 @@ func main() {
 	defer db.Close()
 
 	errdb := db.Init(&Person{})
+	errdb = db.Init(&Service{})
 	errdb = db.Init(&Location{})
+
 	if errdb != nil {
 		log.Fatal(errdb)
 	}
@@ -165,7 +169,7 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/", 302)
 	})
 
-	//upload user from file
+	// Upload user from file
 	g.POST("/uploadUsers", func(c *gin.Context) {
 
 		type Users struct {
@@ -225,28 +229,28 @@ func main() {
 		}
 	})
 
-	//Logout users
+	// Logout users
 	g.GET("/logout", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		userstate.Logout(usercook)
 		http.Redirect(c.Writer, c.Request, "/login", 302)
 	})
 
-	//Make user as admin POST
+	// Make user as admin POST
 	g.GET("/makeadmin/:user", func(c *gin.Context) {
 		user := c.Param("user")
 		userstate.SetAdminStatus(user)
 		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	})
 
-	//Delete User from Base POST
+	// Delete User from Base POST
 	g.GET("/delete/:user", func(c *gin.Context) {
 		user := c.Param("user")
 		userstate.RemoveUser(user)
 		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	})
 
-	//Delete Admin status
+	// Delete Admin status
 	g.GET("/adminoff/:user", func(c *gin.Context) {
 		user := c.Param("user")
 		userstate.IsAdmin(user)
@@ -254,7 +258,7 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	})
 
-	//Administartort interface
+	// Administartort interface
 	g.GET("/adminka", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
@@ -314,7 +318,7 @@ func main() {
 
 	})
 
-	//add value from file
+	// Add value from file
 	g.POST("/uploadValue", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 
@@ -370,7 +374,7 @@ func main() {
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	})
 
-	//register users
+	// Register users
 	g.GET("/operator", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		usercook, _ := userstate.UsernameCookie(c.Request)
@@ -408,7 +412,7 @@ func main() {
 		}
 	})
 
-	//Register visitors POST
+	// Register visitors POST
 	g.POST("/operator", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
@@ -449,16 +453,13 @@ func main() {
 		}
 	})
 
-	// find value on date
+	// Find value on date
 	g.GET("/controller", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 
 		if isloggedin {
 
 			var person []Person
-
-			// timeNow := time.Now()
-			// timeNowF := timeNow.Format("2006-01-02T15:04")
 
 			listusers, err1 := userstate.AllUsernames()
 			if err1 != nil {
@@ -489,7 +490,7 @@ func main() {
 		}
 	})
 
-	//find user value on date
+	// Find user value on date
 	g.GET("/history", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := isloggedin(c)
@@ -528,6 +529,7 @@ func main() {
 		}
 	})
 
+	// Find service NOT WORK
 	g.GET("/serviceSort", func(c *gin.Context) {
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := isloggedin(c)
@@ -557,11 +559,11 @@ func main() {
 		}
 	})
 
-	//Delete value on id
+	// Delete value on id
 	g.GET("/removeval/:id", RemVal)
 	// g.GET("/report", ReportGet)
 
-	//Counte all values
+	// Counte all values
 	g.GET("/report", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		if isloggedin {
@@ -572,6 +574,7 @@ func main() {
 		}
 	})
 
+	// Select report
 	g.POST("/report", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		report := c.PostForm("report")
@@ -616,6 +619,7 @@ func main() {
 
 	})
 
+	// Export report to PDF
 	g.POST("/pdfexp", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		if isloggedin {
@@ -656,7 +660,7 @@ func main() {
 		}
 	})
 
-	//edit value
+	// Edit value
 	g.POST("/edit/:id", func(c *gin.Context) {
 		id := c.Param("id")
 		usercook, _ := userstate.UsernameCookie(c.Request)
@@ -703,7 +707,7 @@ func main() {
 	g.Run(":3000")
 }
 
-//Delete value on id function
+// Delete value on id function
 func RemVal(c *gin.Context) {
 
 	id := c.Param("id")
