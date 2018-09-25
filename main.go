@@ -531,27 +531,23 @@ func main() {
 
 	// Find service NOT WORK
 	g.GET("/serviceSort", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
+		// usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := isloggedin(c)
 
 		if isloggedin {
 
-			var person []Person
+			var service []Service
 
-			date := c.Query("date")
+			// date := c.Query("nameserv")
 
-			datep, _ := time.Parse("2006-01-02T15:04", date)
-			datePF := datep.Format("2006-01-02T15:04")
+			err = db.All(&service)
 
-			dateAdd := datep.Add(-12 * time.Hour)
-			dateAF := dateAdd.Format("2006-01-02T15:04")
+			// err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
+			// if err == storm.ErrNotFound {
+			// 	c.Set("Нет данных", person)
+			// }
 
-			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
-			if err == storm.ErrNotFound {
-				c.Set("Нет данных", person)
-			}
-
-			c.HTML(http.StatusOK, "history.html", gin.H{"person": person, "is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "history.html", gin.H{"service": service, "is_logged_in": isloggedin})
 
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
