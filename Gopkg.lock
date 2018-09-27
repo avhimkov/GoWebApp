@@ -17,20 +17,14 @@
     "internal",
     "q"
   ]
-  revision = "bda68dab90fc908ee5dbccb36400edf4f54972d6"
-  version = "v2.1.1"
+  revision = "5a6fe65e3993f63951c8e3f64c812536c9e23595"
+  version = "v2.1.2"
 
 [[projects]]
   name = "github.com/boltdb/bolt"
   packages = ["."]
   revision = "2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8"
   version = "v1.3.1"
-
-[[projects]]
-  name = "github.com/coreos/bbolt"
-  packages = ["."]
-  revision = "583e8937c61f1af6513608ccc75c97b6abdf4ff9"
-  version = "v1.3.0"
 
 [[projects]]
   branch = "master"
@@ -52,8 +46,8 @@
 [[projects]]
   name = "github.com/golang/protobuf"
   packages = ["proto"]
-  revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
-  version = "v1.1.0"
+  revision = "aa810b61a9c79d51363740d207bb46cf8e620ed5"
+  version = "v1.2.0"
 
 [[projects]]
   name = "github.com/json-iterator/go"
@@ -70,8 +64,8 @@
 [[projects]]
   name = "github.com/mattn/go-isatty"
   packages = ["."]
-  revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
-  version = "v0.0.3"
+  revision = "6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c"
+  version = "v0.0.4"
 
 [[projects]]
   name = "github.com/modern-go/concurrent"
@@ -86,10 +80,10 @@
   version = "1.0.1"
 
 [[projects]]
-  branch = "master"
   name = "github.com/thinkerou/favicon"
   packages = ["."]
   revision = "94a442a49da6e2d44bdd5e0d2e2e185c43a19d93"
+  version = "v0.1.0"
 
 [[projects]]
   name = "github.com/ugorji/go"
@@ -122,19 +116,25 @@
   version = "3.0"
 
 [[projects]]
+  name = "go.etcd.io/bbolt"
+  packages = ["."]
+  revision = "583e8937c61f1af6513608ccc75c97b6abdf4ff9"
+  version = "v1.3.0"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = [
     "bcrypt",
     "blowfish"
   ]
-  revision = "a49355c7e3f8fe157a85be2f77e6e269a0f89602"
+  revision = "0e37d006457bf46f9e6692014ba72ef82c33022c"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "1b2967e3c290b7c545b3db0deeda16e9be4f98a2"
+  revision = "c2ed4eda69e7f62900806e4cd6e45f0429f859fa"
 
 [[projects]]
   name = "gopkg.in/go-playground/validator.v8"

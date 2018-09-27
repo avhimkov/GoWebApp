@@ -73,7 +73,7 @@ func SetupRouter() *gin.Engine {
 
 	g := gin.Default()
 
-	g.Static("/assets", "./assets")
+	g.Static("/web", "./web")
 	g.LoadHTMLGlob("templates/*.html")
 
 	// g := gin.New()
@@ -82,8 +82,8 @@ func SetupRouter() *gin.Engine {
 	g.Use(gin.Logger())
 	// Recovery middleware
 	g.Use(gin.Recovery())
-	g.Use(favicon.New("./assets/brand/favicon.ico"))
-	// g.Use(static.Serve("/assets", static.LocalFile("/assets", false)))
+	g.Use(favicon.New("./assets/favicon.ico"))
+	// g.Use(static.Serve("/web", static.LocalFile("/web", false)))
 	// v1 := router.Group("api/v1")
 	// {
 	// 	v1.GET("/instructions", GetInstructions)
@@ -622,15 +622,16 @@ func main() {
 
 			pdf := gofpdf.New("P", "mm", "A4", "")
 			pdf.SetTopMargin(30)
-			pdf.SetHeaderFuncMode(func() {
-				url := "assets/brand/blue-mark_cnzgry.png"
+			// pdf.SetHeaderFuncMode(func() {
+			pdf.SetHeaderFunc(func() {
+				url := "assets/blue-mark_cnzgry.png"
 				pdf.Image(url, 10, 6, 30, 0, false, "", 0, "")
 				pdf.SetY(5)
 				pdf.SetFont("Arial", "B", 15)
 				pdf.Cell(80, 0, "")
 				pdf.CellFormat(30, 10, "Title", "1", 0, "C", false, 0, "")
 				pdf.Ln(20)
-			}, true)
+			})
 			pdf.SetFooterFunc(func() {
 				pdf.SetY(-15)
 				pdf.SetFont("Arial", "I", 8)
