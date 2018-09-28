@@ -152,5 +152,75 @@
         </div>
     </div>
     <p></p>
+    <p></p>
+<div class="card">
+    <h3 class="card-header">Добавить Услуги</h3>
+        <div class="card-body">
+            <div class="col-sm-12">
+                <p></p>
+                <form class="form" action="/adminka" method="POST">
+                        <div class="form-row">
+                            <div class="col">
+                                <h6>Добавить имя услуги</h6>
+                                <label class="sr-only" for="inlineFormInput">имя услуги</label>
+                                <input type="text" name="office" class="form-control" id="office" placeholder="Офис">
+                            </div>
+                            <div class="col">
+                                <h6>Добавить тип услуги</h6>
+                                <label class="sr-only" for="inlineFormInput">тип услуги</label>
+                                <input type="text" name="operator" class="form-control" id="operator" placeholder="Оператора">
+                            </div>
+                        </div>
+                    <p></p>
+                    <button type="submit" class="btn btn-primary float-right">Сохранить</button>
+                </form>
+            </div>
+            <p></p>
+            <table class="table"
+            data-toggle="table"
+            data-search-align="left"
+            data-buttons-align="left"
+            data-page-size=20
+            data-page-list="20, 30, 50, 100"
+            data-show-export="true"
+            data-pagination="true"
+            data-click-to-select="true"
+            data-search="true"
+            data-filter-control="true" >
+            <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-sortable="true">№</th>
+                    <th data-sortable="true" data-field="office">Название услуги</th>
+                    <th data-sortable="true" data-field="operator">Тип</th>
+                    <th>Delete</th>
+                    <th>Edit</th>
+                    
+                </tr>
+            </thead>
+            <tbody>            
+                {{range $index, $val := .service}}
+                <tr>
+                    <td class="bs-checkbox "><input data-index="{{$index}}" name="btSelectItem" type="checkbox"></td>
+                    <td>{{$val.ID}}</td>
+                    <td name="office">{{$val.NameService}}</td>
+                    <td name="operator">{{$val.Type}}</td>
+                    <td>
+                        <form action="/" method="GET">
+                            <input value="AdminOff"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/" method="GET">
+                            <input value="Delete"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+        </div>
+    </div>
+    
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}

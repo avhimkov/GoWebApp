@@ -288,24 +288,24 @@ func main() {
 	})
 
 	// Location operators
-	g.POST("/adminka", func(c *gin.Context) {
+	g.POST("/addservice", func(c *gin.Context) {
 
 		isloggedin := isloggedin(c)
 
 		if isloggedin {
 
-			office := c.PostForm("office")
-			fmt.Println(office)
-			operator := c.PostForm("operator")
-			fmt.Println(operator)
+			nameservice := c.PostForm("nameserv")
+			//fmt.Println(office)
+			servtype := c.PostForm("type")
+			//fmt.Println(operator)
 
-			loc := Location{
+			service := Service{
 				// ID:        1,
-				Office:   office,
-				Operator: operator,
+				NameService: nameservice,
+				Type:        servtype,
 			}
 
-			err := db.Save(&loc)
+			err := db.Save(&service)
 			if err != nil {
 				log.Fatal(err)
 			}
