@@ -275,6 +275,14 @@ func main() {
 				c.Set("Нет данных", loc)
 			}
 
+			var serv []Service
+			err = db.All(&serv)
+			fmt.Println(serv)
+
+			if err == storm.ErrNotFound {
+				c.Set("Нет данных", serv)
+			}
+
 			listusers, _ := userstate.AllUsernames()
 			if isadmin {
 				for _, i := range listusers {
@@ -301,8 +309,8 @@ func main() {
 
 			service := Service{
 				// ID:        1,
-				NameService: nameservice,
 				Type:        servtype,
+				NameService: nameservice,
 			}
 
 			err := db.Save(&service)
