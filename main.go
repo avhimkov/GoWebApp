@@ -97,11 +97,16 @@ func main() {
 	defer db.Close()
 
 	errdb := db.Init(&Person{})
-	errdb = db.Init(&Service{})
-	errdb = db.Init(&Location{})
-
 	if errdb != nil {
 		log.Fatal(errdb)
+	}
+	errdb1 := db.Init(&Service{})
+	if errdb1 != nil {
+		log.Fatal(errdb1)
+	}
+	errdb2 := db.Init(&Location{})
+	if errdb2 != nil {
+		log.Fatal(errdb2)
 	}
 
 	g := SetupRouter()
@@ -289,10 +294,40 @@ func main() {
 					cheked = append(cheked, userstate.IsAdmin(i))
 				}
 			}
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"location": loc, "listusers": listusers, "is_logged_in": isloggedin, "isadmin": isadmin})
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"location": loc, "service": serv, "listusers": listusers, "is_logged_in": isloggedin, "isadmin": isadmin})
 		} else {
 			c.Redirect(301, "/")
 		}
+	})
+
+	g.POST("/adminka", func(c *gin.Context) {
+
+		isloggedin := isloggedin(c)
+
+		if isloggedin {
+
+			office := c.PostForm("office")
+			fmt.Println(office)
+			operator := c.PostForm("operator")
+			fmt.Println(operator)
+
+			loc := Location{
+				// ID:        1,
+				Office:   office,
+				Operator: operator,
+			}
+
+			err := db.Save(&loc)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			http.Redirect(c.Writer, c.Request, "/adminka", 302)
+		} else {
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+		}
+
 	})
 
 	// Location operators
