@@ -330,6 +330,53 @@ func main() {
 
 	})
 
+	// Upload user from file
+	g.POST("/uploadService", func(c *gin.Context) {
+		// usercook, _ := userstate.UsernameCookie(c.Request)
+
+		path := filepath.Clean("./upload/")
+
+		file, header, err := c.Request.FormFile("uploadFile")
+		if err != nil {
+			log.Fatal(err)
+		}
+		filename := header.Filename
+		fmt.Println(filename)
+		err = os.MkdirAll(path, 0777)
+		if err != nil {
+			log.Fatal(err)
+		}
+		out, err := os.Create(path + "/" + filename)
+		_, err = io.Copy(out, file)
+
+		url := path + "/" + filename
+		fmt.Println(url)
+
+		csvFile, _ := os.Open(url)
+		reader := csv.NewReader(bufio.NewReader(csvFile))
+		for {
+			line, error := reader.Read()
+			if error == io.EOF {
+				break
+			} else if error != nil {
+				log.Fatal(error)
+			}
+
+			serv := []*Service{
+				{ // ID:          line[0],
+					Type:        line[0],
+					NameService: line[1]},
+			}
+
+			for _, s := range serv {
+				db.Save(s)
+				fmt.Println(s)
+			}
+		}
+
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
+	})
+
 	// Location operators
 	g.POST("/addservice", func(c *gin.Context) {
 
