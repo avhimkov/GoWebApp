@@ -96,17 +96,17 @@ func main() {
 
 	defer db.Close()
 
-	errdb := db.Init(&Person{})
-	if errdb != nil {
-		log.Fatal(errdb)
+	errdbp := db.Init(&Person{})
+	if errdbp != nil {
+		log.Fatal(errdbp)
 	}
-	errdb1 := db.Init(&Service{})
-	if errdb1 != nil {
-		log.Fatal(errdb1)
+	errdbs := db.Init(&Service{})
+	if errdbs != nil {
+		log.Fatal(errdbs)
 	}
-	errdb2 := db.Init(&Location{})
-	if errdb2 != nil {
-		log.Fatal(errdb2)
+	errdbl := db.Init(&Location{})
+	if errdbl != nil {
+		log.Fatal(errdbl)
 	}
 
 	g := SetupRouter()
@@ -647,6 +647,8 @@ func main() {
 
 	// Delete value on id
 	g.GET("/removeval/:id", RemVal)
+	g.GET("/removevalloc/:id", RemValLoc)
+
 	// g.GET("/report", ReportGet)
 
 	// Counte all values
@@ -809,4 +811,38 @@ func RemVal(c *gin.Context) {
 	fmt.Println(count)
 	fmt.Println(id)
 	http.Redirect(c.Writer, c.Request, "/operator", 302)
+}
+
+// Delete value on id function Service
+func RemValServ(c *gin.Context) {
+
+	id := c.Param("id")
+
+	query := db.Select(q.Eq("ID", id))
+	count, err := query.Count(new(Service))
+	if err != nil {
+		log.Fatal(err)
+	}
+	query.Delete(new(Service))
+
+	fmt.Println(count)
+	fmt.Println(id)
+	http.Redirect(c.Writer, c.Request, "/adminka", 302)
+}
+
+// Delete value on id function Service
+func RemValLoc(c *gin.Context) {
+
+	id := c.Param("id")
+
+	query := db.Select(q.Eq("ID", id))
+	count, err := query.Count(new(Location))
+	if err != nil {
+		log.Fatal(err)
+	}
+	query.Delete(new(Location))
+
+	fmt.Println(count)
+	fmt.Println(id)
+	http.Redirect(c.Writer, c.Request, "/adminka", 302)
 }

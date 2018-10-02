@@ -6,6 +6,7 @@
     "configurations": [
         
         {
+            
             "name": "Launch",
             "type": "go",
             "request": "launch",
@@ -16,7 +17,8 @@
             "program": "${workspaceRoot}",
             "env": {},
             "args": [],
-            "showLog": true
+            "showLog": true,
+            //"debug.hideActionBar": false
         }
     ]
 }

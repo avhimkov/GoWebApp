@@ -120,12 +120,10 @@
             <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
-                    <th data-sortable="true">№</th>
+                    <th data-sortable="true">ID</th>
                     <th data-sortable="true" data-field="office">Офис</th>
                     <th data-sortable="true" data-field="operator">Оператор</th>
                     <th>Delete</th>
-                    <th>Edit</th>
-                    
                 </tr>
             </thead>
             <tbody>            
@@ -136,12 +134,7 @@
                     <td name="office">{{$val.Office}}</td>
                     <td name="operator">{{$val.Operator}}</td>
                     <td>
-                        <form action="/" method="GET">
-                            <input value="AdminOff"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/" method="GET">
+                        <form action="/removevalloc/{{$val.ID}}" method="GET">
                             <input value="Delete"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
                         </form>
                     </td>
@@ -217,12 +210,10 @@
             <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
-                    <th data-sortable="true">№</th>
+                    <th data-sortable="true">ID</th>
                     <th data-sortable="true" data-field="office">Название услуги</th>
                     <th data-sortable="true" data-field="operator">Тип</th>
                     <th>Delete</th>
-                    <th>Edit</th>
-                    
                 </tr>
             </thead>
             <tbody>            
@@ -233,12 +224,7 @@
                     <td name="office">{{$val.NameService}}</td>
                     <td name="operator">{{$val.Type}}</td>
                     <td>
-                        <form action="/" method="GET">
-                            <input value="AdminOff"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/" method="GET">
+                        <form action="/removevalserv/{{$val.ID}}" method="GET">
                             <input value="Delete"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
                         </form>
                     </td>
