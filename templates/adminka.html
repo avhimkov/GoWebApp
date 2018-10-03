@@ -120,6 +120,7 @@
             <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
+                    <th data-sortable="true">№</th>
                     <th data-sortable="true">ID</th>
                     <th data-sortable="true" data-field="office">Офис</th>
                     <th data-sortable="true" data-field="operator">Оператор</th>
@@ -130,6 +131,7 @@
                 {{range $index, $val := .location}}
                 <tr>
                     <td class="bs-checkbox "><input data-index="{{$index}}" name="btSelectItem" type="checkbox"></td>
+                    <td>{{$index}}</td>
                     <td>{{$val.ID}}</td>
                     <td name="office">{{$val.Office}}</td>
                     <td name="operator">{{$val.Operator}}</td>
@@ -210,6 +212,7 @@
             <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
+                    <th data-sortable="true">№</th>
                     <th data-sortable="true">ID</th>
                     <th data-sortable="true" data-field="office">Название услуги</th>
                     <th data-sortable="true" data-field="operator">Тип</th>
@@ -220,6 +223,7 @@
                 {{range $index, $val := .service}}
                 <tr>
                     <td class="bs-checkbox "><input data-index="{{$index}}" name="btSelectItem" type="checkbox"></td>
+                    <td>{{$index}}</td>
                     <td>{{$val.ID}}</td>
                     <td name="office">{{$val.NameService}}</td>
                     <td name="operator">{{$val.Type}}</td>
