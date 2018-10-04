@@ -146,6 +146,11 @@ func main() {
 		return isloggedin
 	}
 
+	// Default user/administrator admin
+	userstate.AddUser("admin", "admin", "admin@mail.ru")
+	userstate.MarkConfirmed("admin")
+	userstate.SetAdminStatus("admin")
+
 	g.GET("/", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		if isloggedin {
