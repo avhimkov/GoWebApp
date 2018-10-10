@@ -136,7 +136,7 @@
                     <td name="office">{{$val.Office}}</td>
                     <td name="operator">{{$val.Operator}}</td>
                     <td>
-                        <form action="/removevalloc/{{$val.ID}}" method="GET">
+                        <form action="/removeval/Location/{{$val.ID}}" method="GET">
                             <input value="Delete"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
                         </form>
                     </td>
@@ -228,7 +228,7 @@
                     <td name="office">{{$val.NameService}}</td>
                     <td name="operator">{{$val.Type}}</td>
                     <td>
-                        <form action="/removevalserv/{{$val.ID}}" method="GET">
+                        <form action="/removeval/Service/{{$val.ID}}" method="GET">
                             <input value="Delete"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
                         </form>
                     </td>

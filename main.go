@@ -651,9 +651,9 @@ func main() {
 	})
 
 	// Delete value on id
-	g.GET("/removeval/:id", RemVal)
-	g.GET("/removevalloc/:id", RemValLoc)
-	g.GET("/removevalserv/:id", RemValServ)
+	g.GET("/removeval/:struct/:id", RemVal)
+	// g.GET("/removevalloc/:id", RemValLoc)
+	// g.GET("/removevalserv/:id", RemValServ)
 
 	// g.GET("/report", ReportGet)
 
@@ -805,53 +805,89 @@ func main() {
 // Delete value on id function
 func RemVal(c *gin.Context) {
 
-	id := c.Param("id")
+	param := c.Param("struct")
 
-	query := db.Select(q.Eq("ID", id))
-	count, err := query.Count(new(Person))
-	if err != nil {
-		log.Fatal(err)
+	switch param {
+	case "Person":
+		id := c.Param("id")
+
+		query := db.Select(q.Eq("ID", id))
+		count, err := query.Count(new(Person))
+		if err != nil {
+			log.Fatal(err)
+		}
+		query.Delete(new(Person))
+
+		fmt.Println(count)
+		fmt.Println(id)
+		http.Redirect(c.Writer, c.Request, "/operator", 302)
+
+	case "Service":
+
+		id := c.Param("id")
+
+		query := db.Select(q.Eq("ID", id))
+		count, err := query.Count(new(Service))
+		if err != nil {
+			log.Fatal(err)
+		}
+		query.Delete(new(Service))
+
+		fmt.Println(count)
+		fmt.Println(id)
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
+
+	case "Location":
+
+		id := c.Param("id")
+
+		query := db.Select(q.Eq("ID", id))
+		count, err := query.Count(new(Location))
+		if err != nil {
+			log.Fatal(err)
+		}
+		query.Delete(new(Location))
+
+		fmt.Println(count)
+		fmt.Println(id)
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	}
-	query.Delete(new(Person))
 
-	fmt.Println(count)
-	fmt.Println(id)
-	http.Redirect(c.Writer, c.Request, "/operator", 302)
 }
 
 // Delete value on id function Service
-func RemValServ(c *gin.Context) {
+// func RemValServ(c *gin.Context) {
 
-	id := c.Param("id")
+// 	id := c.Param("id")
 
-	query := db.Select(q.Eq("ID", id))
-	count, err := query.Count(new(Service))
-	if err != nil {
-		log.Fatal(err)
-	}
-	query.Delete(new(Service))
+// 	query := db.Select(q.Eq("ID", id))
+// 	count, err := query.Count(new(Service))
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	query.Delete(new(Service))
 
-	fmt.Println(count)
-	fmt.Println(id)
-	http.Redirect(c.Writer, c.Request, "/adminka", 302)
-}
+// 	fmt.Println(count)
+// 	fmt.Println(id)
+// 	http.Redirect(c.Writer, c.Request, "/adminka", 302)
+// }
 
-// Delete value on id function Service
-func RemValLoc(c *gin.Context) {
+// // Delete value on id function Service
+// func RemValLoc(c *gin.Context) {
 
-	id := c.Param("id")
+// 	id := c.Param("id")
 
-	query := db.Select(q.Eq("ID", id))
-	count, err := query.Count(new(Location))
-	if err != nil {
-		log.Fatal(err)
-	}
-	query.Delete(new(Location))
+// 	query := db.Select(q.Eq("ID", id))
+// 	count, err := query.Count(new(Location))
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	query.Delete(new(Location))
 
-	fmt.Println(count)
-	fmt.Println(id)
-	http.Redirect(c.Writer, c.Request, "/adminka", 302)
-}
+// 	fmt.Println(count)
+// 	fmt.Println(id)
+// 	http.Redirect(c.Writer, c.Request, "/adminka", 302)
+// }
 
 // ----------- chek login func ------------------
 func setUserStatus() gin.HandlerFunc {
