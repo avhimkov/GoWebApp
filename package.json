@@ -1,0 +1,11 @@
+{
+  "name": "MFC_LogWork",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/avhimkov/GoWebApp.git",
+  "author": "Dmitry <avhimkov@mail.ru>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "4.1.3"
+  }
+}
