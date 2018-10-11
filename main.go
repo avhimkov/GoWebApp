@@ -855,40 +855,6 @@ func RemVal(c *gin.Context) {
 
 }
 
-// Delete value on id function Service
-// func RemValServ(c *gin.Context) {
-
-// 	id := c.Param("id")
-
-// 	query := db.Select(q.Eq("ID", id))
-// 	count, err := query.Count(new(Service))
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	query.Delete(new(Service))
-
-// 	fmt.Println(count)
-// 	fmt.Println(id)
-// 	http.Redirect(c.Writer, c.Request, "/adminka", 302)
-// }
-
-// // Delete value on id function Service
-// func RemValLoc(c *gin.Context) {
-
-// 	id := c.Param("id")
-
-// 	query := db.Select(q.Eq("ID", id))
-// 	count, err := query.Count(new(Location))
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	query.Delete(new(Location))
-
-// 	fmt.Println(count)
-// 	fmt.Println(id)
-// 	http.Redirect(c.Writer, c.Request, "/adminka", 302)
-// }
-
 // ----------- chek login func ------------------
 func setUserStatus() gin.HandlerFunc {
 	return func(c *gin.Context) {
