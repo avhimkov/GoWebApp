@@ -47,13 +47,14 @@
             <table id="table" 
                     data-toggle="table"
                     data-filter-control="true"
+                    data-show-export="true"
                     data-search-align="left"
                     data-buttons-align="left"
                     data-page-size=20
                     data-page-list="20, 30, 50, 100"
-                    data-show-export="true"
                     data-pagination="true"
                     data-click-to-select="true"
+                    data-toolbar="#toolbar"
                     data-search="true">
                 <thead>
                 <tr>
@@ -106,6 +107,15 @@
         </div>
     </div>
 </div>
-
+<script>
+    var $table = $('#table');
+    $(function () {
+        $('#toolbar').find('select').change(function () {
+            $table.bootstrapTable('destroy').bootstrapTable({
+                exportDataType: $(this).val()
+            });
+        });
+    })
+</script>
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}
