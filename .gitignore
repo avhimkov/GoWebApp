@@ -4,4 +4,5 @@ vendor
 .vscode
 projectFilesBackup
 node_modules
+debug
 db
