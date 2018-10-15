@@ -2,8 +2,6 @@
 .idea
 vendor
 .vscode
-debug
-bolt.db
-bolt.db.lock
 projectFilesBackup
 node_modules
+db
