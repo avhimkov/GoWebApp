@@ -7,7 +7,7 @@
     <head>
         <link rel="shortcut icon" type="image/ico" href="/assets/favicon.ico">
         <!--Use the `title` variable to set the title of the page-->
-        <title>GoWebApp</title>
+        <title>MFC_LogWork</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         
@@ -31,30 +31,31 @@
         <script src="/node_modules/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
 
         
-        <!-- <link rel="stylesheet" href="/web/MyTableExport.css"> -->
-        <!-- <script src="/web/MytableExport.js"></script>  -->
-        <!-- <script src="/web/tabexp.js"></script>  -->
-        
-        <!-- <link rel="stylesheet" href="/web/bootstrap-table.css"> -->
-        <!-- <script src="/web/tableExport.js"></script> -->
-        <!-- <script src="/web/bootstrap-table.js"></script> -->
-        <!-- <script src="/web/bootstrap-table-export.js"></script> -->
-        
+        <link rel="stylesheet" href="/web/MyTableExport.css">
+        <script src="/web/MytableExport.js"></script> 
+
         <script src="//api-maps.yandex.ru/2.1/?lang=ru_RU&amp;load=SuggestView&amp;onload=onLoad"></script>
         <script src="/node_modules/jquery.maskedinput/src/jquery.maskedinput.js"></script>
+        <script src="/node_modules/tableexport.jquery.plugin/tableExport.min.js"></script>
 
-        <!-- <link rel="stylesheet" href="/node_modules/bootstrap-editable/css/bootstrap-editable.css"> -->
-        <!-- <script src="/node_modules/tableexport.jquery.plugin/bower_components/tableExport.jquery.plugin/tableExport.min.js"></script> -->
-        
-        <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpv_agXvST3P_pOr4DPHOAmHGzJFjZD0w&libraries=places&callback=initAutocomplete" async defer></script>
-        <script src="/web/js/auto-complete.js"></script> -->
-        
-        
-        <!-- <script src="/node_modules/bootstrap-editable/js/index.js"></script> -->
-        <!-- <script src="/web/bootstrap-editable.js"></script>   -->
+        <!-- <script src="/web/TableExport/js/jquery.base64.js"></script> -->
+        <script src="/node_modules/tableexport.jquery.plugin/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/node_modules/tableexport.jquery.plugin/libs/es6-promise/es6-promise.auto.min.js"></script>
+        <script src="/node_modules/tableexport.jquery.plugin/libs/pdfmake/pdfmake.min.js"></script>
+        <script src="/node_modules/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+        <!-- <script src="/web/TableExport/js/jspdf/jspdf.js"></script> -->
+        <script src="/node_modules/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js"></script>
+        <!-- <script src="/web/TableExport/js/jspdf/libs/base64.js"></script> -->
+        <!-- <script src="/web/TableExport/js/jspdf/libs/sprintf.js"></script> -->
+        <!-- <script src="/web/TableExport/js/FileSaver.min.js"></script> -->
+        <script src="/node_modules/tableexport.jquery.plugin/libs/FileSaver/FileSaver.min.js"></script>
+        <!-- <script src="/web/TableExport/js/xls.core.min.js"></script> -->
+        <!-- <script src="/web/TableExport/js/xlsx.core.min.js"></script> -->
+        <script src="/node_modules/tableexport.jquery.plugin/libs/js-xlsx/xlsx.core.min.js"></script>
+        <!-- <script src="/web/tableExport/js/html2canvas.js"></script>   -->
+        <script src="/node_modules/tableexport.jquery.plugin/libs/html2canvas/html2canvas.min.js"></script>
 
-        <!-- <link rel="stylesheet" href="/web/css/bootstrap-editable.css"> -->
-        <!-- <script src="/web/TableExport/js/tableExport.js"></script>
+        <!-- 
         <script src="/web/TableExport/js/jquery.base64.js"></script>
         <script src="/web/TableExport/js/jspdf/jspdf.js"></script>
          <script src="/web/TableExport/js/jspdf/libs/base64.js"></script>
@@ -62,9 +63,8 @@
         <script src="/web/TableExport/js/FileSaver.min.js"></script>
         <script src="/web/TableExport/js/xls.core.min.js"></script>
         <script src="/web/TableExport/js/xlsx.core.min.js"></script>
-        <script src="/web/tableExport/js/html2canvas.js"></script> -->
-
-        
+        <script src="/web/tableExport/js/html2canvas.js"></script>  
+        -->
 
 
 
@@ -86,7 +86,7 @@
         
         <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script> -->
-        <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
+        <!-- <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script> -->
     </head>
 
     {{ template "menu.html" . }}
