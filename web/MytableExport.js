@@ -1,9 +1,9 @@
-        
- var $table = $('#table');
- $(function () {
-     $('#toolbar').find('select').change(function () {
-         $table.bootstrapTable('destroy').bootstrapTable({
-             exportDataType: $(this).val()
-         });
-     });
- })
+$(document).ready(function() {
+    var table = $('#table').DataTable( {
+        lengthChange: false,
+        buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
+    } );
+ 
+    table.buttons().container()
+        .appendTo( '#table_wrapper .col-md-6:eq(0)' );
+} );
