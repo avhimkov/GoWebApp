@@ -36,35 +36,25 @@
     <div class="card">
         <h3 class="card-header panel-success white-text">Список заявлений</h3>
         <div class="card-body">
-            <table id="table"
-                    data-toggle="table"
-                    data-search-align="left"
-                    data-buttons-align="left"
-                    data-page-size=20
-                    data-page-list="20, 30, 50, 100"
-                    data-show-export="true"
-                    data-pagination="true"
-                    data-click-to-select="true"
-                    data-search="true"
-                    data-filter-control="true" >
+            <table id="table"class="table table-striped table-bordered" style="width:100%">
                 <thead>
                     <tr>
-                        <th data-field="state" data-checkbox="true"></th>
-                        <th data-sortable="true">№</th>
+                        <th></th>
+                        <th>№</th>
                         <!-- <th data-sortable="true" data-field="User">Оператор</th> -->
-                        <th data-sortable="true" data-filter-control="input" data-field="Name">Имя заявитель</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="SubName">Представитель</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="NameService">Название услуги</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="DateIn">Дата регистрации</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="DateSend">Дата отправки</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="DateOut">Дата получения</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="Address" data-formatter="Formatter">Адрес</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="Location">Место оператора</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="Number">Номер</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="Phone">Телефон</th>
-                        <th data-sortable="true" data-filter-control="input" data-field="Note">Нотация</th>
-                        <th data-field="Edit">Редакт..</th>
-                        <th data-field="Delete">Удаление</th>
+                        <th>Имя заявитель</th>
+                        <th>Представитель</th>
+                        <th>Название услуги</th>
+                        <th>Дата регистрации</th>
+                        <th>Дата отправки</th>
+                        <th>Дата получения</th>
+                        <th>Адрес</th>
+                        <th>Место оператора</th>
+                        <th>Номер</th>
+                        <th>Телефон</th>
+                        <th>Нотация</th>
+                        <th>Редакт..</th>
+                        <th>Удаление</th>
                     </tr>
                     <script>
                             function Formatter(value) {

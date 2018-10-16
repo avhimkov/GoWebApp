@@ -6,3 +6,5 @@ projectFilesBackup
 node_modules
 debug
 db
+db/data.db
+db/data.db.lock

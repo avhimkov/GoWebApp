@@ -62,24 +62,14 @@
     <div class="card">
         <h3 class="card-header panel-success white-text">Отчеты</h3>
         <div class="card-body">
-            <table id="table" 
-                    data-toggle="table"
-                    data-filter-control="true"
-                    data-search-align="left"
-                    data-buttons-align="left"
-                    data-page-size=20
-                    data-page-list="20, 30, 50, 100"
-                    data-show-export="true"
-                    data-pagination="true"
-                    data-click-to-select="true"
-                    data-search="true">
+            <table id="table"class="table table-striped table-bordered" style="width:100%">
                 <thead>
                 <tr>
                     <th data-field="state" data-checkbox="true"></th>
                     <th data-sortable="true">№</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Name">Кол. посетителей</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Name1">Кол. посетителей</th>
-                    <th data-sortable="true" data-filter-control="input" data-field="Name2">Кол. посетителей</th>
+                    <th data-field="Name">Кол. посетителей</th>
+                    <th data-field="Name1">Кол. посетителей</th>
+                    <th data-field="Name2">Кол. посетителей</th>
                 </tr>
                 <script>
                         function Formatter(value) {

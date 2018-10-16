@@ -34,22 +34,12 @@
                             </div>
                         </div>
                     </form>
-        <table class="table"
-            data-toggle="table"
-            data-search-align="left"
-            data-buttons-align="left"
-            data-page-size=20
-            data-page-list="20, 30, 50, 100"
-            data-show-export="true"
-            data-pagination="true"
-            data-click-to-select="true"
-            data-search="true"
-            data-filter-control="true" >
+        <table id="table" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
-                    <th data-field="state" data-checkbox="true"></th>
-                    <th data-sortable="true">№</th>
-                    <th data-sortable="true" data-field="Users">Users</th>
+                   
+                    <th>№</th>
+                    <th data-field="Users">Users</th>
                     <th>Admin Off</th>
                     <th>Delet User</th>
                     <th>Make Admin</th>
@@ -58,7 +48,7 @@
             <tbody>            
                 {{range $i, $e := .listusers}}
                 <tr>
-                    <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td>
+                    <!-- <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td> -->
                     <td>{{$i}}</td>
                     <td>{{$e}}</td>
                     <td>
@@ -106,31 +96,20 @@
                 </form>
             </div>
             <p></p>
-            <table class="table"
-            data-toggle="table"
-            data-search-align="left"
-            data-buttons-align="left"
-            data-page-size=20
-            data-page-list="20, 30, 50, 100"
-            data-show-export="true"
-            data-pagination="true"
-            data-click-to-select="true"
-            data-search="true"
-            data-filter-control="true" >
+            <table id="table1" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
-                    <th data-field="state" data-checkbox="true"></th>
-                    <th data-sortable="true">№</th>
-                    <th data-sortable="true">ID</th>
-                    <th data-sortable="true" data-field="office">Офис</th>
-                    <th data-sortable="true" data-field="operator">Оператор</th>
+                    <th>№</th>
+                    <th>ID</th>
+                    <th data-field="office">Офис</th>
+                    <th data-field="operator">Оператор</th>
                     <th>Delete</th>
                 </tr>
             </thead>
             <tbody>            
                 {{range $index, $val := .location}}
                 <tr>
-                    <td class="bs-checkbox "><input data-index="{{$index}}" name="btSelectItem" type="checkbox"></td>
+                    <!-- <td class="bs-checkbox "><input data-index="{{$index}}" name="btSelectItem" type="checkbox"></td> -->
                     <td>{{$index}}</td>
                     <td>{{$val.ID}}</td>
                     <td name="office">{{$val.Office}}</td>
@@ -198,20 +177,10 @@
                 </form>
             </div>
             <p></p>
-            <table class="table"
-            data-toggle="table"
-            data-search-align="left"
-            data-buttons-align="left"
-            data-page-size=20
-            data-page-list="20, 30, 50, 100"
-            data-show-export="true"
-            data-pagination="true"
-            data-click-to-select="true"
-            data-search="true"
-            data-filter-control="true" >
+            <table id="table" class="table table-striped table-bordered" style="width:100%" >
             <thead>
                 <tr>
-                    <th data-field="state" data-checkbox="true"></th>
+                    
                     <th data-sortable="true">№</th>
                     <th data-sortable="true">ID</th>
                     <th data-sortable="true" data-field="office">Название услуги</th>
@@ -222,7 +191,7 @@
             <tbody>            
                 {{range $index, $val := .service}}
                 <tr>
-                    <td class="bs-checkbox "><input data-index="{{$index}}" name="btSelectItem" type="checkbox"></td>
+                    
                     <td>{{$index}}</td>
                     <td>{{$val.ID}}</td>
                     <td name="office">{{$val.NameService}}</td>
