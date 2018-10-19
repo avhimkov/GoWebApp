@@ -1,7 +1,12 @@
 $(document).ready(function() {
     var table = $('#table').DataTable( {
         lengthChange: false,
-        buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
+        buttons: [ {extend: 'copy',  filename: 'Data export'}, 
+                   {extend: 'csv',  filename: 'Data export'}, 
+                   {extend: 'excel',  filename: 'Data export'}, 
+                   {extend: 'pdf',  filename: 'Data export'},
+                   {extend: 'print',  filename: 'Data export'},
+                   'colvis']
     } );
  
     table.buttons().container()
@@ -11,7 +16,12 @@ $(document).ready(function() {
 $(document).ready(function() {
     var table1 = $('#table1').DataTable( {
         lengthChange: false,
-        buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
+        buttons: [ {extend: 'copy',  filename: 'Data export'}, 
+                   {extend: 'csv',  filename: 'Data export'}, 
+                   {extend: 'excel',  filename: 'Data export'}, 
+                   {extend: 'pdf',  filename: 'Data export'},
+                   {extend: 'print',  filename: 'Data export'},
+                   'colvis']
     } );
  
     table1.buttons().container()
@@ -21,7 +31,12 @@ $(document).ready(function() {
 $(document).ready(function() {
     var table2 = $('#table2').DataTable( {
         lengthChange: false,
-        buttons: [ 'copy', 'excel', 'pdf', 'colvis' ]
+        buttons: [ {extend: 'copy',  filename: 'Data export'}, 
+                   {extend: 'csv',  filename: 'Data export'}, 
+                   {extend: 'excel',  filename: 'Data export'}, 
+                   {extend: 'pdf',  filename: 'Data export'},
+                   {extend: 'print',  filename: 'Data export'},
+                   'colvis']
     } );
  
     table2.buttons().container()
