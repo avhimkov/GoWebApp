@@ -2,7 +2,7 @@
 
 <!doctype html>
 <html>
-  <body>
+  <body id="page-top">
     <!-- <div class="container"> -->
     <head>
         <link rel="shortcut icon" type="image/ico" href="/assets/favicon.ico">
@@ -33,7 +33,7 @@
 
 
         <link rel="stylesheet" href="/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css">
-        <script src="/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js"></script>
+        <!-- <script src="/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js"></script> -->
         <!-- <link rel="stylesheet" href="/web/css/dataTables.bootstrap4.min.css"> -->
         <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"> -->
 
@@ -51,9 +51,11 @@
         <script src="/node_modules/tableexport.jquery.plugin/tableExport.min.js"></script>
        
         <script src="/node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
-                <!-- <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> -->
+        <!-- <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> -->
 
-        <script src="/web/js/dataTables.bootstrap4.min.js"></script>
+
+        <script src="/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <!-- <script src="/web/js/dataTables.bootstrap4.min.js"></script> -->
         <!-- <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script> -->
 
         <script src="/node_modules/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
@@ -92,5 +94,6 @@
         <!-- Latest compiled and minified CSS -->
         <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script> -->
     </head>
-
-    {{ template "menu.html" . }}
+    
+    {{ template "menu.html" . }} 
+ 
