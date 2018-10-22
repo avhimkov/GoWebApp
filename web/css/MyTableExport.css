@@ -1,18 +1,3 @@
-/* .container {
-	width: 1024px;
-	padding: 2em;
-} */
-
-/* .bold-blue {
-	font-weight: bold;
-	color: #0277BD;
-}
-
-.dropdown-menu.show{
-	padding: 0.5rem;
-	min-width: 7rem;
-} */
-
 @charset "UTF-8";
 html {
   position: relative;
@@ -381,7 +366,7 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 .container-fluid {
-  margin: 5em 0em;
+  margin: 5em auto;
   text-align: justify;
 }
 

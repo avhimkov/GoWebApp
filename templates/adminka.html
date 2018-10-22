@@ -53,17 +53,17 @@
                     <td>{{$e}}</td>
                     <td>
                         <form action="/adminoff/{{$e}}" method="GET">
-                            <input value="AdminOff"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                            <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-check"></i></button>
                         </form>
                     </td>
                     <td>
                         <form action="/delete/{{$e}}" method="GET">
-                            <input value="Delete"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
+                            <button class="btn btn-danger btn-rounded btn-sm my-0" type="submit"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
                     <td>
                         <form action="/makeadmin/{{$e}}" method="GET">
-                            <input value="Make admin"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
+                            <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-check"></i></button>
                         </form>
                     </td>
                 </tr>
@@ -116,7 +116,7 @@
                     <td name="operator">{{$val.Operator}}</td>
                     <td>
                         <form action="/removeval/Location/{{$val.ID}}" method="GET">
-                            <input value="Delete"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
+                            <button class="btn btn-danger btn-rounded btn-sm my-0" type="submit"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
                 </tr>
@@ -198,7 +198,7 @@
                     <td name="operator">{{$val.Type}}</td>
                     <td>
                         <form action="/removeval/Service/{{$val.ID}}" method="GET">
-                            <input value="Delete"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
+                            <button class="btn btn-danger btn-rounded btn-sm my-0" type="submit"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
                 </tr>

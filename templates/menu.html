@@ -1,7 +1,7 @@
 <!--menu.html-->
 <div id="navbar" >
         <a class="navbar-brand" href="#">
-                <img style=" width: 34px;" src="https://res.cloudinary.com/disputebills/image/upload/v1462474206/blue-mark_cnzgry.png" alt="">  МФЦ
+                <img style=" width: 32px;" src="https://res.cloudinary.com/disputebills/image/upload/v1462474206/blue-mark_cnzgry.png" >  МФЦ
         </a>
         {{ if .is_logged_in }}
             <a class="nav-link" href="/operator">
@@ -22,11 +22,23 @@
             </a>
         {{end}}
         {{ if .is_logged_in }}
-            <a class="nav-link" href="/adminka">Админка</a>
-            <a class="nav-link" href="/logout">Выход</a>
+            <a class="nav-link" href="/adminka">
+                <i class="fas fa-fw fa-hammer"></i>
+                <span>Админка</span>
+            </a>
+            <a class="nav-link" href="/logout">
+                <i class="fas fa-fw fa-sign-out-alt"></i>
+                <span>Выход</span>
+            </a>
         {{end}}
         {{ if not .is_logged_in }}
-            <a class="nav-link" href="/register">Регистрация</a>
-            <a class="nav-link" href="/login">Вход</a>
+            <a class="nav-link" href="/register">
+                <i class="fas fa-fw fa-list-ul"></i>
+                <span>Регистрация</span>
+            </a>
+            <a class="nav-link" href="/login">
+                <i class="fas fa-fw fa-sign-in-alt"></i>
+                <span>Вход</span>
+            </a>
         {{end}}
 </div>

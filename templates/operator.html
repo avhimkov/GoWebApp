@@ -358,13 +358,13 @@
                             <td>{{$e.Phone}}</td>
                             <td>{{$e.Note}}</td>
                             <td>
-                                <form action="/edit/{{$e.ID}}" method="GET">
-                                    <input value="edit"  class="btn btn-primary btn-rounded btn-sm my-0" type="submit" />
-                                </form>
+                                <button class="btn btn-primary btn-rounded btn-sm my-0" data-title="Edit" data-toggle="modal" data-target="#edit{{$e.ID}}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
                             </td>
                             <td>
                                 <form action="/removeval/{{$e.ID}}" method="GET">
-                                    <input value="rem_val"  class="btn btn-danger btn-rounded btn-sm my-0" type="submit" />
+                                    <button class="btn btn-danger btn-rounded btn-sm my-0" type="submit"><i class="fas fa-trash-alt"></i></button>
                                 </form>
                             </td>
                         </tr>
