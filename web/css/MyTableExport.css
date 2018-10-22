@@ -374,3 +374,9 @@ body.sidebar-toggled footer.sticky-footer {
   margin: 5em auto;
   text-align: justify;
 }
+
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
