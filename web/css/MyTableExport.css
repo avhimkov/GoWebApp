@@ -340,7 +340,7 @@ body.sidebar-toggled footer.sticky-footer {
 
 #navbar {
   overflow: hidden;
-  background-color: #333;
+  background-color: #555;
   z-index: 9999;
   position: fixed;
   top:0px;
@@ -348,6 +348,8 @@ body.sidebar-toggled footer.sticky-footer {
   box-shadow: 0 0 3px #b4b4b4;
   transition: all ease-out 0.5s;
   -webkit-transition: all ease-out 0.5s;
+  -moz-transition: all ease-out 0.5s;
+  transition: all ease-out 0.5s;
 }
 
 /* Style the navbar links */
@@ -361,8 +363,8 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 #navbar a:hover {
-  background-color: #ddd;
-  color: black;
+  background-color: #000;
+  /* color: black; */
 }
 
 .container-fluid {
@@ -380,3 +382,6 @@ body.sidebar-toggled footer.sticky-footer {
   overflow: hidden;
 }
 
+.topnav-right {
+  float: right;
+}

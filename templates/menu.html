@@ -1,8 +1,9 @@
 <!--menu.html-->
 <div id="navbar">
         <a class="navbar-brand" href="#">
-                <img style=" width: 32px;" src="https://res.cloudinary.com/disputebills/image/upload/v1462474206/blue-mark_cnzgry.png" >  МФЦ
+            <img src="https://res.cloudinary.com/disputebills/image/upload/v1462474206/blue-mark_cnzgry.png" width="30" height="30" class="d-inline-block align-top" alt="">  МФЦ
         </a>
+        
         {{ if .is_logged_in }}
             <a class="nav-link" href="/operator">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -26,31 +27,28 @@
                 <i class="fas fa-fw fa-hammer"></i>
                 <span>Админка</span>
             </a>
+        <div class="topnav-right">
             <a class="nav-link" href="/logout">
                 <i class="fas fa-fw fa-sign-out-alt"></i>
                 <span>Выход</span>
             </a>
+        </div>
         {{end}}
         {{ if not .is_logged_in }}
+        <div class="topnav-right">
             <a class="nav-link" href="/register">
                 <i class="fas fa-fw fa-list-ul"></i>
                 <span>Регистрация</span>
             </a>
+        </div>
+        <!-- <div class="topnav-right">
             <a class="nav-link" href="/login">
                 <i class="fas fa-fw fa-sign-in-alt"></i>
                 <span>Вход</span>
             </a>
+        </div> -->
         {{end}}
-<!-- 
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a class="nav-link" href="/login">
-                    <i class="fas fa-fw fa-sign-in-alt"></i>
-                    <span>Вход</span>
-                </a>
-            </li>
-        </ul> -->
-
+        
         <!-- <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
