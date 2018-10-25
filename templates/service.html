@@ -1,0 +1,212 @@
+<!--adminka.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+<div class="container">
+    <p></p>
+    <div class="card">
+            <h3 class="card-header panel-success white-text">Настройки пользователей</h3>
+            <div class="card-body">
+                    <form enctype="multipart/form-data" class="form" action="/uploadValue" method="POST">
+                        <h6>Загрузить файл</h6>
+                        <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <!-- <span class="input-group-text">Upload</span> -->
+                                    <input type="submit" class="btn btn-primary btn-rounded btn-sm my-0"  value="Добавить" />
+                                </div>
+                            <div class="custom-file">
+                                <label class="custom-file" id="customFile">
+                                    <input type="file" accept="text/csv" id="uploadFile" class="custom-file-input" name="uploadFile" />
+                                    <input type="hidden" name="token" value="{{.}}"/>
+                                    <label class="custom-file-label" for="inlineFormInput">Выбрать файл</label>     
+                                    <script>
+                                        $(function() {
+                                          $(document).on('change', ':file', function() {var input = $(this), numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                                                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');input.trigger('fileselect', [numFiles, label]);
+                                          });
+                                          $(document).ready( function() {
+                                              $(':file').on('fileselect', function(event, numFiles, label) {var input = $(this).parents('.custom-file').find('.custom-file-label'),
+                                              log = numFiles > 1 ? numFiles + ' files selected' : label;if( input.length ) {input.text(log);} else {if( log ) alert(log);}});
+                                          });
+                                        });
+                                    </script>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+        <table id="table" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                   
+                    <th>№</th>
+                    <th data-field="Users">Users</th>
+                    <th>Admin Off</th>
+                    <th>Delet User</th>
+                    <th>Make Admin</th>
+                </tr>
+            </thead>
+            <tbody>            
+                {{range $i, $e := .listusers}}
+                <tr>
+                    <!-- <td class="bs-checkbox "><input data-index="{{$i}}" name="btSelectItem" type="checkbox"></td> -->
+                    <td>{{$i}}</td>
+                    <td>{{$e}}</td>
+                    <td>
+                        <form action="/adminoff/{{$e}}" method="GET">
+                            <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-check"></i></button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/delete/{{$e}}" method="GET">
+                            <button class="btn btn-danger btn-rounded btn-sm my-0" type="submit"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/makeadmin/{{$e}}" method="GET">
+                            <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-check"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+</div>
+<p></p>
+<div class="card">
+    <h3 class="card-header">Добавить подразделение</h3>
+        <div class="card-body">
+            <div class="col-sm-12">
+                <p></p>
+                <form class="form" action="/adminka" method="POST">
+                        <div class="form-row">
+                            <div class="col">
+                                <h6>Добавить офис</h6>
+                                <label class="sr-only" for="inlineFormInput">Добавить офис</label>
+                                <input type="text" name="office" class="form-control" id="office" placeholder="Офис">
+                            </div>
+                            <div class="col">
+                                <h6>Добавить оператора</h6>
+                                <label class="sr-only" for="inlineFormInput">Добавить оператора</label>
+                                <input type="text" name="operator" class="form-control" id="operator" placeholder="Оператора">
+                            </div>
+                        </div>
+                    <p></p>
+                    <button type="submit" class="btn btn-primary float-right">Сохранить</button>
+                </form>
+            </div>
+            <p></p>
+            <table id="table1" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>ID</th>
+                    <th data-field="office">Офис</th>
+                    <th data-field="operator">Оператор</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>            
+                {{range $index, $val := .location}}
+                <tr>
+                    <!-- <td class="bs-checkbox "><input data-index="{{$index}}" name="btSelectItem" type="checkbox"></td> -->
+                    <td>{{$index}}</td>
+                    <td>{{$val.ID}}</td>
+                    <td name="office">{{$val.Office}}</td>
+                    <td name="operator">{{$val.Operator}}</td>
+                    <td>
+                        <form action="/removeval/Location/{{$val.ID}}" method="GET">
+                            <button class="btn btn-danger btn-rounded btn-sm my-0" type="submit"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+        </div>
+    </div>
+    <p></p>
+    <p></p>
+<div class="card">
+    <h3 class="card-header">Добавить Услуги</h3>
+        <div class="card-body">
+            <div class="col-sm-12">
+                    <form enctype="multipart/form-data" class="form" action="/uploadService" method="POST">
+                        <h6>Загрузить файл</h6>
+                        <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <!-- <span class="input-group-text">Upload</span> -->
+                                    <input type="submit" class="btn btn-primary btn-rounded btn-sm my-0"  value="Добавить" />
+                                </div>
+                            <div class="custom-file">
+                                <label class="custom-file" id="customFile">
+                                    <input type="file" accept="text/csv" id="uploadFile" class="custom-file-input" name="uploadFile" />
+                                    <input type="hidden" name="token" value="{{.}}"/>
+                                    <label class="custom-file-label" for="inlineFormInput">Выбрать файл</label>     
+                                    <script>
+                                        $(function() {
+                                          $(document).on('change', ':file', function() {var input = $(this), numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                                                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');input.trigger('fileselect', [numFiles, label]);
+                                          });
+                                          $(document).ready( function() {
+                                              $(':file').on('fileselect', function(event, numFiles, label) {var input = $(this).parents('.custom-file').find('.custom-file-label'),
+                                              log = numFiles > 1 ? numFiles + ' files selected' : label;if( input.length ) {input.text(log);} else {if( log ) alert(log);}});
+                                          });
+                                        });
+                                    </script>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                <p></p>
+                <form class="form" action="/addservice" method="POST">
+                        <div class="form-row">
+                            <div class="col">
+                                <h6>Добавить имя услуги</h6>
+                                <label class="sr-only" for="inlineFormInput">имя услуги</label>
+                                <input type="text" name="nameserv" class="form-control" id="nameserv" placeholder="имя услуги">
+                            </div>
+                            <div class="col">
+                                <h6>Добавить тип услуги</h6>
+                                <label class="sr-only" for="inlineFormInput">тип услуги</label>
+                                <input type="text" name="type" class="form-control" id="type" placeholder="тип услуги">
+                            </div>
+                        </div>
+                    <p></p>
+                    <button type="submit" class="btn btn-primary float-right">Сохранить</button>
+                </form>
+            </div>
+            <p></p>
+            <table id="table2" class="table table-striped table-bordered" style="width:100%" >
+            <thead>
+                <tr>
+                    
+                    <th data-sortable="true">№</th>
+                    <th data-sortable="true">ID</th>
+                    <th data-sortable="true" data-field="office">Название услуги</th>
+                    <th data-sortable="true" data-field="operator">Тип</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>            
+                {{range $index, $val := .service}}
+                <tr>
+                    
+                    <td>{{$index}}</td>
+                    <td>{{$val.ID}}</td>
+                    <td name="office">{{$val.NameService}}</td>
+                    <td name="operator">{{$val.Type}}</td>
+                    <td>
+                        <form action="/removeval/Service/{{$val.ID}}" method="GET">
+                            <button class="btn btn-danger btn-rounded btn-sm my-0" type="submit"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+        </div>
+    </div>
+    
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}
