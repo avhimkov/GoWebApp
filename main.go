@@ -717,7 +717,7 @@ func main() {
 	g.GET("/service", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
 		if isloggedin {
-			c.HTML(http.StatusOK, "report.html", gin.H{"is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "service.html", gin.H{"is_logged_in": isloggedin})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
