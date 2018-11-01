@@ -809,6 +809,14 @@ func main() {
 		}
 	})
 	ginpprof.Wrap(g)
+
+	// 404 page
+	g.NoRoute(func(c *gin.Context) {
+		c.HTML(http.StatusOK, "404.html", gin.H{})
+
+		// c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
+	})
+
 	// Start serving the application
 	g.Run(":3000")
 }

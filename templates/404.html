@@ -1,0 +1,26 @@
+<!--404.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+<div class="container-fluid">
+
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/operator">Оператор</a>
+      </li>
+      <li class="breadcrumb-item active">404 Error</li>
+    </ol>
+
+    <!-- Page Content -->
+    <h1 class="display-1">404</h1>
+    <p class="lead">Page not found. You can
+      <a href="javascript:history.back()">go back</a>
+      to the previous page, or
+      <a href="/operator">return home</a>.</p>
+
+  </div>
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}
