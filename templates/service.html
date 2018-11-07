@@ -84,6 +84,12 @@
         </table>
         </div>
     </div>
-    
+
+    <div id="tree"></div>
+    <script>
+        $('#tree').tree({
+            dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ]
+        });
+    </script> 
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}
