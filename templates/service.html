@@ -53,43 +53,29 @@
                     <button type="submit" class="btn btn-primary float-right">Сохранить</button>
                 </form>
             </div>
-            <p></p>
-            <table id="table2" class="table table-striped table-bordered" style="width:100%" >
-            <thead>
-                <tr>
-                    
-                    <th data-sortable="true">№</th>
-                    <th data-sortable="true">ID</th>
-                    <th data-sortable="true" data-field="office">Название услуги</th>
-                    <th data-sortable="true" data-field="operator">Тип</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>            
-                {{range $index, $val := .service}}
-                <tr>
-                    
-                    <td>{{$index}}</td>
-                    <td>{{$val.ID}}</td>
-                    <td name="office">{{$val.NameService}}</td>
-                    <td name="operator">{{$val.Type}}</td>
-                    <td>
-                        <form action="/removeval/Service/{{$val.ID}}" method="GET">
-                            <button class="btn btn-danger btn-rounded btn-sm my-0" type="submit"><i class="fas fa-trash-alt"></i></button>
-                        </form>
-                    </td>
-                </tr>
-                {{end}}
-            </tbody>
-        </table>
+            
+           
         </div>
     </div>
 
-    <div id="tree"></div>
-    <script>
-        $('#tree').tree({
-            dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ]
-        });
-    </script> 
+   
+<p></p>
+<div class="card">
+    <h3 class="card-header">Перечень услуг</h3>
+        <div class="card-body">
+            <div class="col-sm-12">
+                    <div id="tree"></div>
+                    {{range $index, $val := .service}}
+                    {{end}}
+                    <script>
+                        
+                        $('#tree').tree({
+                            dataSource: [ { text: 'foo', children: [ { text: 'bar' }, { text: 'bar' },{ text: 'bar' } ] },{ text: 'foo', children: [ { text: 'bar' }, { text: 'bar' },{ text: 'bar' } ] } ]
+                        });
+                    </script> 
+            </div>
+        </div>
+</div>
+<p></p>
 <!--Embed the footer.html template at this location-->
 {{ template "footer.html" .}}
