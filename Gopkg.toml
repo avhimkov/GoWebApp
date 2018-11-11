@@ -42,3 +42,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/DeanThompson/ginpprof"
+
+[[constraint]]
+  name = "github.com/prometheus/client_golang"
+  version = "0.9.1"
