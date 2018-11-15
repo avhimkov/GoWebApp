@@ -19,10 +19,9 @@ import (
 	"github.com/jung-kurt/gofpdf"
 	"github.com/thinkerou/favicon"
 	"github.com/xyproto/permissionbolt"
-
 	// "github.com/prometheus/client_golang/prometheus"
 	// "github.com/prometheus/client_golang/prometheus/promauto"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
+	// "github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // Struc opertator in City and location office
@@ -99,8 +98,8 @@ func SetupRouter() *gin.Engine {
 
 func main() {
 
-	http.Handle("/metrics", promhttp.Handler())
-	http.ListenAndServe(":2112", nil)
+	// http.Handle("/metrics", promhttp.Handler())
+	// http.ListenAndServe(":2112", nil)
 
 	defer db.Close()
 
