@@ -53,6 +53,23 @@
                     <button type="submit" class="btn btn-primary float-right">Сохранить</button>
                 </form>
             </div>
+
+            <table id="table" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>№</th>
+                        </tr>
+                    </thead>
+                    <tbody>        
+                    {{range $i, $e := .service}}
+                    <tr>
+                        <td>{{$i}}</td>
+                        <td>{{$e.Type}}</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -62,31 +79,35 @@
     <h3 class="card-header">Перечень услуг</h3>
         <div class="card-body">
 
+
+
             <div class="tree well">
                 <ul>
                     <li>
-                            <span><i class="icon-calendar"></i> Федеральные</span>
-                            <ul>
-                                    <li>
-                                            <span><i class="icon-minus-sign"></i> Child</span> <a href="">Goes somewhere</a>
-                                    </li>
-                            </ul>    
+                    <span><i class="icon-calendar"></i> Федеральные</span>
+                        <ul>
+                            {{ range $i, $e := .service}}
+                            <li>
+                                <span><i class="icon-minus-sign"></i> {{$e.Type}}</span> 
+                            </li>
+                            {{end}}
+                        </ul>
                     </li>
                     <li>
-                            <span><i class="icon-calendar"></i> Региональные</span>
-                            <ul>
-                                    <li>
-                                            <span><i class="icon-minus-sign"></i> Child</span> <a href="">Goes somewhere</a>
-                                    </li>
-                            </ul>  
+                        <span><i class="icon-calendar"></i> Региональные</span>
+                        <ul>
+                            <li>
+                                <span><i class="icon-minus-sign"></i> Child</span> <a href="">Goes somewhere</a>
+                            </li>
+                        </ul>  
                     </li>
                     <li>
-                            <span><i class="icon-calendar"></i> Муниципальные</span>
-                            <ul>
-                                    <li>
-                                            <span><i class="icon-minus-sign"></i> Child</span> <a href="">Goes somewhere</a>
-                                    </li>
-                            </ul>  
+                        <span><i class="icon-calendar"></i> Муниципальные</span>
+                        <ul>
+                            <li>
+                                <span><i class="icon-minus-sign"></i> Child</span> <a href="">Goes somewhere</a>
+                            </li>
+                        </ul>  
                     </li>
                 </ul>
             </div>

@@ -292,13 +292,13 @@ func main() {
 				c.Set("Нет данных", loc)
 			}
 
-			var serv []Service
-			err = db.All(&serv)
-			fmt.Println(serv)
+			// var serv []Service
+			// err = db.All(&serv)
+			// fmt.Println(serv)
 
-			if err == storm.ErrNotFound {
-				c.Set("Нет данных", serv)
-			}
+			// if err == storm.ErrNotFound {
+			// 	c.Set("Нет данных", serv)
+			// }
 
 			listusers, _ := userstate.AllUsernames()
 			if isadmin {
@@ -306,7 +306,7 @@ func main() {
 					cheked = append(cheked, userstate.IsAdmin(i))
 				}
 			}
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"location": loc, "service": serv, "listusers": listusers, "is_logged_in": isloggedin, "isadmin": isadmin})
+			c.HTML(http.StatusOK, "adminka.html", gin.H{"location": loc, "listusers": listusers, "is_logged_in": isloggedin, "isadmin": isadmin})
 		} else {
 			c.Redirect(301, "/")
 		}
@@ -412,7 +412,7 @@ func main() {
 				log.Fatal(err)
 			}
 
-			http.Redirect(c.Writer, c.Request, "/adminka", 302)
+			http.Redirect(c.Writer, c.Request, "/service", 302)
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
@@ -722,8 +722,14 @@ func main() {
 
 	g.GET("/service", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
+
+		var service []Service
+
+		err = db.All(&service)
+		fmt.Println(service)
+
 		if isloggedin {
-			c.HTML(http.StatusOK, "service.html", gin.H{"is_logged_in": isloggedin})
+			c.HTML(http.StatusOK, "service.html", gin.H{"is_logged_in": isloggedin, "service": service})
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
