@@ -79,26 +79,35 @@
     <h3 class="card-header">Перечень услуг</h3>
         <div class="card-body">
 
-
-
             <div class="tree well">
                 <ul>
                     <li>
-                    <span><i class="icon-calendar"></i> Федеральные</span>
+                        <span class="badge badge-success"><i class="icon-minus-sign"></i> Федеральные</span>
                         <ul>
                             {{ range $i, $e := .service}}
-                            <li>
-                                <span><i class="icon-minus-sign"></i> {{$e.Type}}</span> 
-                            </li>
+                                {{if eq $e.NameService "Федеральная"}}
+                                <li>
+                                    <span><i class="icon-minus-sign"></i> {{$e.Type}}</span> 
+                                </li>
+                                {{else}}
+                                
+                                {{end}}
                             {{end}}
                         </ul>
                     </li>
                     <li>
-                        <span><i class="icon-calendar"></i> Региональные</span>
+                        <span class="badge badge-warning"><i class="icon-minus-sign"></i> Региональные</span>
+                        <!-- <span><i class="icon-calendar"></i> Региональные</span> -->
                         <ul>
-                            <li>
-                                <span><i class="icon-minus-sign"></i> Child</span> <a href="">Goes somewhere</a>
-                            </li>
+                            {{ range $i, $e := .service}}
+                                {{if eq $e.NameService "Региональная"}}
+                                <li>
+                                    <span><i class="icon-minus-sign"></i> {{$e.Type}}</span>
+                                </li>
+                                {{else}}
+                                
+                                {{end}}
+                            {{end}}
                         </ul>  
                     </li>
                     <li>
