@@ -25,20 +25,12 @@
   version = "v2.1.2"
 
 [[projects]]
-  branch = "master"
-  digest = "1:c0bec5f9b98d0bc872ff5e834fac186b807b656683bd29cb82fb207a1513fabb"
-  name = "github.com/beorn7/perks"
-  packages = ["quantile"]
-  pruneopts = ""
-  revision = "3a771d992973f24aa725d07868b467d1ddfceafb"
-
-[[projects]]
-  digest = "1:ed112122ed4a920d944cc99b9d00b0441c11685939c28462c719488d36fe29aa"
-  name = "github.com/boltdb/bolt"
+  digest = "1:6150d0a72956eb2e50226e13ce59ef2a9636c0e8e1ac900d72f9b2097121cdf9"
+  name = "github.com/coreos/bbolt"
   packages = ["."]
   pruneopts = ""
-  revision = "2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8"
-  version = "v1.3.1"
+  revision = "583e8937c61f1af6513608ccc75c97b6abdf4ff9"
+  version = "v1.3.0"
 
 [[projects]]
   branch = "master"
@@ -94,14 +86,6 @@
   version = "v0.0.4"
 
 [[projects]]
-  digest = "1:63722a4b1e1717be7b98fc686e0b30d5e7f734b9e93d7dee86293b6deab7ea28"
-  name = "github.com/matttproud/golang_protobuf_extensions"
-  packages = ["pbutil"]
-  pruneopts = ""
-  revision = "c12348ce28de40eed0136aa2b644d0ee0650e56c"
-  version = "v1.0.1"
-
-[[projects]]
   digest = "1:0c0ff2a89c1bb0d01887e1dac043ad7efbf3ec77482ef058ac423d13497e16fd"
   name = "github.com/modern-go/concurrent"
   packages = ["."]
@@ -116,51 +100,6 @@
   pruneopts = ""
   revision = "4b7aa43c6742a2c18fdef89dd197aaae7dac7ccd"
   version = "1.0.1"
-
-[[projects]]
-  digest = "1:8b2082f564fe20dbb43a621ee0d57ae2777656ab14111d100d3d92d1b5b958b9"
-  name = "github.com/prometheus/client_golang"
-  packages = [
-    "prometheus",
-    "prometheus/internal",
-    "prometheus/promhttp",
-  ]
-  pruneopts = ""
-  revision = "abad2d1bd44235a26707c172eab6bca5bf2dbad3"
-  version = "v0.9.1"
-
-[[projects]]
-  branch = "master"
-  digest = "1:185cf55b1f44a1bf243558901c3f06efa5c64ba62cfdcbb1bf7bbe8c3fb68561"
-  name = "github.com/prometheus/client_model"
-  packages = ["go"]
-  pruneopts = ""
-  revision = "5c3871d89910bfb32f5fcab2aa4b9ec68e65a99f"
-
-[[projects]]
-  branch = "master"
-  digest = "1:ec33e022d27019d9ef386bf1d952df0fb24427ad2d2731e77c013f6ab228a445"
-  name = "github.com/prometheus/common"
-  packages = [
-    "expfmt",
-    "internal/bitbucket.org/ww/goautoneg",
-    "model",
-  ]
-  pruneopts = ""
-  revision = "0b1957f9d949dfa3084171a6ec5642b38055276a"
-
-[[projects]]
-  branch = "master"
-  digest = "1:1f62ed2c173c42c1edad2e94e127318ea11b0d28c62590c82a8d2d3cde189afe"
-  name = "github.com/prometheus/procfs"
-  packages = [
-    ".",
-    "internal/util",
-    "nfs",
-    "xfs",
-  ]
-  pruneopts = ""
-  revision = "185b4288413d2a0dd0806f78c90dde719829e5ae"
 
 [[projects]]
   branch = "master"
@@ -187,28 +126,28 @@
   version = "2.0"
 
 [[projects]]
-  digest = "1:51e2e193827c52f3e50f65ced65d65c25b8053d6771a0076ec6fd303c9d87c11"
+  digest = "1:7b5b51b1943d5b7e810454988d2f825acfcc48c119ae042fc5a00db8c1a30c6a"
   name = "github.com/xyproto/permissionbolt"
   packages = ["."]
   pruneopts = ""
-  revision = "657ad1a411098f614a30382e53d4267067b0fa43"
-  version = "2.3"
+  revision = "a475f7fcef960f26a877264f03e215911bd35eff"
+  version = "v2.4.0"
 
 [[projects]]
-  digest = "1:a369fc4f0700efd95d561b2e9fef3dea1282ec72ebd09bcf020fae78a83b1108"
+  digest = "1:e478dfdf6164ff401d9a3261fae489e78565d7bdcad6c406d55c2461503ce8ba"
   name = "github.com/xyproto/pinterface"
   packages = ["."]
   pruneopts = ""
-  revision = "05fa0e3080664c781c213d0a890a9d22718f7afb"
-  version = "4.1"
+  revision = "9710ef24b6847f028ae78e63a001a56963bdc989"
+  version = "v5.0.0"
 
 [[projects]]
-  digest = "1:65e223a387773763cc743a0100e414e21c7867f80dff82585b2a14efcb3e3c79"
+  digest = "1:ae6dc7a7caf2a25469f617e6632bb2f7dc727dedc956fa447da964eb26ad91b8"
   name = "github.com/xyproto/simplebolt"
   packages = ["."]
   pruneopts = ""
-  revision = "3ad76f169f0ede30c60f6b098efd305ad995e417"
-  version = "3.0"
+  revision = "617dc386952fff207b3d02c3b0bf2e6c34705bcb"
+  version = "v3.2.0"
 
 [[projects]]
   digest = "1:6150d0a72956eb2e50226e13ce59ef2a9636c0e8e1ac900d72f9b2097121cdf9"
@@ -220,22 +159,22 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:61a86f0be8b466d6e3fbdabb155aaa4006137cb5e3fd3b949329d103fa0ceb0f"
+  digest = "1:52cfc16d4fc39fd1d779c9b52e391c7b2a31537b722d38aa9cca0f33d88d62ef"
   name = "golang.org/x/crypto"
   packages = [
     "bcrypt",
     "blowfish",
   ]
   pruneopts = ""
-  revision = "0e37d006457bf46f9e6692014ba72ef82c33022c"
+  revision = "eb0de9b17e854e9b1ccd9963efafc79862359959"
 
 [[projects]]
   branch = "master"
-  digest = "1:dad137c4b24778e11782675f4ef8a00e9625dfe8cf063cb7d104d370c303c6cb"
+  digest = "1:303c0ee48d6229a2423950f41b3ccb5a2067dc4c7b65f8863cfbd962bef05a85"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = ""
-  revision = "c2ed4eda69e7f62900806e4cd6e45f0429f859fa"
+  revision = "62eef0e2fa9b2c385f7b2778e763486da6880d37"
 
 [[projects]]
   digest = "1:dd549e360e5a8f982a28c2bcbe667307ceffe538ed9afc7c965524f1ac285b3f"
@@ -262,7 +201,6 @@
     "github.com/asdine/storm/q",
     "github.com/gin-gonic/gin",
     "github.com/jung-kurt/gofpdf",
-    "github.com/prometheus/client_golang/prometheus/promhttp",
     "github.com/thinkerou/favicon",
     "github.com/xyproto/permissionbolt",
   ]

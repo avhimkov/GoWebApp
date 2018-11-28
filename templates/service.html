@@ -39,14 +39,14 @@
                 <form class="form" action="/addservice" method="POST">
                         <div class="form-row">
                             <div class="col">
-                                <h6>Добавить имя услуги</h6>
-                                <label class="sr-only" for="inlineFormInput">имя услуги</label>
-                                <input type="text" name="nameserv" class="form-control" id="nameserv" placeholder="имя услуги">
-                            </div>
-                            <div class="col">
                                 <h6>Добавить тип услуги</h6>
                                 <label class="sr-only" for="inlineFormInput">тип услуги</label>
                                 <input type="text" name="type" class="form-control" id="type" placeholder="тип услуги">
+                            </div>
+                            <div class="col">
+                                <h6>Добавить имя услуги</h6>
+                                <label class="sr-only" for="inlineFormInput">имя услуги</label>
+                                <input type="text" name="nameserv" class="form-control" id="nameserv" placeholder="имя услуги">
                             </div>
                         </div>
                     <p></p>
@@ -85,9 +85,9 @@
                         <span class="badge badge-success"><i class="icon-minus-sign"></i> Федеральные</span>
                         <ul>
                             {{ range $i, $e := .service}}
-                                {{if eq $e.NameService "Федеральная"}}
+                                {{if eq $e.Type "Федеральная"}}
                                 <li>
-                                    <span><i class="icon-minus-sign"></i> {{$e.Type}}</span> 
+                                    <span><i class="icon-minus-sign"></i> {{$e.NameService}}</span> 
                                 </li>
                                 {{else}}
                                 
@@ -100,9 +100,9 @@
                         <!-- <span><i class="icon-calendar"></i> Региональные</span> -->
                         <ul>
                             {{ range $i, $e := .service}}
-                                {{if eq $e.NameService "Региональная"}}
+                                {{if eq $e.Type "Региональная"}}
                                 <li>
-                                    <span><i class="icon-minus-sign"></i> {{$e.Type}}</span>
+                                    <span><i class="icon-minus-sign"></i> {{$e.NameService}}</span>
                                 </li>
                                 {{else}}
                                 
