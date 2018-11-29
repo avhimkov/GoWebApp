@@ -866,7 +866,7 @@ func RemVal(c *gin.Context) {
 
 		fmt.Println(count)
 		fmt.Println(id)
-		http.Redirect(c.Writer, c.Request, "/adminka", 302)
+		http.Redirect(c.Writer, c.Request, "/service", 302)
 
 	case "Location":
 
