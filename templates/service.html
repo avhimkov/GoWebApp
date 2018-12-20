@@ -81,7 +81,6 @@
         </div>
     </div>
 
-   
 <p></p>
 <div class="card">
     <h3 class="card-header">Перечень услуг</h3>
@@ -98,14 +97,12 @@
                                     <span><i class="icon-minus-sign"></i> {{$e.NameService}}</span> 
                                 </li>
                                 {{else}}
-                                
                                 {{end}}
                             {{end}}
                         </ul>
                     </li>
                     <li>
                         <span class="badge badge-warning"><i class="icon-minus-sign"></i> Региональные</span>
-                        <!-- <span><i class="icon-calendar"></i> Региональные</span> -->
                         <ul>
                             {{ range $i, $e := .service}}
                                 {{if eq $e.Type "Региональная"}}
@@ -113,17 +110,21 @@
                                     <span><i class="icon-minus-sign"></i> {{$e.NameService}}</span>
                                 </li>
                                 {{else}}
-                                
                                 {{end}}
                             {{end}}
                         </ul>  
                     </li>
                     <li>
-                        <span><i class="icon-calendar"></i> Муниципальные</span>
+                        <span class="badge badge-warning"><i class="icon-minus-sign"></i> Муниципальные</span>
                         <ul>
-                            <li>
-                                <span><i class="icon-minus-sign"></i> Child</span> <a href="">Goes somewhere</a>
-                            </li>
+                            {{ range $i, $e := .service}}
+                                {{if eq $e.Type "Муниципальная"}}
+                                <li>
+                                    <span><i class="icon-minus-sign"></i> {{$e.NameService}}</span>
+                                </li>
+                                {{else}}
+                                {{end}}
+                            {{end}}
                         </ul>  
                     </li>
                 </ul>
