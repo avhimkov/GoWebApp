@@ -334,9 +334,9 @@ body.sidebar-toggled footer.sticky-footer {
   }
 }
 
-/* .active {
+.active {
   background-color: #4CAF50;
-} */
+}
 
 #navbar {
   overflow: hidden;
@@ -364,7 +364,7 @@ body.sidebar-toggled footer.sticky-footer {
 
 #navbar a:hover {
   background-color: #000;
-  /* color: black; */
+  color: white;
 }
 
 .container-fluid {
