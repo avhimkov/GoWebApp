@@ -13,6 +13,10 @@ window.onscroll = function() {
 $(document).ready(function() {
     var table = $('#table').DataTable( 
         {
+//           "scrollY":400,
+//           "scrollX":true,
+//           "scroller":false
+
         "scrollX":true,
         "scroller":false,
         lengthChange: false,
@@ -27,16 +31,6 @@ $(document).ready(function() {
     table.buttons().container()
         .appendTo( '#table_wrapper .col-md-6:eq(0)' );
 } );
-
-// $(document).ready( function () {
-//     var table = $('#table').DataTable(
-//       {
-//           "scrollY":400,
-//           "scrollX":true,
-//           "scroller":false
-//       }
-//     );
-//   } );
 
 $(document).ready(function() {
     var table1 = $('#table1').DataTable( {
