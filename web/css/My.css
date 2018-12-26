@@ -74,7 +74,7 @@ body.fixed-nav.sidebar-toggled #content-wrapper {
 }
 
 /* Icon menu */
-.navbar-nav .form-inline .input-group {
+/* .navbar-nav .form-inline .input-group {
   width: 100%;
 }
 .navbar-nav .nav-item.active .nav-link {
@@ -110,7 +110,7 @@ body.fixed-nav.sidebar-toggled #content-wrapper {
   .navbar-nav .form-inline .input-group {
     width: auto;
   }
-}
+} */
 
 /* .sidebar {
   width: 90px !important;
@@ -360,14 +360,14 @@ body.sidebar-toggled footer.sticky-footer {
 #navbar a {
   float: left;
   display: block;
-  color: white;
+  color: #b4b4b4;
   text-align: center;
   padding: 15px;
   text-decoration: none;
 }
 
 #navbar a:hover {
-  background-color: #000;
+  /* background-color: #000; */
   color: white;
 }
 
