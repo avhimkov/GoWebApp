@@ -33,9 +33,10 @@ type Location struct {
 
 // Struct service
 type Service struct {
-	ID          int    `storm:"id,increment" form:"id" binding:"required"`
-	Type        string `storm:"index" json:"type" form:"type" binding:"required"`
-	NameService string `storm:"index" json:"nameserv" form:"nameserv" binding:"required"`
+	ID             int    `storm:"id,increment" form:"id" binding:"required"`
+	Type           string `storm:"index" json:"type" form:"type" binding:"required"`
+	NameService    string `storm:"index" json:"nameserv" form:"nameserv" binding:"required"`
+	SybNameService string `storm:"index" json:"sybnameserv" form:"nameserv" binding:"required"`
 }
 
 // Struc data visitors
@@ -396,6 +397,7 @@ func main() {
 
 		if isloggedin {
 
+			sybnameservice := c.PostForm("sybnameserv")
 			nameservice := c.PostForm("nameserv")
 			//fmt.Println(office)
 			servtype := c.PostForm("type")
@@ -403,8 +405,9 @@ func main() {
 
 			service := Service{
 				// ID:        1,
-				Type:        servtype,
-				NameService: nameservice,
+				Type:           servtype,
+				NameService:    nameservice,
+				SybNameService: sybnameservice,
 			}
 
 			err := db.Save(&service)

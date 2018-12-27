@@ -8,7 +8,7 @@ body {
   height: 100%;
 }
 
-#wrapper {
+/* #wrapper {
   display: flex;
 }
 #wrapper #content-wrapper {
@@ -32,7 +32,7 @@ body.fixed-nav.sidebar-toggled #content-wrapper {
   body.fixed-nav.sidebar-toggled #content-wrapper {
     padding-left: 90px;
   }
-}
+} */
 
 /* scroll-to-top */
 .scroll-to-top {
