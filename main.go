@@ -293,14 +293,6 @@ func main() {
 				c.Set("Нет данных", loc)
 			}
 
-			// var serv []Service
-			// err = db.All(&serv)
-			// fmt.Println(serv)
-
-			// if err == storm.ErrNotFound {
-			// 	c.Set("Нет данных", serv)
-			// }
-
 			listusers, _ := userstate.AllUsernames()
 			if isadmin {
 				for _, i := range listusers {
@@ -345,8 +337,6 @@ func main() {
 
 	// Upload user from file
 	g.POST("/uploadService", func(c *gin.Context) {
-		// usercook, _ := userstate.UsernameCookie(c.Request)
-
 		path := filepath.Clean("./upload/")
 
 		file, header, err := c.Request.FormFile("uploadFile")
@@ -376,7 +366,8 @@ func main() {
 			}
 
 			serv := []*Service{
-				{ // ID:          line[0],
+				{
+					// ID:          line[0],
 					Type:        line[0],
 					NameService: line[1]},
 			}
@@ -399,9 +390,7 @@ func main() {
 
 			sybnameservice := c.PostForm("sybnameserv")
 			nameservice := c.PostForm("nameserv")
-			//fmt.Println(office)
 			servtype := c.PostForm("type")
-			//fmt.Println(operator)
 
 			service := Service{
 				// ID:        1,
@@ -604,13 +593,9 @@ func main() {
 
 			var person []Person
 
-			// users := c.Query("users")
 			date := c.Query("date")
 
 			// timeNow := time.Now()
-			// timeNowF := timeNow.Format("2006-01-02T15:04")
-
-			// date := c.DefaultQuery("date", "2006-01-02T15:04")
 			// dateAdd := datepars.AddDate(0, 0, -12)
 
 			datep, _ := time.Parse("2006-01-02T15:04", date)
@@ -662,10 +647,6 @@ func main() {
 
 	// Delete value on id
 	g.GET("/removeval/:struct/:id", RemVal)
-	// g.GET("/removevalloc/:id", RemValLoc)
-	// g.GET("/removevalserv/:id", RemValServ)
-
-	// g.GET("/report", ReportGet)
 
 	// Counte all values
 	g.GET("/report", func(c *gin.Context) {
@@ -746,7 +727,6 @@ func main() {
 
 			pdf := gofpdf.New("P", "mm", "A4", "")
 			pdf.SetTopMargin(30)
-			// pdf.SetHeaderFuncMode(func() {
 			pdf.SetHeaderFunc(func() {
 				url := "assets/blue-mark_cnzgry.png"
 				pdf.Image(url, 10, 6, 30, 0, false, "", 0, "")
@@ -828,8 +808,6 @@ func main() {
 	// 404 page
 	g.NoRoute(func(c *gin.Context) {
 		c.HTML(http.StatusOK, "404.html", gin.H{})
-
-		// c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
 	})
 
 	// Start serving the application
@@ -919,5 +897,3 @@ func ensureNotLoggedIn() gin.HandlerFunc {
 		}
 	}
 }
-
-// userRoutes.GET("/login", ensureNotLoggedIn(), showLoginPage)
