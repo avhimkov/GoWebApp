@@ -368,8 +368,9 @@ func main() {
 			serv := []*Service{
 				{
 					// ID:          line[0],
-					Type:        line[0],
-					NameService: line[1]},
+					Type:           line[0],
+					NameService:    line[1],
+					SybNameService: line[2]},
 			}
 
 			for _, s := range serv {

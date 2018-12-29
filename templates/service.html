@@ -102,11 +102,15 @@
                                 {{if eq $e.Type "Федеральная"}}
                                 <li>
                                     <span><i class="icon-minus-sign"></i> {{$e.NameService}}</span> 
-                                    <ul>
-                                        <li>
-                                            <span><i class="icon-leaf"></i> {{$e.SybNameService}}</span>
-                                        </li>
-                                    </ul>
+                                    {{if eq $e.SybNameService ""}}
+                                    <div></div>
+                                    {{else}}
+                                        <ul>
+                                            <li>
+                                                <span><i class="icon-leaf"></i> {{$e.SybNameService}}</span>
+                                            </li>
+                                        </ul>
+                                    {{end}}
                                 </li>
                                 {{else}}
                                 {{end}}
@@ -120,11 +124,15 @@
                                 {{if eq $e.Type "Региональная"}}
                                 <li>
                                     <span><i class="icon-minus-sign"></i> {{$e.NameService}}</span>
-                                    <ul>
-                                        <li>
-                                            <span><i class="icon-leaf"></i> {{$e.SybNameService}}</span>
-                                        </li>
-                                    </ul>
+                                    {{if eq $e.SybNameService ""}}
+                                        <div></div>
+                                    {{else}}
+                                        <ul>
+                                            <li>
+                                                <span><i class="icon-leaf"></i> {{$e.SybNameService}}</span>
+                                            </li>
+                                        </ul>
+                                    {{end}}
                                 </li>
                                 {{else}}
                                 {{end}}
@@ -138,12 +146,15 @@
                                 {{if eq $e.Type "Муниципальная"}}
                                 <li>
                                     <span><i class="icon-minus-sign"></i> {{$e.NameService}}</span>
-                                    <ul>
-                                        <li>
-                                            <span><i class="icon-leaf"></i> {{$e.SybNameService}}</span>
-                                            <!-- <a href="">Goes somewhere</a> -->
-                                        </li>
-                                    </ul>
+                                    {{if eq $e.SybNameService ""}}
+                                    <div></div>
+                                    {{else}}
+                                        <ul>
+                                            <li>
+                                                <span><i class="icon-leaf"></i> {{$e.SybNameService}}</span>
+                                            </li>
+                                        </ul>
+                                    {{end}}
                                 </li>
                                 {{else}}
                                 {{end}}
