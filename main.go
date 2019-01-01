@@ -78,6 +78,7 @@ func SetupRouter() *gin.Engine {
 	g := gin.Default()
 
 	g.Static("/web", "./web")
+	g.Static("/assets", "./assets")
 	g.Static("/node_modules", "./node_modules")
 	g.LoadHTMLGlob("templates/*.html")
 
