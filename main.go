@@ -70,6 +70,34 @@ func DB() *storm.DB {
 
 var db = DB()
 
+func perminit(db string) (*permissionbolt.Permissions, error) {
+	perm, err := permissionbolt.NewWithConf(db)
+	if err != nil {
+		log.Fatal(err)
+		// fmt.Println("Could not open database: " + db)
+		return nil, nil
+	}
+
+	return perm, nil
+}
+
+var perm, err = perminit("db/bolt.db")
+
+func permHandler(c *gin.Context) {
+	// Set up a middleware handler for Gin, with a custom "permission denied" message.
+	// permissionHandler := func(c *gin.Context) {
+	// Check if the user has the right admin/user rights
+	if perm.Rejected(c.Writer, c.Request) {
+		// Deny the request, don't call other middleware handlers
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+		return
+	}
+	// Call the next middleware handler
+	c.Next()
+	// }
+}
+
 func SetupRouter() *gin.Engine {
 
 	// Set Gin to production mode
@@ -123,12 +151,18 @@ func main() {
 	//	Blank slate, no default permissions
 	//	perm.Clear()
 
-	filename := "db/bolt.db"
-	perm, err := permissionbolt.NewWithConf(filename)
-	if err != nil {
-		fmt.Println("Could not open database: " + filename)
-		return
-	}
+	// filename := "db/bolt.db"
+	// perm, err := permissionbolt.NewWithConf(filename)
+	// if err != nil {
+	// 	fmt.Println("Could not open database: " + filename)
+	// 	return
+	// }
+
+	// perm, err := perminit(filename)
+	// if err != nil {
+	// 	fmt.Println("Could not open database: " + filename)
+	// 	return
+	// }
 
 	// Set up a middleware handler for Gin, with a custom "permission denied" message.
 	permissionHandler := func(c *gin.Context) {
@@ -142,6 +176,8 @@ func main() {
 		// Call the next middleware handler
 		c.Next()
 	}
+
+	// permissionHandler := permHandler()
 
 	// Enable the permissionbolt middleware, must come before recovery
 	g.Use(permissionHandler)
