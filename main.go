@@ -83,20 +83,23 @@ func perminit(db string) (*permissionbolt.Permissions, error) {
 
 var perm, err = perminit("db/bolt.db")
 
-func permHandler(c *gin.Context) {
-	// Set up a middleware handler for Gin, with a custom "permission denied" message.
-	// permissionHandler := func(c *gin.Context) {
-	// Check if the user has the right admin/user rights
-	if perm.Rejected(c.Writer, c.Request) {
-		// Deny the request, don't call other middleware handlers
-		c.AbortWithStatus(http.StatusForbidden)
-		fmt.Fprint(c.Writer, "Permission denied!")
-		return
+func permHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Set up a middleware handler for Gin, with a custom "permission denied" message.
+		// permissionHandler := func(c *gin.Context) {
+		// Check if the user has the right admin/user rights
+		if perm.Rejected(c.Writer, c.Request) {
+			// Deny the request, don't call other middleware handlers
+			c.AbortWithStatus(http.StatusForbidden)
+			fmt.Fprint(c.Writer, "Permission denied!")
+			return
+		}
+		// Call the next middleware handler
+		c.Next()
 	}
-	// Call the next middleware handler
-	c.Next()
-	// }
 }
+
+var permissionHandler = permHandler()
 
 func SetupRouter() *gin.Engine {
 
@@ -122,6 +125,7 @@ func SetupRouter() *gin.Engine {
 	// {
 	// 	v1.GET("/instructions", GetInstructions)
 	// }
+	g.Use(permissionHandler)
 
 	return g
 }
@@ -165,22 +169,21 @@ func main() {
 	// }
 
 	// Set up a middleware handler for Gin, with a custom "permission denied" message.
-	permissionHandler := func(c *gin.Context) {
-		// Check if the user has the right admin/user rights
-		if perm.Rejected(c.Writer, c.Request) {
-			// Deny the request, don't call other middleware handlers
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-			return
-		}
-		// Call the next middleware handler
-		c.Next()
-	}
+	// permissionHandler := func(c *gin.Context) {
+	// 	// Check if the user has the right admin/user rights
+	// 	if perm.Rejected(c.Writer, c.Request) {
+	// 		// Deny the request, don't call other middleware handlers
+	// 		c.AbortWithStatus(http.StatusForbidden)
+	// 		fmt.Fprint(c.Writer, "Permission denied!")
+	// 		return
+	// 	}
+	// 	// Call the next middleware handler
+	// 	c.Next()
+	// }
 
 	// permissionHandler := permHandler()
 
 	// Enable the permissionbolt middleware, must come before recovery
-	g.Use(permissionHandler)
 
 	// Get the userstate, used in the handlers below
 	userstate := perm.UserState()
