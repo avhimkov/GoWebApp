@@ -700,60 +700,10 @@ func main() {
 	g.GET("/removeval/:struct/:id", RemVal)
 
 	// Counte all values
-	g.GET("/report", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
-		if isloggedin {
-			c.HTML(http.StatusOK, "report.html", gin.H{"is_logged_in": isloggedin})
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
+	g.GET("/report", reportGet)
 
 	// Select report
-	g.POST("/report", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
-		report := c.PostForm("report")
-		fmt.Println(report)
-		if isloggedin {
-
-			switch report {
-			case "report1":
-				query := db.Select()
-				count, err := query.Count(new(Person))
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				fmt.Println(count)
-				c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
-
-			case "report2":
-				query := db.Select(q.Eq("User", "ren"))
-				count, err := query.Count(new(Person))
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				fmt.Println(count)
-				c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
-
-			case "report3":
-				query := db.Select(q.Eq("User", "bil"))
-				count, err := query.Count(new(Person))
-				if err != nil {
-					log.Fatal(err)
-				}
-				fmt.Println(count)
-				c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
-			}
-
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-
-	})
+	g.POST("/report", reportPost)
 
 	g.GET("/service", func(c *gin.Context) {
 		isloggedin := isloggedin(c)
@@ -772,50 +722,10 @@ func main() {
 	})
 
 	// Export report to PDF
-	g.POST("/pdfexp", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
-		if isloggedin {
-
-			pdf := gofpdf.New("P", "mm", "A4", "")
-			pdf.SetTopMargin(30)
-			pdf.SetHeaderFunc(func() {
-				url := "assets/blue-mark_cnzgry.png"
-				pdf.Image(url, 10, 6, 30, 0, false, "", 0, "")
-				pdf.SetY(5)
-				pdf.SetFont("Arial", "B", 15)
-				pdf.Cell(80, 0, "")
-				pdf.CellFormat(30, 10, "Title", "1", 0, "C", false, 0, "")
-				pdf.Ln(20)
-			})
-			pdf.SetFooterFunc(func() {
-				pdf.SetY(-15)
-				pdf.SetFont("Arial", "I", 8)
-				pdf.CellFormat(0, 10, fmt.Sprintf("Page %d/{nb}", pdf.PageNo()),
-					"", 0, "C", false, 0, "")
-			})
-			pdf.AliasNbPages("")
-			pdf.AddPage()
-			pdf.SetFont("Times", "", 12)
-			for j := 1; j <= 40; j++ {
-				pdf.CellFormat(0, 10, fmt.Sprintf("Printing line number %d", j),
-					"", 1, "", false, 0, "")
-			}
-			err := pdf.OutputFileAndClose("upload/hello1.pdf")
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			c.HTML(http.StatusOK, "report.html", gin.H{"is_logged_in": isloggedin})
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
+	g.POST("/pdfexp", pdfexp)
 
 	// Edit value
-	g.POST("/edit/:id", pdfexp)
-
-	/* 	g.POST("/edit/:id", func(c *gin.Context) {
+	g.POST("/edit/:id", func(c *gin.Context) {
 		id := c.Param("id")
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
@@ -855,7 +765,7 @@ func main() {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
-	}) */
+	})
 
 	ginpprof.Wrap(g)
 
@@ -866,6 +776,60 @@ func main() {
 
 	// Start serving the application
 	g.Run(":3000")
+}
+
+func reportPost(c *gin.Context) {
+	isloggedin := isloggedin(c)
+	report := c.PostForm("report")
+	fmt.Println(report)
+	if isloggedin {
+
+		switch report {
+		case "report1":
+			query := db.Select()
+			count, err := query.Count(new(Person))
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Println(count)
+			c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
+
+		case "report2":
+			query := db.Select(q.Eq("User", "ren"))
+			count, err := query.Count(new(Person))
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Println(count)
+			c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
+
+		case "report3":
+			query := db.Select(q.Eq("User", "bil"))
+			count, err := query.Count(new(Person))
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Println(count)
+			c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
+		}
+
+	} else {
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+	}
+
+}
+
+func reportGet(c *gin.Context) {
+	isloggedin := isloggedin(c)
+	if isloggedin {
+		c.HTML(http.StatusOK, "report.html", gin.H{"is_logged_in": isloggedin})
+	} else {
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+	}
 }
 
 func pdfexp(c *gin.Context) {
