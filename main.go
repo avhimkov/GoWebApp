@@ -99,6 +99,14 @@ func permHandler() gin.HandlerFunc {
 	}
 }
 
+var userstate = perm.UserState()
+
+func isloggedin(c *gin.Context) bool {
+	usercook, _ := userstate.UsernameCookie(c.Request)
+	isloggedin := userstate.IsLoggedIn(usercook)
+	return isloggedin
+}
+
 var permissionHandler = permHandler()
 
 func SetupRouter() *gin.Engine {
@@ -186,15 +194,17 @@ func main() {
 	// Enable the permissionbolt middleware, must come before recovery
 
 	// Get the userstate, used in the handlers below
-	userstate := perm.UserState()
 
-	isloggedin := func(c *gin.Context) bool {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
-		return isloggedin
-	}
+	// userstate := perm.UserState()
+	/*
+		isloggedin := func(c *gin.Context) bool {
+			usercook, _ := userstate.UsernameCookie(c.Request)
+			isloggedin := userstate.IsLoggedIn(usercook)
+			return isloggedin
+		}
 
-	// Default user/administrator admin
+	*/
+	// Default user /administrator admin
 	userstate.AddUser("admin", "admin", "admin@mail.ru")
 	userstate.MarkConfirmed("admin")
 	userstate.SetAdminStatus("admin")
@@ -803,7 +813,9 @@ func main() {
 	})
 
 	// Edit value
-	g.POST("/edit/:id", func(c *gin.Context) {
+	g.POST("/edit/:id", pdfexp)
+
+	/* 	g.POST("/edit/:id", func(c *gin.Context) {
 		id := c.Param("id")
 		usercook, _ := userstate.UsernameCookie(c.Request)
 		isloggedin := userstate.IsLoggedIn(usercook)
@@ -843,7 +855,8 @@ func main() {
 			c.AbortWithStatus(http.StatusForbidden)
 			fmt.Fprint(c.Writer, "Permission denied!")
 		}
-	})
+	}) */
+
 	ginpprof.Wrap(g)
 
 	// 404 page
@@ -853,6 +866,46 @@ func main() {
 
 	// Start serving the application
 	g.Run(":3000")
+}
+
+func pdfexp(c *gin.Context) {
+	isloggedin := isloggedin(c)
+	if isloggedin {
+
+		pdf := gofpdf.New("P", "mm", "A4", "")
+		pdf.SetTopMargin(30)
+		pdf.SetHeaderFunc(func() {
+			url := "assets/blue-mark_cnzgry.png"
+			pdf.Image(url, 10, 6, 30, 0, false, "", 0, "")
+			pdf.SetY(5)
+			pdf.SetFont("Arial", "B", 15)
+			pdf.Cell(80, 0, "")
+			pdf.CellFormat(30, 10, "Title", "1", 0, "C", false, 0, "")
+			pdf.Ln(20)
+		})
+		pdf.SetFooterFunc(func() {
+			pdf.SetY(-15)
+			pdf.SetFont("Arial", "I", 8)
+			pdf.CellFormat(0, 10, fmt.Sprintf("Page %d/{nb}", pdf.PageNo()),
+				"", 0, "C", false, 0, "")
+		})
+		pdf.AliasNbPages("")
+		pdf.AddPage()
+		pdf.SetFont("Times", "", 12)
+		for j := 1; j <= 40; j++ {
+			pdf.CellFormat(0, 10, fmt.Sprintf("Printing line number %d", j),
+				"", 1, "", false, 0, "")
+		}
+		err := pdf.OutputFileAndClose("upload/hello1.pdf")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		c.HTML(http.StatusOK, "report.html", gin.H{"is_logged_in": isloggedin})
+	} else {
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+	}
 }
 
 // Delete value on id function
