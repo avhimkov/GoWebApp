@@ -520,181 +520,22 @@ func main() {
 	})
 
 	// Register users
-	g.GET("/operator", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
-		usercook, _ := userstate.UsernameCookie(c.Request)
-
-		if isloggedin {
-			var person []Person
-
-			var loc []Location
-			err = db.All(&loc)
-			fmt.Println(loc)
-
-			timeNow := time.Now()
-			timeNowF := timeNow.Format("2006-01-02T15:04")
-
-			fmt.Println(timeNowF)
-
-			// timeAgo := timeNow.AddDate(0, 0, -1)
-			timeAgo := timeNow.Add(-12 * time.Hour)
-			timeAgoF := timeAgo.Format("2006-01-02T15:04")
-
-			fmt.Println(timeAgoF)
-
-			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", timeAgoF), q.Lte("DateIn", timeNowF))).Find(&person)
-			fmt.Println(&person)
-
-			if err == storm.ErrNotFound {
-				c.Set("Нет данных", person)
-			}
-
-			c.HTML(http.StatusOK, "operator.html", gin.H{"location": loc, "person": person, "is_logged_in": isloggedin, "timeNow": timeNowF})
-
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
+	g.GET("/operator", operatorGet)
 
 	// Register visitors POST
-	g.POST("/operator", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
-
-		if isloggedin {
-
-			name := c.PostForm("name")
-			subname := c.PostForm("subname")
-			nameservice := c.PostForm("nameservice")
-			datein := c.PostForm("datein")
-			datesend := c.PostForm("datesend")
-			dateout := c.PostForm("dateout")
-			address := c.PostForm("address")
-			loc := c.PostForm("loc")
-			number := c.PostForm("number")
-			phone := c.PostForm("phone")
-			note := c.PostForm("note")
-
-			peeps := []*Person{
-				{User: usercook, Name: name, SubName: subname, NameService: nameservice,
-					DateIn: datein, DateSend: datesend, DateOut: dateout, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
-			}
-
-			datepars, _ := time.Parse(time.RFC3339, datein)
-			datef := datepars.Format("2006-01-02T15:04")
-
-			fmt.Println(datef)
-
-			for _, p := range peeps {
-				fmt.Println(p)
-				db.Save(p)
-			}
-
-			http.Redirect(c.Writer, c.Request, "/operator", 302)
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
+	g.POST("/operator", operatorPost)
 
 	// Find value on date
-	g.GET("/controller", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
-
-		if isloggedin {
-
-			var person []Person
-
-			listusers, err1 := userstate.AllUsernames()
-			if err1 != nil {
-				log.Fatal(err1)
-			}
-
-			users := c.Query("users")
-			date := c.Query("date")
-
-			datep, _ := time.Parse("2006-01-02T15:04", date)
-			datePF := datep.Format("2006-01-02T15:04")
-
-			dateAdd := datep.Add(-12 * time.Hour)
-			dateAF := dateAdd.Format("2006-01-02T15:04")
-			fmt.Println(dateAF)
-			fmt.Println(datePF)
-
-			err := db.Select(q.Eq("User", users), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
-			if err == storm.ErrNotFound {
-				c.Set("Нет данных", person)
-			}
-
-			c.HTML(http.StatusOK, "controller.html", gin.H{"person": person, "is_logged_in": isloggedin, "listusers": listusers})
-
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
+	g.GET("/controller", controller)
 
 	// Find user value on date
-	g.GET("/history", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := isloggedin(c)
+	g.GET("/history", history)
 
-		if isloggedin {
-
-			var person []Person
-
-			date := c.Query("date")
-
-			// timeNow := time.Now()
-			// dateAdd := datepars.AddDate(0, 0, -12)
-
-			datep, _ := time.Parse("2006-01-02T15:04", date)
-			datePF := datep.Format("2006-01-02T15:04")
-
-			dateAdd := datep.Add(-12 * time.Hour)
-			dateAF := dateAdd.Format("2006-01-02T15:04")
-			fmt.Println(dateAF)
-			fmt.Println(datePF)
-
-			err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
-			if err == storm.ErrNotFound {
-				c.Set("Нет данных", person)
-			}
-
-			c.HTML(http.StatusOK, "history.html", gin.H{"person": person, "is_logged_in": isloggedin})
-
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
+	// Service page
+	g.GET("/service", service)
 
 	// Find service NOT WORK
-	g.GET("/serviceSort", func(c *gin.Context) {
-		// usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := isloggedin(c)
-
-		if isloggedin {
-
-			var service []Service
-
-			// date := c.Query("nameserv")
-
-			err = db.All(&service)
-
-			// err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
-			// if err == storm.ErrNotFound {
-			// 	c.Set("Нет данных", person)
-			// }
-
-			c.HTML(http.StatusOK, "history.html", gin.H{"service": service, "is_logged_in": isloggedin})
-
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
+	g.GET("/serviceSort", serviceSort)
 
 	// Delete value on id
 	g.GET("/removeval/:struct/:id", RemVal)
@@ -705,67 +546,11 @@ func main() {
 	// Select report
 	g.POST("/report", reportPost)
 
-	g.GET("/service", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
-
-		var service []Service
-
-		err = db.All(&service)
-		fmt.Println(service)
-
-		if isloggedin {
-			c.HTML(http.StatusOK, "service.html", gin.H{"is_logged_in": isloggedin, "service": service})
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
-
 	// Export report to PDF
 	g.POST("/pdfexp", pdfexp)
 
 	// Edit value
-	g.POST("/edit/:id", func(c *gin.Context) {
-		id := c.Param("id")
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
-		var person Person
-
-		findVal := db.Select(q.Eq("ID", id))
-		err := findVal.First(&person)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(&person)
-
-		if isloggedin {
-
-			// id := c.PostForm("id")
-			name := c.PostForm("name")
-			subname := c.PostForm("subname")
-			nameservice := c.PostForm("nameservice")
-			datein := c.PostForm("datein")
-			datesend := c.PostForm("datesend")
-			dateout := c.PostForm("dateout")
-			address := c.PostForm("address")
-			loc := c.PostForm("loc")
-			number := c.PostForm("number")
-			phone := c.PostForm("phone")
-			note := c.PostForm("note")
-
-			peeps := &Person{ID: person.ID, User: usercook, Name: name, SubName: subname, NameService: nameservice,
-				DateIn: datein, DateSend: datesend, DateOut: dateout, Address: address, Location: loc, Number: number, Phone: phone, Note: note}
-			fmt.Println(peeps)
-
-			db.Update(peeps)
-			fmt.Println(peeps)
-
-			http.Redirect(c.Writer, c.Request, "/operator", 302)
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-	})
+	g.POST("/edit/:id", editVal)
 
 	ginpprof.Wrap(g)
 
@@ -778,6 +563,245 @@ func main() {
 	g.Run(":3000")
 }
 
+// Register users
+func operatorGet(c *gin.Context) {
+	isloggedin := isloggedin(c)
+	usercook, _ := userstate.UsernameCookie(c.Request)
+
+	if isloggedin {
+		var person []Person
+
+		var loc []Location
+		err = db.All(&loc)
+		fmt.Println(loc)
+
+		timeNow := time.Now()
+		timeNowF := timeNow.Format("2006-01-02T15:04")
+
+		fmt.Println(timeNowF)
+
+		// timeAgo := timeNow.AddDate(0, 0, -1)
+		timeAgo := timeNow.Add(-12 * time.Hour)
+		timeAgoF := timeAgo.Format("2006-01-02T15:04")
+
+		fmt.Println(timeAgoF)
+
+		err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", timeAgoF), q.Lte("DateIn", timeNowF))).Find(&person)
+		fmt.Println(&person)
+
+		if err == storm.ErrNotFound {
+			c.Set("Нет данных", person)
+		}
+
+		c.HTML(http.StatusOK, "operator.html", gin.H{"location": loc, "person": person, "is_logged_in": isloggedin, "timeNow": timeNowF})
+
+	} else {
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+	}
+}
+
+// Register visitors POST
+func operatorPost(c *gin.Context) {
+	usercook, _ := userstate.UsernameCookie(c.Request)
+	isloggedin := userstate.IsLoggedIn(usercook)
+
+	if isloggedin {
+
+		name := c.PostForm("name")
+		subname := c.PostForm("subname")
+		nameservice := c.PostForm("nameservice")
+		datein := c.PostForm("datein")
+		datesend := c.PostForm("datesend")
+		dateout := c.PostForm("dateout")
+		address := c.PostForm("address")
+		loc := c.PostForm("loc")
+		number := c.PostForm("number")
+		phone := c.PostForm("phone")
+		note := c.PostForm("note")
+
+		peeps := []*Person{
+			{User: usercook, Name: name, SubName: subname, NameService: nameservice,
+				DateIn: datein, DateSend: datesend, DateOut: dateout, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
+		}
+
+		datepars, _ := time.Parse(time.RFC3339, datein)
+		datef := datepars.Format("2006-01-02T15:04")
+
+		fmt.Println(datef)
+
+		for _, p := range peeps {
+			fmt.Println(p)
+			db.Save(p)
+		}
+
+		http.Redirect(c.Writer, c.Request, "/operator", 302)
+	} else {
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+	}
+}
+
+// Find value on date
+func controller(c *gin.Context) {
+	isloggedin := isloggedin(c)
+
+	if isloggedin {
+
+		var person []Person
+
+		listusers, err1 := userstate.AllUsernames()
+		if err1 != nil {
+			log.Fatal(err1)
+		}
+
+		users := c.Query("users")
+		date := c.Query("date")
+
+		datep, _ := time.Parse("2006-01-02T15:04", date)
+		datePF := datep.Format("2006-01-02T15:04")
+
+		dateAdd := datep.Add(-12 * time.Hour)
+		dateAF := dateAdd.Format("2006-01-02T15:04")
+		fmt.Println(dateAF)
+		fmt.Println(datePF)
+
+		err := db.Select(q.Eq("User", users), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
+		if err == storm.ErrNotFound {
+			c.Set("Нет данных", person)
+		}
+
+		c.HTML(http.StatusOK, "controller.html", gin.H{"person": person, "is_logged_in": isloggedin, "listusers": listusers})
+
+	} else {
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+	}
+}
+
+// Edit value
+func editVal(c *gin.Context) {
+	id := c.Param("id")
+	usercook, _ := userstate.UsernameCookie(c.Request)
+	isloggedin := userstate.IsLoggedIn(usercook)
+	var person Person
+
+	findVal := db.Select(q.Eq("ID", id))
+	err := findVal.First(&person)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(&person)
+
+	if isloggedin {
+
+		// id := c.PostForm("id")
+		name := c.PostForm("name")
+		subname := c.PostForm("subname")
+		nameservice := c.PostForm("nameservice")
+		datein := c.PostForm("datein")
+		datesend := c.PostForm("datesend")
+		dateout := c.PostForm("dateout")
+		address := c.PostForm("address")
+		loc := c.PostForm("loc")
+		number := c.PostForm("number")
+		phone := c.PostForm("phone")
+		note := c.PostForm("note")
+
+		peeps := &Person{ID: person.ID, User: usercook, Name: name, SubName: subname, NameService: nameservice,
+			DateIn: datein, DateSend: datesend, DateOut: dateout, Address: address, Location: loc, Number: number, Phone: phone, Note: note}
+		fmt.Println(peeps)
+
+		db.Update(peeps)
+		fmt.Println(peeps)
+
+		http.Redirect(c.Writer, c.Request, "/operator", 302)
+	} else {
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+	}
+}
+
+// Find user value on date
+func history(c *gin.Context) {
+	usercook, _ := userstate.UsernameCookie(c.Request)
+	isloggedin := isloggedin(c)
+
+	if isloggedin {
+
+		var person []Person
+
+		date := c.Query("date")
+
+		// timeNow := time.Now()
+		// dateAdd := datepars.AddDate(0, 0, -12)
+
+		datep, _ := time.Parse("2006-01-02T15:04", date)
+		datePF := datep.Format("2006-01-02T15:04")
+
+		dateAdd := datep.Add(-12 * time.Hour)
+		dateAF := dateAdd.Format("2006-01-02T15:04")
+		fmt.Println(dateAF)
+		fmt.Println(datePF)
+
+		err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
+		if err == storm.ErrNotFound {
+			c.Set("Нет данных", person)
+		}
+
+		c.HTML(http.StatusOK, "history.html", gin.H{"person": person, "is_logged_in": isloggedin})
+
+	} else {
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+	}
+}
+
+// Service page
+func service(c *gin.Context) {
+	isloggedin := isloggedin(c)
+
+	var service []Service
+
+	err = db.All(&service)
+	fmt.Println(service)
+
+	if isloggedin {
+		c.HTML(http.StatusOK, "service.html", gin.H{"is_logged_in": isloggedin, "service": service})
+	} else {
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+	}
+}
+
+// :TODO
+// Find service NOT WORK
+func serviceSort(c *gin.Context) {
+	// usercook, _ := userstate.UsernameCookie(c.Request)
+	isloggedin := isloggedin(c)
+
+	if isloggedin {
+
+		var service []Service
+
+		// date := c.Query("nameserv")
+
+		err = db.All(&service)
+
+		// err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
+		// if err == storm.ErrNotFound {
+		// 	c.Set("Нет данных", person)
+		// }
+
+		c.HTML(http.StatusOK, "history.html", gin.H{"service": service, "is_logged_in": isloggedin})
+
+	} else {
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+	}
+}
+
+// Counte all values
 func reportPost(c *gin.Context) {
 	isloggedin := isloggedin(c)
 	report := c.PostForm("report")
@@ -822,6 +846,7 @@ func reportPost(c *gin.Context) {
 
 }
 
+// Select report
 func reportGet(c *gin.Context) {
 	isloggedin := isloggedin(c)
 	if isloggedin {
@@ -832,6 +857,7 @@ func reportGet(c *gin.Context) {
 	}
 }
 
+// Export report to PDF
 func pdfexp(c *gin.Context) {
 	isloggedin := isloggedin(c)
 	if isloggedin {
