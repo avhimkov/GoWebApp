@@ -238,41 +238,7 @@ func main() {
 	})
 
 	// Upload user from file
-	g.POST("/uploadUsers", func(c *gin.Context) {
-
-		type Users struct {
-			User    string
-			Address string
-			Pass    string
-		}
-
-		csvFile, _ := os.Open("people.csv")
-		reader := csv.NewReader(bufio.NewReader(csvFile))
-		var people []Users
-		for {
-			line, error := reader.Read()
-			if error == io.EOF {
-				break
-			} else if error != nil {
-				log.Fatal(error)
-			}
-			people = append(people, Users{
-				User:    line[0],
-				Pass:    line[1],
-				Address: line[2],
-			})
-		}
-
-		for _, p := range people {
-			userstate.AddUser(p.User, p.Pass, p.Address)
-			userstate.Login(c.Writer, p.User)
-			userstate.MarkConfirmed(p.User)
-		}
-
-		peopleJson, _ := json.Marshal(people)
-		fmt.Println(string(peopleJson))
-
-	})
+	g.POST("/uploadUsers", uploadUsers)
 
 	// Loging Users GET
 	g.GET("/login", func(c *gin.Context) {
@@ -305,219 +271,27 @@ func main() {
 	})
 
 	// Make user as admin POST
-	g.GET("/makeadmin/:user", func(c *gin.Context) {
-		user := c.Param("user")
-		userstate.SetAdminStatus(user)
-		http.Redirect(c.Writer, c.Request, "/adminka", 302)
-	})
+	g.GET("/makeadmin/:user", makeadmin)
 
 	// Delete User from Base POST
-	g.GET("/delete/:user", func(c *gin.Context) {
-		user := c.Param("user")
-		userstate.RemoveUser(user)
-		http.Redirect(c.Writer, c.Request, "/adminka", 302)
-	})
+	g.GET("/delete/:user", deleteUser)
 
 	// Delete Admin status
-	g.GET("/adminoff/:user", func(c *gin.Context) {
-		user := c.Param("user")
-		userstate.IsAdmin(user)
-		userstate.RemoveAdminStatus(user)
-		http.Redirect(c.Writer, c.Request, "/adminka", 302)
-	})
+	g.GET("/adminoff/:user", adminoff)
 
 	// Administartort interface
-	g.GET("/adminka", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		isloggedin := userstate.IsLoggedIn(usercook)
-		isadmin := userstate.IsAdmin(usercook)
+	g.GET("/adminka", adminkaGet)
 
-		var cheked []bool
-		if isloggedin {
-
-			var loc []Location
-			err = db.All(&loc)
-			fmt.Println(loc)
-
-			if err == storm.ErrNotFound {
-				c.Set("Нет данных", loc)
-			}
-
-			listusers, _ := userstate.AllUsernames()
-			if isadmin {
-				for _, i := range listusers {
-					cheked = append(cheked, userstate.IsAdmin(i))
-				}
-			}
-			c.HTML(http.StatusOK, "adminka.html", gin.H{"location": loc, "listusers": listusers, "is_logged_in": isloggedin, "isadmin": isadmin})
-		} else {
-			c.Redirect(301, "/")
-		}
-	})
-
-	g.POST("/adminka", func(c *gin.Context) {
-
-		isloggedin := isloggedin(c)
-
-		if isloggedin {
-
-			office := c.PostForm("office")
-			fmt.Println(office)
-			operator := c.PostForm("operator")
-			fmt.Println(operator)
-
-			loc := Location{
-				// ID:        1,
-				Office:   office,
-				Operator: operator,
-			}
-
-			err := db.Save(&loc)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			http.Redirect(c.Writer, c.Request, "/adminka", 302)
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-
-	})
+	g.POST("/adminka", adminkaPost)
 
 	// Upload user from file
-	g.POST("/uploadService", func(c *gin.Context) {
-		path := filepath.Clean("./upload/")
-
-		file, header, err := c.Request.FormFile("uploadFile")
-		if err != nil {
-			log.Fatal(err)
-		}
-		filename := header.Filename
-		fmt.Println(filename)
-		err = os.MkdirAll(path, 0777)
-		if err != nil {
-			log.Fatal(err)
-		}
-		out, err := os.Create(path + "/" + filename)
-		_, err = io.Copy(out, file)
-
-		url := path + "/" + filename
-		fmt.Println(url)
-
-		csvFile, _ := os.Open(url)
-		reader := csv.NewReader(bufio.NewReader(csvFile))
-		for {
-			line, error := reader.Read()
-			if error == io.EOF {
-				break
-			} else if error != nil {
-				log.Fatal(error)
-			}
-
-			serv := []*Service{
-				{
-					// ID:          line[0],
-					Type:           line[0],
-					NameService:    line[1],
-					SybNameService: line[2]},
-			}
-
-			for _, s := range serv {
-				db.Save(s)
-				fmt.Println(s)
-			}
-		}
-
-		http.Redirect(c.Writer, c.Request, "/adminka", 302)
-	})
+	g.POST("/uploadService", uploadService)
 
 	// Location operators
-	g.POST("/addservice", func(c *gin.Context) {
-
-		isloggedin := isloggedin(c)
-
-		if isloggedin {
-
-			sybnameservice := c.PostForm("sybnameserv")
-			nameservice := c.PostForm("nameserv")
-			servtype := c.PostForm("type")
-
-			service := Service{
-				// ID:        1,
-				Type:           servtype,
-				NameService:    nameservice,
-				SybNameService: sybnameservice,
-			}
-
-			err := db.Save(&service)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			http.Redirect(c.Writer, c.Request, "/service", 302)
-		} else {
-			c.AbortWithStatus(http.StatusForbidden)
-			fmt.Fprint(c.Writer, "Permission denied!")
-		}
-
-	})
+	g.POST("/addservice", addservice)
 
 	// Add value from file
-	g.POST("/uploadValue", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-
-		path := filepath.Clean("./upload/")
-
-		file, header, err := c.Request.FormFile("uploadFile")
-		if err != nil {
-			log.Fatal(err)
-		}
-		filename := header.Filename
-		fmt.Println(filename)
-		err = os.MkdirAll(path, 0777)
-		if err != nil {
-			log.Fatal(err)
-		}
-		out, err := os.Create(path + "/" + filename)
-		_, err = io.Copy(out, file)
-
-		url := path + "/" + filename
-		fmt.Println(url)
-
-		csvFile, _ := os.Open(url)
-		reader := csv.NewReader(bufio.NewReader(csvFile))
-		for {
-			line, error := reader.Read()
-			if error == io.EOF {
-				break
-			} else if error != nil {
-				log.Fatal(error)
-			}
-
-			peeps := []*Person{
-				{User: usercook,
-					Name:        line[0],
-					SubName:     line[1],
-					NameService: line[2],
-					DateIn:      line[3],
-					DateSend:    line[4],
-					DateOut:     line[5],
-					Address:     line[6],
-					Location:    line[7],
-					Number:      line[8],
-					Phone:       line[9],
-					Note:        line[10]},
-			}
-
-			for _, p := range peeps {
-				db.Save(p)
-				fmt.Println(p)
-			}
-		}
-
-		http.Redirect(c.Writer, c.Request, "/operator", 302)
-	})
+	g.POST("/uploadValue", uploadValue)
 
 	// Register users
 	g.GET("/operator", operatorGet)
@@ -561,6 +335,253 @@ func main() {
 
 	// Start serving the application
 	g.Run(":3000")
+}
+
+func makeadmin(c *gin.Context) {
+	user := c.Param("user")
+	userstate.SetAdminStatus(user)
+	http.Redirect(c.Writer, c.Request, "/adminka", 302)
+}
+
+func deleteUser(c *gin.Context) {
+	user := c.Param("user")
+	userstate.RemoveUser(user)
+	http.Redirect(c.Writer, c.Request, "/adminka", 302)
+}
+
+func adminoff(c *gin.Context) {
+	user := c.Param("user")
+	userstate.IsAdmin(user)
+	userstate.RemoveAdminStatus(user)
+	http.Redirect(c.Writer, c.Request, "/adminka", 302)
+}
+
+func uploadUsers(c *gin.Context) {
+
+	type Users struct {
+		User    string
+		Address string
+		Pass    string
+	}
+
+	csvFile, _ := os.Open("people.csv")
+	reader := csv.NewReader(bufio.NewReader(csvFile))
+	var people []Users
+	for {
+		line, error := reader.Read()
+		if error == io.EOF {
+			break
+		} else if error != nil {
+			log.Fatal(error)
+		}
+		people = append(people, Users{
+			User:    line[0],
+			Pass:    line[1],
+			Address: line[2],
+		})
+	}
+
+	for _, p := range people {
+		userstate.AddUser(p.User, p.Pass, p.Address)
+		userstate.Login(c.Writer, p.User)
+		userstate.MarkConfirmed(p.User)
+	}
+
+	peopleJson, _ := json.Marshal(people)
+	fmt.Println(string(peopleJson))
+
+}
+
+func adminkaGet(c *gin.Context) {
+	usercook, _ := userstate.UsernameCookie(c.Request)
+	isloggedin := userstate.IsLoggedIn(usercook)
+	isadmin := userstate.IsAdmin(usercook)
+
+	var cheked []bool
+	if isloggedin {
+
+		var loc []Location
+		err = db.All(&loc)
+		fmt.Println(loc)
+
+		if err == storm.ErrNotFound {
+			c.Set("Нет данных", loc)
+		}
+
+		listusers, _ := userstate.AllUsernames()
+		if isadmin {
+			for _, i := range listusers {
+				cheked = append(cheked, userstate.IsAdmin(i))
+			}
+		}
+		c.HTML(http.StatusOK, "adminka.html", gin.H{"location": loc, "listusers": listusers, "is_logged_in": isloggedin, "isadmin": isadmin})
+	} else {
+		c.Redirect(301, "/")
+	}
+}
+
+func adminkaPost(c *gin.Context) {
+
+	isloggedin := isloggedin(c)
+
+	if isloggedin {
+
+		office := c.PostForm("office")
+		fmt.Println(office)
+		operator := c.PostForm("operator")
+		fmt.Println(operator)
+
+		loc := Location{
+			// ID:        1,
+			Office:   office,
+			Operator: operator,
+		}
+
+		err := db.Save(&loc)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		http.Redirect(c.Writer, c.Request, "/adminka", 302)
+	} else {
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+	}
+
+}
+
+// Upload user from file
+func uploadService(c *gin.Context) {
+	path := filepath.Clean("./upload/")
+
+	file, header, err := c.Request.FormFile("uploadFile")
+	if err != nil {
+		log.Fatal(err)
+	}
+	filename := header.Filename
+	fmt.Println(filename)
+	err = os.MkdirAll(path, 0777)
+	if err != nil {
+		log.Fatal(err)
+	}
+	out, err := os.Create(path + "/" + filename)
+	_, err = io.Copy(out, file)
+
+	url := path + "/" + filename
+	fmt.Println(url)
+
+	csvFile, _ := os.Open(url)
+	reader := csv.NewReader(bufio.NewReader(csvFile))
+	for {
+		line, error := reader.Read()
+		if error == io.EOF {
+			break
+		} else if error != nil {
+			log.Fatal(error)
+		}
+
+		serv := []*Service{
+			{
+				// ID:          line[0],
+				Type:           line[0],
+				NameService:    line[1],
+				SybNameService: line[2]},
+		}
+
+		for _, s := range serv {
+			db.Save(s)
+			fmt.Println(s)
+		}
+	}
+
+	http.Redirect(c.Writer, c.Request, "/adminka", 302)
+}
+
+// Location operators
+func addservice(c *gin.Context) {
+
+	isloggedin := isloggedin(c)
+
+	if isloggedin {
+
+		sybnameservice := c.PostForm("sybnameserv")
+		nameservice := c.PostForm("nameserv")
+		servtype := c.PostForm("type")
+
+		service := Service{
+			// ID:        1,
+			Type:           servtype,
+			NameService:    nameservice,
+			SybNameService: sybnameservice,
+		}
+
+		err := db.Save(&service)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		http.Redirect(c.Writer, c.Request, "/service", 302)
+	} else {
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+	}
+
+}
+
+// Add value from file
+func uploadValue(c *gin.Context) {
+	usercook, _ := userstate.UsernameCookie(c.Request)
+
+	path := filepath.Clean("./upload/")
+
+	file, header, err := c.Request.FormFile("uploadFile")
+	if err != nil {
+		log.Fatal(err)
+	}
+	filename := header.Filename
+	fmt.Println(filename)
+	err = os.MkdirAll(path, 0777)
+	if err != nil {
+		log.Fatal(err)
+	}
+	out, err := os.Create(path + "/" + filename)
+	_, err = io.Copy(out, file)
+
+	url := path + "/" + filename
+	fmt.Println(url)
+
+	csvFile, _ := os.Open(url)
+	reader := csv.NewReader(bufio.NewReader(csvFile))
+	for {
+		line, error := reader.Read()
+		if error == io.EOF {
+			break
+		} else if error != nil {
+			log.Fatal(error)
+		}
+
+		peeps := []*Person{
+			{User: usercook,
+				Name:        line[0],
+				SubName:     line[1],
+				NameService: line[2],
+				DateIn:      line[3],
+				DateSend:    line[4],
+				DateOut:     line[5],
+				Address:     line[6],
+				Location:    line[7],
+				Number:      line[8],
+				Phone:       line[9],
+				Note:        line[10]},
+		}
+
+		for _, p := range peeps {
+			db.Save(p)
+			fmt.Println(p)
+		}
+	}
+
+	http.Redirect(c.Writer, c.Request, "/operator", 302)
 }
 
 // Register users
