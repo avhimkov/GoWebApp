@@ -204,71 +204,31 @@ func main() {
 		}
 
 	*/
+
 	// Default user /administrator admin
 	userstate.AddUser("admin", "admin", "admin@mail.ru")
 	userstate.MarkConfirmed("admin")
 	userstate.SetAdminStatus("admin")
 
-	g.GET("/", func(c *gin.Context) {
-		isloggedin := isloggedin(c)
-		if isloggedin {
-			c.HTML(http.StatusOK, "operator.html", gin.H{"is_logged_in": isloggedin})
-		} else {
-			http.Redirect(c.Writer, c.Request, "/login", 302)
-		}
-	})
+	g.GET("/", indexPage)
 
 	// Registaration Users GET
-	g.GET("/register", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "register.html", gin.H{})
-	})
+	g.GET("/register", registerGet)
 
 	// Registaration Users OPOST
-	g.POST("/register", func(c *gin.Context) {
-
-		username := c.PostForm("username")
-		pass := c.PostForm("password")
-		mail := c.PostForm("email")
-
-		userstate.AddUser(username, pass, mail)
-		userstate.Login(c.Writer, username)
-		userstate.MarkConfirmed(username)
-
-		http.Redirect(c.Writer, c.Request, "/", 302)
-	})
+	g.POST("/register", registerPost)
 
 	// Upload user from file
 	g.POST("/uploadUsers", uploadUsers)
 
 	// Loging Users GET
-	g.GET("/login", func(c *gin.Context) {
-
-		isloggedin := isloggedin(c)
-		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Login Page", "is_logged_in": isloggedin})
-	})
+	g.GET("/login", loginGet)
 
 	// Loging Users
-	g.POST("/login", func(c *gin.Context) {
-		username := c.PostForm("username")
-		password := c.PostForm("password")
-		logintryst := userstate.CorrectPassword(username, password)
-
-		if logintryst == true {
-			userstate.Login(c.Writer, username)
-			http.Redirect(c.Writer, c.Request, "/operator", 302)
-		} else {
-			c.HTML(http.StatusBadRequest, "login.html", gin.H{
-				"ErrorTitle":   "Login Failed",
-				"ErrorMessage": "Invalid credentials provided"})
-		}
-	})
+	g.POST("/login", loginPost)
 
 	// Logout users
-	g.GET("/logout", func(c *gin.Context) {
-		usercook, _ := userstate.UsernameCookie(c.Request)
-		userstate.Logout(usercook)
-		http.Redirect(c.Writer, c.Request, "/login", 302)
-	})
+	g.GET("/logout", logout)
 
 	// Make user as admin POST
 	g.GET("/makeadmin/:user", makeadmin)
@@ -335,6 +295,59 @@ func main() {
 
 	// Start serving the application
 	g.Run(":3000")
+}
+
+func indexPage(c *gin.Context) {
+	isloggedin := isloggedin(c)
+	if isloggedin {
+		c.HTML(http.StatusOK, "operator.html", gin.H{"is_logged_in": isloggedin})
+	} else {
+		http.Redirect(c.Writer, c.Request, "/login", 302)
+	}
+}
+
+func registerGet(c *gin.Context) {
+	c.HTML(http.StatusOK, "register.html", gin.H{})
+}
+
+func registerPost(c *gin.Context) {
+
+	username := c.PostForm("username")
+	pass := c.PostForm("password")
+	mail := c.PostForm("email")
+
+	userstate.AddUser(username, pass, mail)
+	userstate.Login(c.Writer, username)
+	userstate.MarkConfirmed(username)
+
+	http.Redirect(c.Writer, c.Request, "/", 302)
+}
+
+func loginGet(c *gin.Context) {
+
+	isloggedin := isloggedin(c)
+	c.HTML(http.StatusOK, "login.html", gin.H{"title": "Login Page", "is_logged_in": isloggedin})
+}
+
+func loginPost(c *gin.Context) {
+	username := c.PostForm("username")
+	password := c.PostForm("password")
+	logintryst := userstate.CorrectPassword(username, password)
+
+	if logintryst == true {
+		userstate.Login(c.Writer, username)
+		http.Redirect(c.Writer, c.Request, "/operator", 302)
+	} else {
+		c.HTML(http.StatusBadRequest, "login.html", gin.H{
+			"ErrorTitle":   "Login Failed",
+			"ErrorMessage": "Invalid credentials provided"})
+	}
+}
+
+func logout(c *gin.Context) {
+	usercook, _ := userstate.UsernameCookie(c.Request)
+	userstate.Logout(usercook)
+	http.Redirect(c.Writer, c.Request, "/login", 302)
 }
 
 func makeadmin(c *gin.Context) {
