@@ -400,8 +400,8 @@ func uploadUsers(c *gin.Context) {
 		userstate.MarkConfirmed(p.User)
 	}
 
-	peopleJson, _ := json.Marshal(people)
-	fmt.Println(string(peopleJson))
+	peopleJSON, _ := json.Marshal(people)
+	fmt.Println(string(peopleJSON))
 
 }
 
@@ -986,7 +986,7 @@ func RemVal(c *gin.Context) {
 }
 
 // ----------- chek login func ------------------
-func setUserStatus() gin.HandlerFunc {
+/* func setUserStatus() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if token, err := c.Cookie("token"); err == nil || token != "" {
 			c.Set("is_logged_in", true)
@@ -1014,4 +1014,4 @@ func ensureNotLoggedIn() gin.HandlerFunc {
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 	}
-}
+} */
