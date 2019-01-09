@@ -1,13 +1,15 @@
 package main
 
 import (
-	"reflect"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 
-	"github.com/gin-gonic/gin"
+	"github.com/magiconair/properties/assert"
 )
 
-func TestSetupRouter(t *testing.T) {
+/* func TestSetupRouter(t *testing.T) {
 	tests := []struct {
 		name string
 		want *gin.Engine
@@ -21,9 +23,23 @@ func TestSetupRouter(t *testing.T) {
 			}
 		})
 	}
-}
+} */
 
 func Test_indexPage(t *testing.T) {
+	testRouter := SetupRouter()
+
+	req, err := http.NewRequest("GET", "/", nil)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	resp := httptest.NewRecorder()
+	testRouter.ServeHTTP(resp, req)
+	assert.Equal(t, resp.Code, 200)
+
+}
+
+/* func Test_indexPage(t *testing.T) {
 	type args struct {
 		c *gin.Context
 	}
@@ -38,9 +54,9 @@ func Test_indexPage(t *testing.T) {
 			indexPage(tt.args.c)
 		})
 	}
-}
+} */
 
-func Test_registerGet(t *testing.T) {
+/* func Test_registerGet(t *testing.T) {
 	type args struct {
 		c *gin.Context
 	}
@@ -464,3 +480,4 @@ func TestRemVal(t *testing.T) {
 		})
 	}
 }
+*/

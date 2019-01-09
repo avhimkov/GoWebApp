@@ -78,6 +78,14 @@
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:961dc3b1d11f969370533390fdf203813162980c858e1dabe827b60940c909a5"
+  name = "github.com/magiconair/properties"
+  packages = ["assert"]
+  pruneopts = ""
+  revision = "c2353362d570a7bfa228149c62842019201cfb71"
+  version = "v1.8.0"
+
+[[projects]]
   digest = "1:3140e04675a6a91d2a20ea9d10bdadf6072085502e6def6768361260aee4b967"
   name = "github.com/mattn/go-isatty"
   packages = ["."]
@@ -201,6 +209,7 @@
     "github.com/asdine/storm/q",
     "github.com/gin-gonic/gin",
     "github.com/jung-kurt/gofpdf",
+    "github.com/magiconair/properties/assert",
     "github.com/thinkerou/favicon",
     "github.com/xyproto/permissionbolt",
   ]
