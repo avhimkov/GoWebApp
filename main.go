@@ -50,16 +50,25 @@ type Person struct {
 	DateSend    string `storm:"index" json:"datesend" form:"datesend" binding:"required"`       //Дата отправки
 	DateOut     string `storm:"index" json:"dateout" form:"dateout" binding:"required"`         //Дата получения
 	Address     string `storm:"index" json:"address" form:"address" binding:"required"`         //Адрес
-	Location    string `storm:"index" json:"address" form:"address" binding:"required"`         //Место оператора
+	Location    string `storm:"index" json:"location" form:"location" binding:"required"`       //Место оператора
 	Number      string `storm:"index" json:"number" form:"number" binding:"required"`           //
 	Phone       string `storm:"index" json:"phone" form:"phone" binding:"required"`             //Телефон
 	Note        string `storm:"index" json:"note" form:"note" binding:"required"`               //Примечание
 }
 
-// var perm, _ = permissionbolt.New()
+//
+var db = DB()
 
-// open database
+//middlleware db
+var perm, err = perminit("db/bolt.db")
+
+//middlleware var
+var userstate = perm.UserState()
+var permissionHandler = permHandler()
+
+//open databas
 func DB() *storm.DB {
+	//data db
 	db, err := storm.Open("db/data.db")
 	if err != nil {
 		log.Fatal(err)
@@ -68,8 +77,7 @@ func DB() *storm.DB {
 	return db
 }
 
-var db = DB()
-
+//middlleware init
 func perminit(db string) (*permissionbolt.Permissions, error) {
 	perm, err := permissionbolt.NewWithConf(db)
 	if err != nil {
@@ -81,8 +89,7 @@ func perminit(db string) (*permissionbolt.Permissions, error) {
 	return perm, nil
 }
 
-var perm, err = perminit("db/bolt.db")
-
+//middlleware gin config
 func permHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Set up a middleware handler for Gin, with a custom "permission denied" message.
@@ -99,16 +106,13 @@ func permHandler() gin.HandlerFunc {
 	}
 }
 
-var userstate = perm.UserState()
-
 func isloggedin(c *gin.Context) bool {
 	usercook, _ := userstate.UsernameCookie(c.Request)
 	isloggedin := userstate.IsLoggedIn(usercook)
 	return isloggedin
 }
 
-var permissionHandler = permHandler()
-
+//gin init func
 func SetupRouter() *gin.Engine {
 
 	// Set Gin to production mode
@@ -128,11 +132,13 @@ func SetupRouter() *gin.Engine {
 	// Recovery middleware
 	g.Use(gin.Recovery())
 	g.Use(favicon.New("./assets/favicon.ico"))
+
 	// g.Use(static.Serve("/web", static.LocalFile("/web", false)))
 	// v1 := router.Group("api/v1")
 	// {
 	// 	v1.GET("/instructions", GetInstructions)
 	// }
+
 	g.Use(permissionHandler)
 
 	return g
@@ -140,6 +146,7 @@ func SetupRouter() *gin.Engine {
 
 func main() {
 
+	//prometheus
 	// http.Handle("/metrics", promhttp.Handler())
 	// http.ListenAndServe(":2112", nil)
 
@@ -162,48 +169,6 @@ func main() {
 
 	//	Blank slate, no default permissions
 	//	perm.Clear()
-
-	// filename := "db/bolt.db"
-	// perm, err := permissionbolt.NewWithConf(filename)
-	// if err != nil {
-	// 	fmt.Println("Could not open database: " + filename)
-	// 	return
-	// }
-
-	// perm, err := perminit(filename)
-	// if err != nil {
-	// 	fmt.Println("Could not open database: " + filename)
-	// 	return
-	// }
-
-	// Set up a middleware handler for Gin, with a custom "permission denied" message.
-	// permissionHandler := func(c *gin.Context) {
-	// 	// Check if the user has the right admin/user rights
-	// 	if perm.Rejected(c.Writer, c.Request) {
-	// 		// Deny the request, don't call other middleware handlers
-	// 		c.AbortWithStatus(http.StatusForbidden)
-	// 		fmt.Fprint(c.Writer, "Permission denied!")
-	// 		return
-	// 	}
-	// 	// Call the next middleware handler
-	// 	c.Next()
-	// }
-
-	// permissionHandler := permHandler()
-
-	// Enable the permissionbolt middleware, must come before recovery
-
-	// Get the userstate, used in the handlers below
-
-	// userstate := perm.UserState()
-	/*
-		isloggedin := func(c *gin.Context) bool {
-			usercook, _ := userstate.UsernameCookie(c.Request)
-			isloggedin := userstate.IsLoggedIn(usercook)
-			return isloggedin
-		}
-
-	*/
 
 	// Default user /administrator admin
 	userstate.AddUser("admin", "admin", "admin@mail.ru")
