@@ -398,6 +398,16 @@ func adminkaGet(c *gin.Context) {
 	}
 }
 
+/* func (ctrl TestController) TestConfig(c *gin.Context){
+	var testForm form.TestForm
+	if c.ShouldBindWith(&testForm, binding.FormPost) != nil {
+		c.Redirect(302, "/v1/console/config/request_failed")
+	}
+	TestModel.TestConfig(testForm)
+	fmt.Println(testForm.age)
+	c.Redirect(302, "/v1/console/config/success")
+} */
+
 func adminkaPost(c *gin.Context) {
 
 	isloggedin := isloggedin(c)
