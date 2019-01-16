@@ -42,12 +42,18 @@
                 </div>
                 </form>
                 <p></p>
-                <form class="form" action="/operator" method="POST">
+                <form class="needs-validation" action="/operator" method="POST">
                         <div class="form-row">
                             <div class="col">
-                                <h6>Имя заявителя</h6>
-                                <label class="sr-only" for="inlineFormInput">Имя заявителя</label>
-                                <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" placeholder="Имя заявителя">
+                                <!-- <h6>Имя заявителя</h6> -->
+                                <label for="validationTooltip01">Имя заявителя</label>
+                                <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" placeholder="Имя заявителя" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Doesn't look good!
+                                </div>
                             </div>
                             <p></p>
                             <div class="col">
@@ -127,11 +133,35 @@
                                 <h6>Описание</h6>
                                 <label class="sr-only" for="inlineFormInput">Описание</label>
                                 <input type="text" name="note" class="form-control" id="note" placeholder="Описание">
+                                <div class="help-block with-errors"></div>
                             </div>
+                         
                         </div>
                     <p></p>
                     <button type="submit" class="btn btn-primary float-right">Сохранить</button>
                 </form>
+
+                <script>
+                    // Example starter JavaScript for disabling form submissions if there are invalid fields
+                    (function() {
+                      'use strict';
+                      window.addEventListener('load', function() {
+                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                        var forms = document.getElementsByClassName('needs-validation');
+                        // Loop over them and prevent submission
+                        var validation = Array.prototype.filter.call(forms, function(form) {
+                          form.addEventListener('submit', function(event) {
+                            if (form.checkValidity() === false) {
+                              event.preventDefault();
+                              event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                          }, false);
+                        });
+                      }, false);
+                    })();
+                    </script>
+
             </div>
         </div>
     </div>
@@ -228,7 +258,7 @@
                                             <input type="text" name="phone" class="form-control" id="phone"  value={{$e.Phone}}   >
                                                 <script>
                                                     $(function(){
-                                                    //Использование параметра completed jquery.maskedinput.min.js
+                                                    //Использование параметра completed     .min.js
                                                         $("#phone").mask("8(999) 999-9999");
                                                     });
                                                 </script>
@@ -236,7 +266,9 @@
                                         <div class="form-group">
                                             <h6>Нотация</h6>
                                             <input type="text" name="note" class="form-control" id="note" value={{$e.Note}}>
+                                            
                                         </div>
+                                        
                                     </div>
                                     <div class="modal-footer ">
                                             <button type="submit" class="btn btn-warning btn-lg" style="width: 100%;">Update</button><i class="fa fa-pencil fa-fw"></i>
@@ -270,7 +302,7 @@
                                 </button>
                             </td>
                             <td>
-                                <form action="/removeval/{{$e.ID}}" method="GET">
+                                <form action="/removeval/Person/{{$e.ID}}" method="GET">
                                     <button class="btn btn-danger btn-rounded btn-sm my-0" type="submit"><i class="fas fa-trash-alt"></i></button>
                                 </form>
                             </td>
