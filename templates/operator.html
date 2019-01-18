@@ -42,30 +42,24 @@
                 </div>
                 </form>
                 <p></p>
-                <form class="needs-validation" action="/operator" method="POST">
+                <form class="reg-service" action="/operator" method="POST">
                         <div class="form-row">
                             <div class="col">
-                                <!-- <h6>Имя заявителя</h6> -->
-                                <label for="validationTooltip01">Имя заявителя</label>
+                                <h6>Имя заявителя</h6>
+                                <label class="sr-only" for="inlineFormInput">Имя заявителя</label>
                                 <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" placeholder="Имя заявителя" required>
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
-                                <div class="invalid-feedback">
-                                    Doesn't look good!
-                                </div>
                             </div>
                             <p></p>
                             <div class="col">
                                 <h6>Представитель заявителя</h6>
                                 <label class="sr-only" for="inlineFormInput">Представитель заявителя</label>
-                                <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" id="subname" placeholder="Представитель заявителя">
+                                <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" id="subname" placeholder="Представитель заявителя" required>
                             </div>
                             <p></p>
                             <div class="col">
                                 <h6>Название услуги</h6>
                                 <label class="sr-only" for="inlineFormInput">Название услуги</label>
-                                <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" id="nameservice" placeholder="Название услуги">
+                                <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" id="nameservice" placeholder="Название услуги" required>
                             </div>
                         </div>
                         <p></p>
@@ -73,7 +67,7 @@
                             <div class="col">
                                 <h6>Дата регистрации</h6>
                                 <label class="sr-only" for="inlineFormInput">Дата регистрации</label>
-                                <input type="datetime-local" name="datein"  class="form-control mr-sm-2 mb-2 mb-sm-0" id="datein" value="{{.timeNow}}">
+                                <input type="datetime-local" name="datein"  class="form-control mr-sm-2 mb-2 mb-sm-0" id="datein" value="{{.timeNow}}" required>
                             </div>
                         
                             <div class="col">
@@ -100,7 +94,7 @@
                             <div class="col">
                                 <h6>Адрес</h6>
                                 <label class="sr-only" for="inlineFormInput">Адрес</label>
-                                <input type="text" name="address" class="form-control" id="address" placeholder="Адрес">
+                                <input type="text" name="address" class="form-control" id="address" placeholder="Адрес" required>
                             </div>
                             <script>
                                 function onLoad (ymaps) {
@@ -114,13 +108,13 @@
                             <div class="col">
                                 <h6>Номер</h6>
                                 <label class="sr-only" for="inlineFormInput">Номер</label>
-                                <input type="text" name="number" class="form-control" id="number" placeholder="Номер">
+                                <input type="text" name="number" class="form-control" id="number" placeholder="Номер" required>
                             </div>
                             <p></p>
                             <div class="col">
                                 <h6>Телефон</h6>
                                 <label class="sr-only" for="inlineFormInput">Телефон</label>
-                                <input type="text" name="phone" id="phone" class="form-control" >
+                                <input type="text" name="phone" id="phone" class="form-control" required>
                                     <script>
                                         $(function(){
                                         //Использование параметра completed jquery.maskedinput.min.js
@@ -138,29 +132,27 @@
                          
                         </div>
                     <p></p>
-                    <button type="submit" class="btn btn-primary float-right">Сохранить</button>
+                    <button type="submit" id="btnSubmit" class="btn btn-primary float-right">Сохранить</button>
                 </form>
 
-                <script>
-                    // Example starter JavaScript for disabling form submissions if there are invalid fields
-                    (function() {
-                      'use strict';
-                      window.addEventListener('load', function() {
-                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                        var forms = document.getElementsByClassName('needs-validation');
-                        // Loop over them and prevent submission
-                        var validation = Array.prototype.filter.call(forms, function(form) {
-                          form.addEventListener('submit', function(event) {
-                            if (form.checkValidity() === false) {
-                              event.preventDefault();
-                              event.stopPropagation();
-                            }
-                            form.classList.add('was-validated');
-                          }, false);
-                        });
-                      }, false);
-                    })();
-                    </script>
+                <!-- <script>
+                    
+                    $("#btnSubmit").click(function(event) {
+
+                    // Fetch form to apply custom Bootstrap validation
+                    var form = $("#reg-service")
+
+                    if (form[0].checkValidity() === false) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    }
+
+                    form.addClass('was-validated');
+                    // Perform ajax submit here...
+
+                    });
+
+                </script> -->
 
             </div>
         </div>
