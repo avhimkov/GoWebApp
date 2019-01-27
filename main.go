@@ -24,6 +24,16 @@ import (
 	// "github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+type Subscriber struct {
+	ID   int    `storm:"id,increment" form:"subid" binding:"required"`
+	Name string `storm:"index" json:"subname" form:"subname" binding:"required"`
+}
+
+type SubSubscriber struct {
+	ID      int    `storm:"id,increment" form:"subsubid" binding:"required"`
+	SubName string `storm:"index" json:"subname" form:"subname" binding:"required"`
+}
+
 // Struc opertator in City and location office
 type Location struct {
 	ID       int    `storm:"id,increment" form:"id" binding:"required"` //`form:"ID" storm:"id,increment" json:"ID"`
@@ -156,13 +166,25 @@ func main() {
 	if errdbp != nil {
 		log.Fatal(errdbp)
 	}
+
 	errdbs := db.Init(&Service{})
 	if errdbs != nil {
 		log.Fatal(errdbs)
 	}
+
 	errdbl := db.Init(&Location{})
 	if errdbl != nil {
 		log.Fatal(errdbl)
+	}
+
+	errdbsb := db.Init(&Subscriber{})
+	if errdbsb != nil {
+		log.Fatal(errdbsb)
+	}
+
+	errdbsbsb := db.Init(&SubSubscriber{})
+	if errdbsbsb != nil {
+		log.Fatal(errdbsbsb)
 	}
 
 	g := SetupRouter()
