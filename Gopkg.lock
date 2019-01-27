@@ -54,12 +54,28 @@
   version = "v1.3.0"
 
 [[projects]]
+  digest = "1:a01080d20c45c031c13f3828c56e58f4f51d926a482ad10cc0316225097eb7ea"
+  name = "github.com/go-stack/stack"
+  packages = ["."]
+  pruneopts = ""
+  revision = "2fee6af1a9795aafbe0253a0cfbdf668e1fb8a9a"
+  version = "v1.8.0"
+
+[[projects]]
   digest = "1:3dd078fda7500c341bc26cfbc6c6a34614f295a2457149fc1045cab767cbcf18"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
   pruneopts = ""
   revision = "aa810b61a9c79d51363740d207bb46cf8e620ed5"
   version = "v1.2.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:2a5888946cdbc8aa360fd43301f9fc7869d663f60d5eedae7d4e6e5e4f06f2bf"
+  name = "github.com/golang/snappy"
+  packages = ["."]
+  pruneopts = ""
+  revision = "2e65f85255dbc3072edf28d6b5b8efc472979f5a"
 
 [[projects]]
   digest = "1:b79fc583e4dc7055ed86742e22164ac41bf8c0940722dbcb600f1a3ace1a8cb5"
@@ -110,6 +126,45 @@
   version = "1.0.1"
 
 [[projects]]
+  digest = "1:f9ca060b032b732133f39406cb8108145a1fdc286c57a468f662eca675d54fc0"
+  name = "github.com/mongodb/mongo-go-driver"
+  packages = [
+    "bson",
+    "bson/bsoncodec",
+    "bson/bsonrw",
+    "bson/bsontype",
+    "bson/primitive",
+    "event",
+    "internal",
+    "mongo",
+    "mongo/options",
+    "mongo/readconcern",
+    "mongo/readpref",
+    "mongo/writeconcern",
+    "tag",
+    "version",
+    "x/bsonx",
+    "x/bsonx/bsoncore",
+    "x/mongo/driver",
+    "x/mongo/driver/auth",
+    "x/mongo/driver/auth/internal/gssapi",
+    "x/mongo/driver/session",
+    "x/mongo/driver/topology",
+    "x/mongo/driver/uuid",
+    "x/network/address",
+    "x/network/command",
+    "x/network/compressor",
+    "x/network/connection",
+    "x/network/connstring",
+    "x/network/description",
+    "x/network/result",
+    "x/network/wiremessage",
+  ]
+  pruneopts = ""
+  revision = "3cfdc9ffcf780eede57d27ec26a3edad4c9ab6a9"
+  version = "v0.2.0"
+
+[[projects]]
   branch = "master"
   digest = "1:90f91b3ecbf37365e8c730bb4270df8e12769fe157dbd8472f7b2da9c69a2bd6"
   name = "github.com/thinkerou/favicon"
@@ -126,12 +181,28 @@
   version = "v1.1.1"
 
 [[projects]]
-  digest = "1:4a58ce6a190c0fa8f9cc5fdac94fd976757afb272c3629305644b17d347a0e19"
+  branch = "master"
+  digest = "1:ad74f33a69bd6ab0bd7287003b7c1069b94cfb5213eb5597005fe2963d7dfca9"
+  name = "github.com/xdg/scram"
+  packages = ["."]
+  pruneopts = ""
+  revision = "7eeb5667e42c09cb51bf7b7c28aea8c56767da90"
+
+[[projects]]
+  branch = "master"
+  digest = "1:62f6eb06f6f39d18fc961956116a50a0e52b89961ed8a83bbb950b4cfb09fe67"
+  name = "github.com/xdg/stringprep"
+  packages = ["."]
+  pruneopts = ""
+  revision = "73f8eece6fdcd902c185bf651de50f3828bed5ed"
+
+[[projects]]
+  digest = "1:07c9ad25db45efdcbc46921beeed2c1760a4396f316ebf90e8a7e561d90ec549"
   name = "github.com/xyproto/cookie"
   packages = ["."]
   pruneopts = ""
-  revision = "8ce3defb0907741a2a8c9b56cce0f716c933ce34"
-  version = "2.0"
+  revision = "f4de411f45ff7eb4e4b9310f783951c35cf01711"
+  version = "2.2.0"
 
 [[projects]]
   digest = "1:7b5b51b1943d5b7e810454988d2f825acfcc48c119ae042fc5a00db8c1a30c6a"
@@ -150,12 +221,28 @@
   version = "v5.0.0"
 
 [[projects]]
+  digest = "1:f434517d554dbdab270ed2a5877a20f33a81408f23d8ee9372a37368acebe020"
+  name = "github.com/xyproto/randomstring"
+  packages = ["."]
+  pruneopts = ""
+  revision = "6165d349ef69b281631c4b6ef01081aa6c74361d"
+  version = "1.0.1"
+
+[[projects]]
   digest = "1:ae6dc7a7caf2a25469f617e6632bb2f7dc727dedc956fa447da964eb26ad91b8"
   name = "github.com/xyproto/simplebolt"
   packages = ["."]
   pruneopts = ""
   revision = "617dc386952fff207b3d02c3b0bf2e6c34705bcb"
   version = "v3.2.0"
+
+[[projects]]
+  digest = "1:e0b66449ee13712712d02ddcbb41c13ef482ed07e66141bdb7ad03ac85aaae6f"
+  name = "github.com/zebresel-com/mongodm"
+  packages = ["."]
+  pruneopts = ""
+  revision = "cbfd0891ca28de93d3abd48626da2fe84f62644f"
+  version = "v2.0.1"
 
 [[projects]]
   digest = "1:6150d0a72956eb2e50226e13ce59ef2a9636c0e8e1ac900d72f9b2097121cdf9"
@@ -167,22 +254,46 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:52cfc16d4fc39fd1d779c9b52e391c7b2a31537b722d38aa9cca0f33d88d62ef"
+  digest = "1:59b49c47c11a48f1054529207f65907c014ecf5f9a7c0d9c0f1616dec7b062ed"
   name = "golang.org/x/crypto"
   packages = [
     "bcrypt",
     "blowfish",
+    "pbkdf2",
   ]
   pruneopts = ""
-  revision = "eb0de9b17e854e9b1ccd9963efafc79862359959"
+  revision = "ff983b9c42bc9fbf91556e191cc8efb585c16908"
 
 [[projects]]
   branch = "master"
-  digest = "1:303c0ee48d6229a2423950f41b3ccb5a2067dc4c7b65f8863cfbd962bef05a85"
+  digest = "1:814474ab808c5e04b9334d046f8a0060fc1724c2c02acfd00a7cc0008d675455"
+  name = "golang.org/x/sync"
+  packages = ["semaphore"]
+  pruneopts = ""
+  revision = "37e7f081c4d4c64e13b10787722085407fe5d15f"
+
+[[projects]]
+  branch = "master"
+  digest = "1:851d398c9d0b45a3d8496ad6f50d690dd1df7918a309acd23956d73f1ac9adb4"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = ""
-  revision = "62eef0e2fa9b2c385f7b2778e763486da6880d37"
+  revision = "770c60269bf0ef965e9e7ac8bedcb6bca2a1cefd"
+
+[[projects]]
+  digest = "1:5acd3512b047305d49e8763eef7ba423901e85d5dd2fd1e71778a0ea8de10bd4"
+  name = "golang.org/x/text"
+  packages = [
+    "internal/gen",
+    "internal/triegen",
+    "internal/ucd",
+    "transform",
+    "unicode/cldr",
+    "unicode/norm",
+  ]
+  pruneopts = ""
+  revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
+  version = "v0.3.0"
 
 [[projects]]
   digest = "1:dd549e360e5a8f982a28c2bcbe667307ceffe538ed9afc7c965524f1ac285b3f"
@@ -193,12 +304,26 @@
   version = "v8.18.2"
 
 [[projects]]
-  digest = "1:f0620375dd1f6251d9973b5f2596228cc8042e887cd7f827e4220bc1ce8c30e2"
+  branch = "v2"
+  digest = "1:f54ba71a035aac92ced3e902d2bff3734a15d1891daff73ec0f90ef236750139"
+  name = "gopkg.in/mgo.v2"
+  packages = [
+    ".",
+    "bson",
+    "internal/json",
+    "internal/sasl",
+    "internal/scram",
+  ]
+  pruneopts = ""
+  revision = "9856a29383ce1c59f308dd1cf0363a79b5bef6b5"
+
+[[projects]]
+  digest = "1:cedccf16b71e86db87a24f8d4c70b0a855872eb967cb906a66b95de56aefbd0d"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   pruneopts = ""
-  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
-  version = "v2.2.1"
+  revision = "51d6538a90f86fe93ac480b35f37b2be17fef232"
+  version = "v2.2.2"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -210,8 +335,11 @@
     "github.com/gin-gonic/gin",
     "github.com/jung-kurt/gofpdf",
     "github.com/magiconair/properties/assert",
+    "github.com/mongodb/mongo-go-driver/mongo",
     "github.com/thinkerou/favicon",
     "github.com/xyproto/permissionbolt",
+    "github.com/zebresel-com/mongodm",
+    "gopkg.in/mgo.v2",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

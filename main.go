@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -17,8 +18,11 @@ import (
 	"github.com/asdine/storm/q"
 	"github.com/gin-gonic/gin"
 	"github.com/jung-kurt/gofpdf"
+	"github.com/mongodb/mongo-go-driver/mongo"
 	"github.com/thinkerou/favicon"
 	"github.com/xyproto/permissionbolt"
+	"github.com/zebresel-com/mongodm"
+	mgo "gopkg.in/mgo.v2"
 	// "github.com/prometheus/client_golang/prometheus"
 	// "github.com/prometheus/client_golang/prometheus/promauto"
 	// "github.com/prometheus/client_golang/prometheus/promhttp"
@@ -67,7 +71,7 @@ type Person struct {
 }
 
 //
-var db = DB()
+// var db = DB()
 
 //middlleware db
 var perm, err = perminit("db/bolt.db")
@@ -77,7 +81,7 @@ var userstate = perm.UserState()
 var permissionHandler = permHandler()
 
 //open databas
-func DB() *storm.DB {
+/* func DB() *storm.DB {
 	//data db
 	db, err := storm.Open("db/data.db")
 	if err != nil {
@@ -85,6 +89,36 @@ func DB() *storm.DB {
 	}
 	// defer db.Close()
 	return db
+} */
+
+func mogoDBinit() {
+	file, err := ioutil.ReadFile("locals.json")
+
+	if err != nil {
+		fmt.Printf("File error: %v\n", err)
+		os.Exit(1)
+	}
+
+	var localMap map[string]map[string]string
+	json.Unmarshal(file, &localMap)
+
+	dbConfig := &mongodm.Config{
+		DialInfo: &mgo.DialInfo{
+			Addrs:    []string{"127.0.0.1"},
+			Timeout:  3 * time.Second,
+			Database: "mongodm_sample",
+			Username: "admin",
+			Password: "admin",
+			Source:   "admin",
+		},
+		Locals: localMap["en-US"],
+	}
+
+	connection, err := mongodm.Connect(dbConfig)
+
+	if err != nil {
+		fmt.Println("Database connection error: %v", err)
+	}
 }
 
 //middlleware init
@@ -155,6 +189,8 @@ func SetupRouter() *gin.Engine {
 }
 
 func main() {
+
+	client, err := mongo.NewClient("mongodb://localhost:27017")
 
 	//prometheus
 	// http.Handle("/metrics", promhttp.Handler())
