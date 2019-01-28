@@ -27,15 +27,15 @@ import (
 	// "github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-type Subscriber struct {
-	ID   int    `storm:"id,increment" form:"subid" binding:"required"`
-	Name string `storm:"index" json:"subname" form:"subname" binding:"required"`
-}
+// type Subscriber struct {
+// 	ID   int    `storm:"id,increment" form:"subid" binding:"required"`
+// 	Name string `storm:"index" json:"subname" form:"subname" binding:"required"`
+// }
 
-type SubSubscriber struct {
-	ID      int    `storm:"id,increment" form:"subsubid" binding:"required"`
-	SubName string `storm:"index" json:"subname" form:"subname" binding:"required"`
-}
+// type SubSubscriber struct {
+// 	ID      int    `storm:"id,increment" form:"subsubid" binding:"required"`
+// 	SubName string `storm:"index" json:"subname" form:"subname" binding:"required"`
+// }
 
 // Struc opertator in City and location office
 type Location struct {
@@ -212,15 +212,15 @@ func main() {
 		log.Fatal(errdbl)
 	}
 
-	errdbsb := db.Init(&Subscriber{})
-	if errdbsb != nil {
-		log.Fatal(errdbsb)
-	}
+	// errdbsb := db.Init(&Subscriber{})
+	// if errdbsb != nil {
+	// 	log.Fatal(errdbsb)
+	// }
 
-	errdbsbsb := db.Init(&SubSubscriber{})
-	if errdbsbsb != nil {
-		log.Fatal(errdbsbsb)
-	}
+	// errdbsbsb := db.Init(&SubSubscriber{})
+	// if errdbsbsb != nil {
+	// 	log.Fatal(errdbsbsb)
+	// }
 
 	g := SetupRouter()
 
@@ -641,6 +641,10 @@ func operatorGet(c *gin.Context) {
 		err = db.All(&loc)
 		fmt.Println(loc)
 
+		var service []Service
+		err = db.All(&service)
+		fmt.Println(service)
+
 		timeNow := time.Now()
 		timeNowF := timeNow.Format("2006-01-02T15:04")
 
@@ -659,7 +663,7 @@ func operatorGet(c *gin.Context) {
 			c.Set("Нет данных", person)
 		}
 
-		c.HTML(http.StatusOK, "operator.html", gin.H{"location": loc, "person": person, "is_logged_in": isloggedin, "timeNow": timeNowF})
+		c.HTML(http.StatusOK, "operator.html", gin.H{"location": loc, "service": service, "person": person, "is_logged_in": isloggedin, "timeNow": timeNowF})
 
 	} else {
 		c.AbortWithStatus(http.StatusForbidden)

@@ -47,19 +47,19 @@
                             <div class="col">
                                 <h6>ФИО заявителя</h6>
                                 <label class="sr-only" for="inlineFormInput">Имя заявителя</label>
-                                <select multiple name="name" id="name" placeholder="Заявитель" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                <!-- <select multiple name="name" id="name" placeholder="Заявитель" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
     
-                                </select>
-                                <!-- <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" placeholder="ФИО заявителя" required> -->
+                                </select> -->
+                                <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" placeholder="ФИО заявителя" required>
                             </div>
                             <p></p>
                             <div class="col">
                                 <h6>Представитель заявителя</h6>
                                 <label class="sr-only" for="inlineFormInput">Представитель заявителя</label>
-                                <select multiple name="name" id="name" placeholder="Заявитель" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                <!-- <select multiple name="name" id="name" placeholder="Заявитель" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
        
-                                </select>
-                                <!-- <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" id="subname" placeholder="Представитель заявителя" required> -->
+                                </select> -->
+                                <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" id="subname" placeholder="Представитель заявителя" required>
                             </div>
                             <p></p>
 
@@ -69,7 +69,12 @@
                             <div class="col">
                                 <h6>Название услуги</h6>
                                 <label class="sr-only" for="inlineFormInput">Название услуги</label>
-                                <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" id="nameservice" placeholder="Название услуги" required>
+                                <select name="service" id="service" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                    {{range $index, $val := .service}}
+                                    <option value="{{$val.NameService}}">{{$val.NameService}}</option>
+                                    {{end}}
+                                </select>
+                                <!-- <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" id="nameservice" placeholder="Название услуги" required> -->
                             </div>
                         </div>
                         <p></p>
