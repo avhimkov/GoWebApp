@@ -69,13 +69,20 @@
                             <div class="col">
                                 <h6>Название услуги</h6>
                                 <label class="sr-only" for="inlineFormInput">Название услуги</label>
-                                <select name="service" id="service" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
-                                    {{range $index, $val := .service}}
-                                    <option value="{{$val.NameService}}">{{$val.NameService}}</option>
-                                    {{end}}
-                                </select>
-                                <!-- <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" id="nameservice" placeholder="Название услуги" required> -->
+                               
+                                <input type="text" data-provide="typeahead" class="form-control typeahead border-primary" name="query" id="query" placeholder="search..." autocomplete="off">
+                                <script>
+                                        $(".typeahead").typeahead({
+                                       source: [
+                                         {id: "id1", name: "jQuery"},
+                                         {id: "id2", name: "Script"},
+                                         {id: "id3", name: "Net"}
+                                       ]
+                                     });
+                                </script>
                             </div>
+                            
+                           
                         </div>
                         <p></p>
                         <div class="form-row">
