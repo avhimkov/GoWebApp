@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"encoding/csv"
-	"encoding/json"
+
 	"fmt"
 	"io"
 	"log"
@@ -14,6 +14,8 @@ import (
 
 	"github.com/DeanThompson/ginpprof"
 	"github.com/asdine/storm"
+
+	// "github.com/asdine/storm/codec/json"
 	"github.com/asdine/storm/q"
 	"github.com/gin-gonic/gin"
 	"github.com/jung-kurt/gofpdf"
@@ -422,8 +424,8 @@ func uploadUsers(c *gin.Context) {
 		userstate.MarkConfirmed(p.User)
 	}
 
-	peopleJSON, _ := json.Marshal(people)
-	fmt.Println(string(peopleJSON))
+	// peopleJSON, _ := json.Marshal(people)
+	// fmt.Println(string(peopleJSON))
 
 }
 
@@ -644,6 +646,9 @@ func operatorGet(c *gin.Context) {
 		var service []Service
 		err = db.All(&service)
 		fmt.Println(service)
+
+		// serviceJ, _ := json.Marshal(service)
+		// fmt.Println(string(serviceJ))
 
 		timeNow := time.Now()
 		timeNowF := timeNow.Format("2006-01-02T15:04")
