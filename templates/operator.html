@@ -71,15 +71,22 @@
                                 <label class="sr-only" for="inlineFormInput">Название услуги</label>
                                
                                 <input type="text" data-provide="typeahead" class="form-control typeahead border-primary" name="query" id="query" placeholder="search..." autocomplete="off">
+                                {{range $index, $val := .service}}
                                 <script>
-                                        $(".typeahead").typeahead({
-                                       source: [
-                                         {id: "id1", name: "jQuery"},
-                                         {id: "id2", name: "Script"},
-                                         {id: "id3", name: "Net"}
-                                       ]
-                                     });
+                                        $.get("{{$val.NameService}}", function(data){
+                                        console.log(data);
+                                        // use a data source with 'id' and 'name' keys
+                                        $("#query").typeahead({ source:data });
+                                    },'json');
+                                    //  $.get("data.json", function(data){
+                                    //     $(".typeahead").typeahead({ 
+                                    //         source:data 
+                                    //     });
+                                    //     },'json');
+                                    // data.json
+                                    // ["jQuery","Script","Net"]   
                                 </script>
+                                 {{end}}
                             </div>
                             
                            
