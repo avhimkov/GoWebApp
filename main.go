@@ -645,10 +645,7 @@ func operatorGet(c *gin.Context) {
 
 		var service []Service
 		err = db.All(&service)
-		fmt.Println(service)
-
-		// serviceJ, _ := json.Marshal(service)
-		// fmt.Println(string(serviceJ))
+		fmt.Println(&service)
 
 		timeNow := time.Now()
 		timeNowF := timeNow.Format("2006-01-02T15:04")

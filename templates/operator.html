@@ -69,15 +69,20 @@
                             <div class="col">
                                 <h6>Название услуги</h6>
                                 <label class="sr-only" for="inlineFormInput">Название услуги</label>
-                               
+                                <!-- <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                        {{range $index, $val := .service}}
+                                        <option value="{{$val.Type}}">{{$val.NameService}}</option>
+                                        {{end}}
+                                </select> -->
+                                
                                 <input type="text" data-provide="typeahead" class="form-control typeahead border-primary" name="query" id="query" placeholder="search..." autocomplete="off">
-                                {{range $index, $val := .service}}
+                                
                                 <script>
-                                   $(".typeahead").typeahead({
-                                    source: ["{{$val.NameService}}"]
+                                    $(".typeahead").typeahead({
+                                    source: []
                                     });
                                 </script>
-                                 {{end}}
+                                 
                             </div>
                         </div>
                         <p></p>
