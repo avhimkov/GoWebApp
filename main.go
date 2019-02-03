@@ -647,6 +647,10 @@ func operatorGet(c *gin.Context) {
 		err = db.All(&service)
 		fmt.Println(&service)
 
+		// var servicename []Service
+		// err = db.Select(q."NameService", &servicename)
+		// fmt.Println(&servicename)
+
 		timeNow := time.Now()
 		timeNowF := timeNow.Format("2006-01-02T15:04")
 
@@ -665,7 +669,7 @@ func operatorGet(c *gin.Context) {
 			c.Set("Нет данных", person)
 		}
 
-		c.HTML(http.StatusOK, "operator.html", gin.H{"location": loc, "service": service, "person": person, "is_logged_in": isloggedin, "timeNow": timeNowF})
+		c.HTML(http.StatusOK, "operator.html", gin.H{"location": loc, "service": service, "servicename": servicename, "person": person, "is_logged_in": isloggedin, "timeNow": timeNowF})
 
 	} else {
 		c.AbortWithStatus(http.StatusForbidden)

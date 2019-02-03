@@ -76,13 +76,58 @@
                                 </select> -->
                                 
                                 <input type="text" data-provide="typeahead" class="form-control typeahead border-primary" name="query" id="query" placeholder="search..." autocomplete="off">
-                                
-                                <script>
-                                    $(".typeahead").typeahead({
-                                    source: []
-                                    });
+                                {{range $index, $val := .servicename}}
+                               <script>
+                                    // var arr = "";
+                                    
+                                   
+                                   
+                                    // data from an external JSON file
+                                    // $.get("https://next.json-generator.com/api/json/get/V1cGoKmDV", function(data){
+                                    // console.log(data);
+                                    // // use a data source with 'id' and 'name' keys
+                                    // $("#query").typeahead({ source:data });
+                                    // },'json');
+                                    // var countries = ["Afghanistan","Albania","Algeria"]
+
+                                    $(".typeahead").typeahead({ 
+                                        
+                                        // data source
+                                        source: ['{{$val}}'],
+
+                                        // how many items to show
+                                        items: 8,
+
+                                        // default template
+                                        // menu: '<ul class="typeahead dropdown-menu" role="listbox"></ul>',
+                                        // item: '<li><a class="dropdown-item" href="#" role="option"></a></li>',
+                                        // headerHtml: '<li class="dropdown-header"></li>',
+                                        // headerDivider: '<li class="divider" role="separator"></li>' 
+                                        // itemContentSelector:'a',
+
+                                        // min length to trigger the suggestion list
+                                        minLength: 1,
+
+                                        // number of pixels the scrollable parent container scrolled down
+                                        scrollHeight: 0,
+
+                                        // auto selects the first item
+                                        autoSelect: true,
+
+                                        // callbacks
+                                        afterSelect: $.noop,
+                                        afterEmptySelect: $.noop,
+
+                                        // adds an item to the end of the list
+                                        addItem: false,
+
+                                        // delay between lookups
+                                        delay: 0,
+
+                                        });
+                                    
                                 </script>
-                                 
+                                {{end}}
                             </div>
                         </div>
                         <p></p>
