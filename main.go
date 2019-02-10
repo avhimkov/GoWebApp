@@ -3,6 +3,8 @@ package main
 import (
 	"bufio"
 	"encoding/csv"
+	"encoding/json"
+	"strings"
 
 	"fmt"
 	"io"
@@ -641,29 +643,44 @@ func operatorGet(c *gin.Context) {
 
 		var loc []Location
 		err = db.All(&loc)
-		fmt.Println(loc)
+		// fmt.Println(loc)
 
 		var service []Service
 		err = db.All(&service)
-		fmt.Println(&service)
+		// fmt.Println(service)
 
-		// var servicename []Service
-		// err = db.Select(q."NameService", &servicename)
-		// fmt.Println(&servicename)
+		var servicename []Service
+		err = db.All(&servicename)
+		// fmt.Println(servicename)
+
+		servicenameJSON, _ := json.Marshal(service)
+		fmt.Println(string(servicenameJSON))
+
+		// servicenameData := []byte(servicenameJSON)
+
+		// var servicename Service
+		// err1 := json.Unmarshal(servicenameData, &servicename)
+		// if err1 != nil {
+		// 	log.Println(err1)
+		// }
+
+		// fmt.Println(servicenameJSON)
+		// servicenameJSON, _ := json.Marshal(servicename)
+		// fmt.Println(string(servicenameJSON))
 
 		timeNow := time.Now()
 		timeNowF := timeNow.Format("2006-01-02T15:04")
 
-		fmt.Println(timeNowF)
+		// fmt.Println(timeNowF)
 
 		// timeAgo := timeNow.AddDate(0, 0, -1)
 		timeAgo := timeNow.Add(-12 * time.Hour)
 		timeAgoF := timeAgo.Format("2006-01-02T15:04")
 
-		fmt.Println(timeAgoF)
+		// fmt.Println(timeAgoF)
 
 		err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", timeAgoF), q.Lte("DateIn", timeNowF))).Find(&person)
-		fmt.Println(&person)
+		// fmt.Println(&person)
 
 		if err == storm.ErrNotFound {
 			c.Set("Нет данных", person)
@@ -1025,6 +1042,19 @@ func RemVal(c *gin.Context) {
 		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	}
 
+}
+
+func (s Service) MarshalJSON() ([]byte, error) {
+	return []byte(fmt.Sprintf("%v %v", s.NameService, s.SybNameService)), nil
+}
+
+func (s *Service) UnmarshalJSON(value []byte) error {
+	parts := strings.Split(string(value), "/")
+	// m.MonthNumber = strconv.ParseInt(parts[0], 10, 32)
+	// m.YearNumber = strconv.ParseInt(parts[1], 10, 32)
+	fmt.Println(parts)
+
+	return nil
 }
 
 // ----------- chek login func ------------------
