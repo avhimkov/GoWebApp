@@ -3,8 +3,6 @@ package main
 import (
 	"bufio"
 	"encoding/csv"
-	"encoding/json"
-	"strings"
 
 	"fmt"
 	"io"
@@ -653,20 +651,16 @@ func operatorGet(c *gin.Context) {
 		err = db.All(&servicename)
 		// fmt.Println(servicename)
 
-		servicenameJSON, _ := json.Marshal(service)
-		fmt.Println(string(servicenameJSON))
+		// var arrayServ []string
 
-		// servicenameData := []byte(servicenameJSON)
+		// for i := range servicename {
 
-		// var servicename Service
-		// err1 := json.Unmarshal(servicenameData, &servicename)
-		// if err1 != nil {
-		// 	log.Println(err1)
+		// 	parts := ("\"" + servicename[i].NameService + "\",")
+
+		// 	arrayServ = append(arrayServ, parts)
 		// }
 
-		// fmt.Println(servicenameJSON)
-		// servicenameJSON, _ := json.Marshal(servicename)
-		// fmt.Println(string(servicenameJSON))
+		// fmt.Println(arrayServ)
 
 		timeNow := time.Now()
 		timeNowF := timeNow.Format("2006-01-02T15:04")
@@ -1044,18 +1038,19 @@ func RemVal(c *gin.Context) {
 
 }
 
-func (s Service) MarshalJSON() ([]byte, error) {
-	return []byte(fmt.Sprintf("%v %v", s.NameService, s.SybNameService)), nil
-}
+// JSON
+// func (s Service) MarshalJSON() ([]byte, error) {
+// 	return []byte(fmt.Sprintf("%v %v", s.NameService, s.SybNameService)), nil
+// }
 
-func (s *Service) UnmarshalJSON(value []byte) error {
-	parts := strings.Split(string(value), "/")
-	// m.MonthNumber = strconv.ParseInt(parts[0], 10, 32)
-	// m.YearNumber = strconv.ParseInt(parts[1], 10, 32)
-	fmt.Println(parts)
+// func (s *Service) UnmarshalJSON(value []byte) error {
+// 	parts := strings.Split(string(value), "/")
+// 	// m.MonthNumber = strconv.ParseInt(parts[0], 10, 32)
+// 	// m.YearNumber = strconv.ParseInt(parts[1], 10, 32)
+// 	fmt.Println(parts)
 
-	return nil
-}
+// 	return nil
+// }
 
 // ----------- chek login func ------------------
 /* func setUserStatus() gin.HandlerFunc {

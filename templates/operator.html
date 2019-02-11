@@ -77,23 +77,12 @@
                                 
                                 <input type="text" data-provide="typeahead" class="form-control typeahead border-primary" name="query" id="query" placeholder="search..." autocomplete="off">
                                 {{range $index, $val := .servicename}}
-                               <script>
-                                    // var arr = "";
-                                    
-                                   
-                                   
-                                    // data from an external JSON file
-                                    // $.get("https://next.json-generator.com/api/json/get/V1cGoKmDV", function(data){
-                                    // console.log(data);
-                                    // // use a data source with 'id' and 'name' keys
-                                    // $("#query").typeahead({ source:data });
-                                    // },'json');
-                                    // var countries = ["Afghanistan","Albania","Algeria"]
+                                <script>
 
-                                    $(".typeahead").typeahead({ 
+                                        $(".typeahead").typeahead({ 
                                         
                                         // data source
-                                        source: ['{{$val}}'],
+                                        source: ['{{$val.NameService}}'],
 
                                         // how many items to show
                                         items: 8,
