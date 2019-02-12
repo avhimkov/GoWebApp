@@ -1,13 +1,98 @@
 package main
 
 import (
-	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"strings"
 	"testing"
 
-	"github.com/magiconair/properties/assert"
+	"github.com/gin-gonic/gin"
 )
+
+var tmpServiceList []Service
+
+// This function is used for setup before executing the test functions
+func TestMain(m *testing.M) {
+	//Set Gin to Test Mode
+	gin.SetMode(gin.TestMode)
+
+	// Run the other tests
+	os.Exit(m.Run())
+}
+
+// Helper function to create a router during testing
+func getRouter(withTemplates bool) *gin.Engine {
+	r := gin.Default()
+	if withTemplates {
+		r.LoadHTMLGlob("templates/*")
+	}
+	return r
+}
+
+// Helper function to process a request and test its response
+func testHTTPResponse(t *testing.T, r *gin.Engine, req *http.Request, f func(w *httptest.ResponseRecorder) bool) {
+
+	// Create a response recorder
+	w := httptest.NewRecorder()
+
+	// Create the service and process the above request.
+	r.ServeHTTP(w, req)
+
+	if !f(w) {
+		t.Fail()
+	}
+}
+
+// This function is used to store the main lists into the temporary one
+// for testing
+func saveLists() {
+	tmpServiceList = serviceList
+}
+
+// This function is used to restore the main lists from the temporary one
+func restoreLists() {
+	serviceList = tmpServiceList
+}
+
+func TestShowIndexPageUnauthenticated(t *testing.T) {
+	r := getRouter(true)
+
+	r.GET("/operator", indexPage)
+
+	// Create a request to send to the above route
+	req, _ := http.NewRequest("GET", "/operator", nil)
+
+	testHTTPResponse(t, r, req, func(w *httptest.ResponseRecorder) bool {
+		// Test that the http status code is 200
+		statusOK := w.Code == http.StatusOK
+
+		// Test that the page title is "Home Page"
+		// You can carry out a lot more detailed tests using libraries that can
+		// parse and process HTML pages
+		p, err := ioutil.ReadAll(w.Body)
+		pageOK := err == nil && strings.Index(string(p), "<h1>Вход</h1>") > 0
+
+		return statusOK && pageOK
+	})
+}
+
+// For this demo, we're storing the article list in memory
+// In a real application, this list will most likely be fetched
+// from a database or from static files
+var serviceList = []Service{
+	{ID: 3, Type: "Федеральная", NameService: "Получение паспорта", SybNameService: "Загран паспорта"},
+	{ID: 12, Type: "Региональная", NameService: "Получение ИНН", SybNameService: ""},
+	{ID: 15, Type: "Муниципальная", NameService: "Выдача разрешение на вылов рыбы", SybNameService: ""},
+	// article{ID: 1, Title: "Article 1", Content: "Article 1 body"},
+	// article{ID: 2, Title: "Article 2", Content: "Article 2 body"},
+}
+
+// Return a list of all the articles
+func getAllService() []Service {
+	return serviceList
+}
 
 /* func TestSetupRouter(t *testing.T) {
 	tests := []struct {
@@ -25,19 +110,32 @@ import (
 	}
 } */
 
-func Test_indexPage(t *testing.T) {
-	testRouter := SetupRouter()
+// func Test_indexPage(t *testing.T) {
+// 	handler := func(c *gin.Context) {
+// 		c.String(http.StatusOK, "bar")
+// 	}
 
-	req, err := http.NewRequest("GET", "/", nil)
-	if err != nil {
-		fmt.Println(err)
-	}
+// 	router := gin.New()
+// 	router.GET("/operator", handler)
 
-	resp := httptest.NewRecorder()
-	testRouter.ServeHTTP(resp, req)
-	assert.Equal(t, resp.Code, 200)
+// 	req, _ := http.NewRequest("GET", "/operator", nil)
+// 	resp := httptest.NewRecorder()
+// 	router.ServeHTTP(resp, req)
 
-}
+// 	assert.Equal(t, resp.Body.String(), "bar")
+
+// testRouter := SetupRouter()
+
+// req, err := http.NewRequest("GET", "/operator", nil)
+// if err != nil {
+// 	fmt.Println(err)
+// }
+
+// resp := httptest.NewRecorder()
+// testRouter.ServeHTTP(resp, req)
+// assert.Equal(t, resp.Code, 200)
+
+// }
 
 /* func Test_indexPage(t *testing.T) {
 	type args struct {
