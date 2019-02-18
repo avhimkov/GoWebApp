@@ -52,7 +52,11 @@
                     <td>{{$e}}</td>
                     <td>
                         <form action="/adminoff/{{$e}}" method="GET">
-                            <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-check"></i></button>
+                            {{ if .cheked  }}        
+                                <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-square"></i></button>
+                            {{else}}
+                                <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-square"></i></button>
+                            {{end}}
                         </form>
                     </td>
                     <td>

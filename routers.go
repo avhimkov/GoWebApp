@@ -130,7 +130,7 @@ func adminkaGet(c *gin.Context) {
 	isloggedin := userstate.IsLoggedIn(usercook)
 	isadmin := userstate.IsAdmin(usercook)
 
-	var cheked []bool
+	// var cheked []bool
 	if isloggedin {
 
 		var loc []Location
@@ -142,11 +142,13 @@ func adminkaGet(c *gin.Context) {
 		}
 
 		listusers, _ := userstate.AllUsernames()
-		if isadmin {
-			for _, i := range listusers {
-				cheked = append(cheked, userstate.IsAdmin(i))
-			}
-		}
+		// if isadmin {
+		// 	for _, i := range listusers {
+		// 		cheked = append(cheked, userstate.IsAdmin(i))
+		// 	}
+		// }
+		// fmt.Println(cheked)
+
 		c.HTML(http.StatusOK, "adminka.html", gin.H{"location": loc, "listusers": listusers, "is_logged_in": isloggedin, "isadmin": isadmin})
 	} else {
 		c.Redirect(301, "/")
