@@ -51,10 +51,11 @@
                     <td>{{$i}}</td>
                     <td>{{$e}}</td>
                     <td>
-                        <form action="/adminoff/{{$e}}" method="GET">
-                            {{ if .cheked  }}        
-                                <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-square"></i></button>
-                            {{else}}
+                        <form action="/adminoff/{{$e}}" method="GET"> 
+                            {{ if $.cheked  }}      
+                                <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-check"></i></button>
+                            {{end}}
+                            {{ if not $.cheked  }}  
                                 <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-square"></i></button>
                             {{end}}
                         </form>
