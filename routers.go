@@ -119,10 +119,6 @@ func uploadUsers(c *gin.Context) {
 		userstate.Login(c.Writer, p.User)
 		userstate.MarkConfirmed(p.User)
 	}
-
-	// peopleJSON, _ := json.Marshal(people)
-	// fmt.Println(string(peopleJSON))
-
 }
 
 func adminkaGet(c *gin.Context) {
@@ -135,7 +131,6 @@ func adminkaGet(c *gin.Context) {
 
 		var loc []Location
 		err = db.All(&loc)
-		fmt.Println(loc)
 
 		if err == storm.ErrNotFound {
 			c.Set("Нет данных", loc)
@@ -148,24 +143,11 @@ func adminkaGet(c *gin.Context) {
 			}
 		}
 
-		fmt.Println(cheked)
-		fmt.Println(listusers)
-
 		c.HTML(http.StatusOK, "adminka.html", gin.H{"location": loc, "listusers": listusers, "is_logged_in": isloggedin, "isadmin": isadmin, "cheked": cheked})
 	} else {
 		c.Redirect(301, "/")
 	}
 }
-
-/* func (ctrl TestController) TestConfig(c *gin.Context){
-	var testForm form.TestForm
-	if c.ShouldBindWith(&testForm, binding.FormPost) != nil {
-		c.Redirect(302, "/v1/console/config/request_failed")
-	}
-	TestModel.TestConfig(testForm)
-	fmt.Println(testForm.age)
-	c.Redirect(302, "/v1/console/config/success")
-} */
 
 func adminkaPost(c *gin.Context) {
 
@@ -174,9 +156,7 @@ func adminkaPost(c *gin.Context) {
 	if isloggedin {
 
 		office := c.PostForm("office")
-		fmt.Println(office)
 		operator := c.PostForm("operator")
-		fmt.Println(operator)
 
 		loc := Location{
 			// ID:        1,
@@ -206,7 +186,6 @@ func uploadService(c *gin.Context) {
 		log.Fatal(err)
 	}
 	filename := header.Filename
-	fmt.Println(filename)
 	err = os.MkdirAll(path, 0777)
 	if err != nil {
 		log.Fatal(err)
@@ -215,7 +194,6 @@ func uploadService(c *gin.Context) {
 	_, err = io.Copy(out, file)
 
 	url := path + "/" + filename
-	fmt.Println(url)
 
 	csvFile, _ := os.Open(url)
 	reader := csv.NewReader(bufio.NewReader(csvFile))
@@ -237,7 +215,6 @@ func uploadService(c *gin.Context) {
 
 		for _, s := range serv {
 			db.Save(s)
-			fmt.Println(s)
 		}
 	}
 
@@ -286,7 +263,6 @@ func uploadValue(c *gin.Context) {
 		log.Fatal(err)
 	}
 	filename := header.Filename
-	fmt.Println(filename)
 	err = os.MkdirAll(path, 0777)
 	if err != nil {
 		log.Fatal(err)
@@ -295,7 +271,6 @@ func uploadValue(c *gin.Context) {
 	_, err = io.Copy(out, file)
 
 	url := path + "/" + filename
-	fmt.Println(url)
 
 	csvFile, _ := os.Open(url)
 	reader := csv.NewReader(bufio.NewReader(csvFile))
@@ -324,7 +299,6 @@ func uploadValue(c *gin.Context) {
 
 		for _, p := range peeps {
 			db.Save(p)
-			fmt.Println(p)
 		}
 	}
 
@@ -415,8 +389,6 @@ func operatorPost(c *gin.Context) {
 		datepars, _ := time.Parse(time.RFC3339, datein)
 		datef := datepars.Format("2006-01-02T15:04")
 
-		fmt.Println(datef)
-
 		for _, p := range peeps {
 			fmt.Println(p)
 			db.Save(p)
@@ -450,8 +422,6 @@ func controller(c *gin.Context) {
 
 		dateAdd := datep.Add(-12 * time.Hour)
 		dateAF := dateAdd.Format("2006-01-02T15:04")
-		fmt.Println(dateAF)
-		fmt.Println(datePF)
 
 		err := db.Select(q.Eq("User", users), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
 		if err == storm.ErrNotFound {
@@ -478,7 +448,6 @@ func editVal(c *gin.Context) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(&person)
 
 	if isloggedin {
 
@@ -497,10 +466,8 @@ func editVal(c *gin.Context) {
 
 		peeps := &Person{ID: person.ID, User: usercook, Name: name, SubName: subname, NameService: nameservice,
 			DateIn: datein, DateSend: datesend, DateOut: dateout, Address: address, Location: loc, Number: number, Phone: phone, Note: note}
-		fmt.Println(peeps)
 
 		db.Update(peeps)
-		fmt.Println(peeps)
 
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 	} else {
@@ -528,8 +495,6 @@ func history(c *gin.Context) {
 
 		dateAdd := datep.Add(-12 * time.Hour)
 		dateAF := dateAdd.Format("2006-01-02T15:04")
-		fmt.Println(dateAF)
-		fmt.Println(datePF)
 
 		err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", dateAF), q.Lte("DateIn", datePF))).Find(&person)
 		if err == storm.ErrNotFound {
@@ -603,7 +568,6 @@ func reportPost(c *gin.Context) {
 				log.Fatal(err)
 			}
 
-			fmt.Println(count)
 			c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
 
 		case "report2":
@@ -613,7 +577,6 @@ func reportPost(c *gin.Context) {
 				log.Fatal(err)
 			}
 
-			fmt.Println(count)
 			c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
 
 		case "report3":
@@ -622,7 +585,6 @@ func reportPost(c *gin.Context) {
 			if err != nil {
 				log.Fatal(err)
 			}
-			fmt.Println(count)
 			c.HTML(http.StatusOK, "report.html", gin.H{"count": count, "is_logged_in": isloggedin})
 		}
 
@@ -701,8 +663,6 @@ func RemVal(c *gin.Context) {
 		}
 		query.Delete(new(Person))
 
-		fmt.Println(count)
-		fmt.Println(id)
 		http.Redirect(c.Writer, c.Request, "/operator", 302)
 
 	case "Service":
@@ -716,8 +676,6 @@ func RemVal(c *gin.Context) {
 		}
 		query.Delete(new(Service))
 
-		fmt.Println(count)
-		fmt.Println(id)
 		http.Redirect(c.Writer, c.Request, "/service", 302)
 
 	case "Location":
@@ -731,9 +689,6 @@ func RemVal(c *gin.Context) {
 		}
 		query.Delete(new(Location))
 
-		fmt.Println(count)
-		fmt.Println(id)
 		http.Redirect(c.Writer, c.Request, "/adminka", 302)
 	}
-
 }

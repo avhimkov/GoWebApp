@@ -67,7 +67,11 @@
                     </td>
                     <td>
                         <form action="/makeadmin/{{$e}}" method="GET">
-                            <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-check"></i></button>
+                            {{ if $.cheked  }} 
+                                <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-check"></i></button>
+                            {{else}}
+                                <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-square"></i></button>
+                            {{end}}
                         </form>
                     </td>
                 </tr>
