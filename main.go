@@ -75,12 +75,10 @@ var permissionHandler = permHandler()
 
 //open databas
 func DB() *storm.DB {
-	//data db
 	db, err := storm.Open("db/data.db")
 	if err != nil {
 		log.Fatal(err)
 	}
-	// defer db.Close()
 	return db
 }
 

@@ -315,40 +315,20 @@ func operatorGet(c *gin.Context) {
 
 		var loc []Location
 		err = db.All(&loc)
-		// fmt.Println(loc)
 
 		var service []Service
 		err = db.All(&service)
-		// fmt.Println(service)
 
 		var servicename []Service
 		err = db.All(&servicename)
-		// fmt.Println(servicename)
-
-		// var arrayServ []string
-
-		// for i := range servicename {
-
-		// 	parts := ("\"" + servicename[i].NameService + "\",")
-
-		// 	arrayServ = append(arrayServ, parts)
-		// }
-
-		// fmt.Println(arrayServ)
 
 		timeNow := time.Now()
 		timeNowF := timeNow.Format("2006-01-02T15:04")
 
-		// fmt.Println(timeNowF)
-
-		// timeAgo := timeNow.AddDate(0, 0, -1)
 		timeAgo := timeNow.Add(-12 * time.Hour)
 		timeAgoF := timeAgo.Format("2006-01-02T15:04")
 
-		// fmt.Println(timeAgoF)
-
 		err := db.Select(q.Eq("User", usercook), q.And(q.Gte("DateIn", timeAgoF), q.Lte("DateIn", timeNowF))).Find(&person)
-		// fmt.Println(&person)
 
 		if err == storm.ErrNotFound {
 			c.Set("Нет данных", person)
@@ -385,9 +365,6 @@ func operatorPost(c *gin.Context) {
 			{User: usercook, Name: name, SubName: subname, NameService: nameservice,
 				DateIn: datein, DateSend: datesend, DateOut: dateout, Address: address, Location: loc, Number: number, Phone: phone, Note: note},
 		}
-
-		datepars, _ := time.Parse(time.RFC3339, datein)
-		datef := datepars.Format("2006-01-02T15:04")
 
 		for _, p := range peeps {
 			fmt.Println(p)
@@ -489,6 +466,9 @@ func history(c *gin.Context) {
 
 		// timeNow := time.Now()
 		// dateAdd := datepars.AddDate(0, 0, -12)
+
+		// datepars, _ := time.Parse(time.RFC3339, datein)
+		// datef := datepars.Format("2006-01-02T15:04")
 
 		datep, _ := time.Parse("2006-01-02T15:04", date)
 		datePF := datep.Format("2006-01-02T15:04")
@@ -658,6 +638,7 @@ func RemVal(c *gin.Context) {
 
 		query := db.Select(q.Eq("ID", id))
 		count, err := query.Count(new(Person))
+		fmt.Println(count)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -671,6 +652,7 @@ func RemVal(c *gin.Context) {
 
 		query := db.Select(q.Eq("ID", id))
 		count, err := query.Count(new(Service))
+		fmt.Println(count)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -684,6 +666,7 @@ func RemVal(c *gin.Context) {
 
 		query := db.Select(q.Eq("ID", id))
 		count, err := query.Count(new(Location))
+		fmt.Println(count)
 		if err != nil {
 			log.Fatal(err)
 		}
