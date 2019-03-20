@@ -453,6 +453,46 @@ func editVal(c *gin.Context) {
 	}
 }
 
+// Edit value
+func editLogin(c *gin.Context) {
+	id := c.Param("id")
+	usercook, _ := userstate.UsernameCookie(c.Request)
+	isloggedin := userstate.IsLoggedIn(usercook)
+	var person Person
+
+	findVal := db.Select(q.Eq("ID", id))
+	err := findVal.First(&person)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if isloggedin {
+
+		// id := c.PostForm("id")
+		name := c.PostForm("name")
+		subname := c.PostForm("subname")
+		nameservice := c.PostForm("nameservice")
+		datein := c.PostForm("datein")
+		datesend := c.PostForm("datesend")
+		dateout := c.PostForm("dateout")
+		address := c.PostForm("address")
+		loc := c.PostForm("loc")
+		number := c.PostForm("number")
+		phone := c.PostForm("phone")
+		note := c.PostForm("note")
+
+		peeps := &Person{ID: person.ID, User: usercook, Name: name, SubName: subname, NameService: nameservice,
+			DateIn: datein, DateSend: datesend, DateOut: dateout, Address: address, Location: loc, Number: number, Phone: phone, Note: note}
+
+		db.Update(peeps)
+
+		http.Redirect(c.Writer, c.Request, "/operator", 302)
+	} else {
+		c.AbortWithStatus(http.StatusForbidden)
+		fmt.Fprint(c.Writer, "Permission denied!")
+	}
+}
+
 // Find user value on date
 func history(c *gin.Context) {
 	usercook, _ := userstate.UsernameCookie(c.Request)

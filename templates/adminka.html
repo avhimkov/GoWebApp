@@ -75,6 +75,27 @@
                         </form>
                     </td>
                 </tr>
+                <form class="form" action="/addservice" method="POST">
+                    <div class="form-row">
+                        <div class="col">
+                            <h6>Имя</h6>
+                            <label class="sr-only" for="inlineFormInput">Имя</label>
+                            <input type="text" name="type" class="form-control" id="type" placeholder="Имя" required>
+                        </div>
+                        <div class="col">
+                            <h6>Пароль</h6>
+                            <label class="sr-only" for="inlineFormInput">Пароль</label>
+                            <input type="text" name="nameserv" class="form-control" id="nameserv" placeholder="Пароль" required>
+                        </div>
+                        <div class="col">
+                            <h6>Почта</h6>
+                            <label class="sr-only" for="inlineFormInput">Почта</label>
+                            <input type="text" name="sybnameserv" class="form-control" id="sybnameserv" placeholder="Почта" required>
+                        </div>
+                    </div>
+                <p></p>
+                <button type="submit" class="btn btn-primary float-right">Сохранить</button>
+            </form>
                 {{end}}
             </tbody>
         </table>

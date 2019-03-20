@@ -300,6 +300,9 @@ func main() {
 	// Edit value
 	g.POST("/edit/:id", editVal)
 
+	// Edit login TODO
+	g.POST("/edit/:id", editLogin)
+
 	ginpprof.Wrap(g)
 
 	// 404 page
