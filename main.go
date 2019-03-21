@@ -301,7 +301,7 @@ func main() {
 	g.POST("/edit/:id", editVal)
 
 	// Edit login TODO
-	g.POST("/edit/:id", editLogin)
+	//g.POST("/edit/:id", editLogin)
 
 	ginpprof.Wrap(g)
 

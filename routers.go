@@ -454,7 +454,7 @@ func editVal(c *gin.Context) {
 }
 
 // Edit value
-func editLogin(c *gin.Context) {
+/* func editLogin(c *gin.Context) {
 	id := c.Param("id")
 	usercook, _ := userstate.UsernameCookie(c.Request)
 	isloggedin := userstate.IsLoggedIn(usercook)
@@ -491,7 +491,7 @@ func editLogin(c *gin.Context) {
 		c.AbortWithStatus(http.StatusForbidden)
 		fmt.Fprint(c.Writer, "Permission denied!")
 	}
-}
+} */
 
 // Find user value on date
 func history(c *gin.Context) {
