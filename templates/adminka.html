@@ -52,10 +52,10 @@
                 {{range $i, $e := .listusers}}
                 <!-- TODO -->  
                 <!-- hide modal window -->
-                <div class="modal fade" id="edit{{$e}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                <div class="modal fade" id="registerEdit{{$e}}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form enctype="multipart/form-data" class="form" action="/edit/{{$e}}" method="POST">
+                            <form enctype="multipart/form-data" class="form" action="/register" method="POST">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                                 <h4 class="modal-title custom_align" id="Heading">Редактировать данные</h4>
@@ -63,15 +63,15 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <h6>Имя</h6>
-                                    <input type="text" name="name" class="form-control mr-sm-2 mb-2 mb-sm-0" id="name" value={{$e}}>
+                                    <input type="text" name="username" class="form-control mr-sm-2 mb-2 mb-sm-0" id="username" value={{$e}}>
                                 </div>
                                 <div class="form-group">
                                     <h6>Пароль</h6>
-                                    <input type="text" name="subname" class="form-control mr-sm-2 mb-2 mb-sm-0" id="subname" >
+                                    <input type="text" name="password" class="form-control mr-sm-2 mb-2 mb-sm-0" id="password" >
                                 </div>
                                 <div class="form-group">
                                     <h6>Почта</h6>
-                                    <input type="text" name="nameservice" class="form-control mr-sm-2 mb-2 mb-sm-0" id="nameservice" >
+                                    <input type="text" name="mail" class="form-control mr-sm-2 mb-2 mb-sm-0" id="mail" >
                                 </div>
                             </div>
                             <div class="modal-footer ">
@@ -112,6 +112,11 @@
                                 <button class="btn btn-primary btn-rounded btn-sm my-0" type="submit"><i class="fas fa-square"></i></button>
                             {{end}}
                         </form>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-rounded btn-sm my-0" data-title="Edit" data-toggle="modal" data-target="#registerEdit{{$e}}">
+                            <i class="fas fa-edit"></i>
+                        </button>
                     </td>
                 </tr>
 
