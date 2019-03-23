@@ -454,7 +454,7 @@ func editVal(c *gin.Context) {
 }
 
 // Edit value
-/* func registerEdit(c *gin.Context) {
+func registerEdit(c *gin.Context) {
 	username := c.PostForm("username")
 	pass := c.PostForm("password")
 	mail := c.PostForm("email")
@@ -464,11 +464,8 @@ func editVal(c *gin.Context) {
 	userstate.MarkConfirmed(username)
 
 	http.Redirect(c.Writer, c.Request, "/adminka", 302)
-	} else {
-		c.AbortWithStatus(http.StatusForbidden)
-		fmt.Fprint(c.Writer, "Permission denied!")
-	}
-} */
+
+}
 
 // Find user value on date
 func history(c *gin.Context) {
