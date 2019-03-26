@@ -455,12 +455,12 @@ func editVal(c *gin.Context) {
 
 // Edit value
 func registerEdit(c *gin.Context) {
+
 	username := c.PostForm("username")
 	pass := c.PostForm("password")
 	mail := c.PostForm("email")
 
 	userstate.AddUser(username, pass, mail)
-	userstate.Login(c.Writer, username)
 	userstate.MarkConfirmed(username)
 
 	http.Redirect(c.Writer, c.Request, "/adminka", 302)
