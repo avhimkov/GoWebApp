@@ -69,54 +69,11 @@
                             <div class="col">
                                 <h6>Название услуги</h6>
                                 <label class="sr-only" for="inlineFormInput">Название услуги</label>
-                                <!-- <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
+                                <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
                                         {{range $index, $val := .service}}
-                                        <option value="{{$val.Type}}">{{$val.NameService}}</option>
+                                            <option value="{{$val.NameService}}">{{$val.NameService}}</option>
                                         {{end}}
-                                </select> -->
-                                
-                                <input type="text" data-provide="typeahead" class="form-control typeahead border-primary" name="query" id="query" placeholder="search..." autocomplete="off">
-                                {{range $index, $val := .servicename}}
-                                <script>
-
-                                        $(".typeahead").typeahead({ 
-                                        
-                                        // data source
-                                        source: ['{{$val.NameService}}'],
-
-                                        // how many items to show
-                                        items: 8,
-
-                                        // default template
-                                        // menu: '<ul class="typeahead dropdown-menu" role="listbox"></ul>',
-                                        // item: '<li><a class="dropdown-item" href="#" role="option"></a></li>',
-                                        // headerHtml: '<li class="dropdown-header"></li>',
-                                        // headerDivider: '<li class="divider" role="separator"></li>' 
-                                        // itemContentSelector:'a',
-
-                                        // min length to trigger the suggestion list
-                                        minLength: 1,
-
-                                        // number of pixels the scrollable parent container scrolled down
-                                        scrollHeight: 0,
-
-                                        // auto selects the first item
-                                        autoSelect: true,
-
-                                        // callbacks
-                                        afterSelect: $.noop,
-                                        afterEmptySelect: $.noop,
-
-                                        // adds an item to the end of the list
-                                        addItem: false,
-
-                                        // delay between lookups
-                                        delay: 0,
-
-                                        });
-                                    
-                                </script>
-                                {{end}}
+                                </select>
                             </div>
                         </div>
                         <p></p>
@@ -132,7 +89,7 @@
                                 <label class="sr-only" for="inlineFormInput">Офис</label>
                                 <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
                                     {{range $index, $val := .location}}
-                                    <option value="{{$val.Operator}}">{{$val.Office}}</option>
+                                        <option value="{{$val.Office}}">{{$val.Office}}</option>
                                     {{end}}
                                 </select>
                             </div>
@@ -141,7 +98,7 @@
                                 <label class="sr-only" for="inlineFormInput">Место оператора</label>
                                 <select name="loc" id="loc" placeholder="Место оператора" class="form-control mr-sm-2 mb-2 mb-sm-0"> 
                                     {{range $index, $val := .location}}
-                                    <option value="{{$val.Operator}}">{{$val.Operator}}</option>
+                                        <option value="{{$val.Operator}}">{{$val.Operator}}</option>
                                     {{end}}
                                 </select>
                             </div>
@@ -198,26 +155,6 @@
                     <p></p>
                     <button type="submit" id="btnSubmit" class="btn btn-primary float-right">Сохранить</button>
                 </form>
-
-                <!-- <script>
-                    
-                    $("#btnSubmit").click(function(event) {
-
-                    // Fetch form to apply custom Bootstrap validation
-                    var form = $("#reg-service")
-
-                    if (form[0].checkValidity() === false) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    }
-
-                    form.addClass('was-validated');
-                    // Perform ajax submit here...
-
-                    });
-
-                </script> -->
-
             </div>
         </div>
     </div>
